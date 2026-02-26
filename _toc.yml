@@ -1,0 +1,58 @@
+format: jb-book
+root: index
+
+parts:
+  - caption: Getting Started
+    chapters:
+      - file: getting-started/overview
+      - file: getting-started/quick-start
+      - file: getting-started/projects
+
+  - caption: Meshing
+    chapters:
+      - file: meshing/geometry
+      - file: meshing/domain-setup
+      - file: meshing/mesh-settings
+      - file: meshing/boundary-layers
+      - file: meshing/refinement-zones
+      - file: meshing/surfaces
+      - file: meshing/multi-region
+      - file: meshing/mesh-quality
+      - file: meshing/export
+
+  - caption: Simulation
+    chapters:
+      - file: simulation/setup
+      - file: simulation/turbulence-models
+      - file: simulation/boundary-conditions
+      - file: simulation/solver-settings
+      - file: simulation/running
+      - file: simulation/post-processing
+
+  - caption: AI Assistant
+    chapters:
+      - file: agent/overview
+      - file: agent/mesh-assistant
+      - file: agent/simulation-assistant
+
+  - caption: Examples
+    chapters:
+      - file: examples/index
+      - file: examples/vehicle-aerodynamics
+      - file: examples/aircraft-wing
+      - file: examples/internal-pipe-flow
+      - file: examples/electronics-cooling
+      - file: examples/rotating-machinery
+
+  - caption: Knowledge Base
+    chapters:
+      - file: knowledge-base/best-practices
+      - file: knowledge-base/troubleshooting
+      - file: knowledge-base/faq
+      - file: knowledge-base/glossary
+
+  - caption: Reference
+    chapters:
+      - file: reference/supported-formats
+      - file: reference/subscription-tiers
+      - file: reference/keyboard-shortcuts

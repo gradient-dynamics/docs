@@ -1,0 +1,787 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Post-Processing &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/post-processing';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AI Assistant" href="../agent/overview.html" />
+    <link rel="prev" title="Running Simulations" href="running.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running Simulations</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../agent/overview.html">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/simulation/post-processing.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Post-Processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-fields">Available Fields</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-tools">Visualization Tools</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-coloring">Surface Coloring</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slice-planes">Slice Planes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isosurfaces">Isosurfaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streamlines">Streamlines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glyphs-vectors">Glyphs (Vectors)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantitative-analysis">Quantitative Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#force-and-moment-calculation">Force and Moment Calculation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#point-probes">Point Probes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#line-probes">Line Probes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewer-controls">Viewer Controls</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#colormaps">Colormaps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#range-control">Range Control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#display-options">Display Options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-results">Downloading Results</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="post-processing">
+<h1>Post-Processing<a class="headerlink" href="#post-processing" title="Link to this heading">#</a></h1>
+<p>After your simulation completes, the <strong>Results</strong> tab provides interactive 3D visualization and analysis tools to extract engineering insight from your data.</p>
+<section id="available-fields">
+<h2>Available Fields<a class="headerlink" href="#available-fields" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Unit</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Velocity</strong></p></td>
+<td><p>U</p></td>
+<td><p>m/s</p></td>
+<td><p>Flow velocity vector</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pressure</strong></p></td>
+<td><p>p</p></td>
+<td><p>Pa</p></td>
+<td><p>Static pressure</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Turbulent kinetic energy</strong></p></td>
+<td><p>k</p></td>
+<td><p>m²/s²</p></td>
+<td><p>Turbulence intensity measure</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Specific dissipation rate</strong></p></td>
+<td><p>ω</p></td>
+<td><p>1/s</p></td>
+<td><p>Turbulence frequency (k-ω models)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Dissipation rate</strong></p></td>
+<td><p>ε</p></td>
+<td><p>m²/s³</p></td>
+<td><p>Turbulence dissipation (k-ε model)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Turbulent viscosity</strong></p></td>
+<td><p>νt</p></td>
+<td><p>m²/s</p></td>
+<td><p>Effective turbulent diffusivity</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Wall distance</strong></p></td>
+<td><p>d</p></td>
+<td><p>m</p></td>
+<td><p>Distance from nearest wall</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="visualization-tools">
+<h2>Visualization Tools<a class="headerlink" href="#visualization-tools" title="Link to this heading">#</a></h2>
+<section id="surface-coloring">
+<h3>Surface Coloring<a class="headerlink" href="#surface-coloring" title="Link to this heading">#</a></h3>
+<p>Color boundary surfaces by any field value:</p>
+<ol class="arabic simple">
+<li><p>In the Results tab, select a <strong>field</strong> from the dropdown (e.g., Pressure)</p></li>
+<li><p>Surface patches are colored according to the field values</p></li>
+<li><p>Adjust the <strong>colormap</strong> (jet, viridis, coolwarm, etc.)</p></li>
+<li><p>Set the <strong>range</strong> manually or use auto-scaling</p></li>
+</ol>
+<p><strong>Use for:</strong> Identifying high/low pressure zones, wall shear patterns, temperature distributions</p>
+</section>
+<section id="slice-planes">
+<h3>Slice Planes<a class="headerlink" href="#slice-planes" title="Link to this heading">#</a></h3>
+<p>Create cross-sectional cuts through the domain to see internal flow structure:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Add Slice</strong></p></li>
+<li><p>Choose the plane orientation (X, Y, or Z normal)</p></li>
+<li><p>Drag the plane position in the 3D viewer or enter a coordinate</p></li>
+<li><p>Select the field to display on the slice</p></li>
+<li><p>The slice shows a colored contour of the field values</p></li>
+</ol>
+<p><strong>Use for:</strong> Visualizing wake structures, pressure distribution through the domain, internal flow patterns</p>
+</section>
+<section id="isosurfaces">
+<h3>Isosurfaces<a class="headerlink" href="#isosurfaces" title="Link to this heading">#</a></h3>
+<p>Create 3D surfaces where a field has a constant value:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Add Isosurface</strong></p></li>
+<li><p>Select the field (e.g., Velocity magnitude)</p></li>
+<li><p>Set the isovalue</p></li>
+<li><p>A 3D surface appears showing all points where the field equals that value</p></li>
+</ol>
+<p><strong>Use for:</strong> Identifying vortex cores (low pressure isosurfaces), wake boundaries (velocity isosurfaces), recirculation zones</p>
+</section>
+<section id="streamlines">
+<h3>Streamlines<a class="headerlink" href="#streamlines" title="Link to this heading">#</a></h3>
+<p>Trace the path that fluid particles follow through the domain:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Add Streamlines</strong></p></li>
+<li><p>Place seed points or a seeding line/plane in the 3D viewer</p></li>
+<li><p>Streamlines are computed forward (and optionally backward) from the seeds</p></li>
+<li><p>Color streamlines by velocity, pressure, or other fields</p></li>
+</ol>
+<p><strong>Use for:</strong> Understanding flow paths, identifying recirculation, visualizing how flow moves around geometry</p>
+</section>
+<section id="glyphs-vectors">
+<h3>Glyphs (Vectors)<a class="headerlink" href="#glyphs-vectors" title="Link to this heading">#</a></h3>
+<p>Display velocity vectors as arrows at discrete points:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Add Glyphs</strong></p></li>
+<li><p>Configure arrow density and scaling</p></li>
+<li><p>Arrows show the direction and magnitude of the velocity field</p></li>
+</ol>
+<p><strong>Use for:</strong> Understanding flow direction at specific locations, identifying stagnation points and flow turning</p>
+</section>
+</section>
+<section id="quantitative-analysis">
+<h2>Quantitative Analysis<a class="headerlink" href="#quantitative-analysis" title="Link to this heading">#</a></h2>
+<section id="force-and-moment-calculation">
+<h3>Force and Moment Calculation<a class="headerlink" href="#force-and-moment-calculation" title="Link to this heading">#</a></h3>
+<p>Calculate aerodynamic forces on selected surfaces:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Forces</strong> in the analysis tools</p></li>
+<li><p>Select the surface(s) to calculate forces on (e.g., <code class="docutils literal notranslate"><span class="pre">car_body</span></code>)</p></li>
+<li><p>Set the reference parameters:</p>
+<ul class="simple">
+<li><p>Reference area (frontal area for drag, planform area for lift)</p></li>
+<li><p>Reference velocity (freestream velocity)</p></li>
+<li><p>Reference length (for moment coefficients)</p></li>
+</ul>
+</li>
+<li><p>Results show:</p></li>
+</ol>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Quantity</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Drag force (Fd)</strong></p></td>
+<td><p>Force in the freestream direction</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Lift force (Fl)</strong></p></td>
+<td><p>Force perpendicular to freestream</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Side force</strong></p></td>
+<td><p>Lateral force</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Drag coefficient (Cd)</strong></p></td>
+<td><p>Normalized drag</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Lift coefficient (Cl)</strong></p></td>
+<td><p>Normalized lift</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Moment coefficients (Cm)</strong></p></td>
+<td><p>Pitching, rolling, yawing moments</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="point-probes">
+<h3>Point Probes<a class="headerlink" href="#point-probes" title="Link to this heading">#</a></h3>
+<p>Query field values at specific locations:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Probe</strong></p></li>
+<li><p>Click a point in the 3D viewer or enter coordinates</p></li>
+<li><p>The field values at that point are displayed</p></li>
+</ol>
+</section>
+<section id="line-probes">
+<h3>Line Probes<a class="headerlink" href="#line-probes" title="Link to this heading">#</a></h3>
+<p>Extract field values along a line for 1D plotting:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>Line Probe</strong></p></li>
+<li><p>Define start and end points</p></li>
+<li><p>A 1D plot shows the selected field value along the line</p></li>
+</ol>
+<p><strong>Use for:</strong> Comparing velocity profiles at different stations, checking pressure distribution along a surface</p>
+</section>
+</section>
+<section id="viewer-controls">
+<h2>Viewer Controls<a class="headerlink" href="#viewer-controls" title="Link to this heading">#</a></h2>
+<section id="colormaps">
+<h3>Colormaps<a class="headerlink" href="#colormaps" title="Link to this heading">#</a></h3>
+<p>Available colormaps:</p>
+<ul class="simple">
+<li><p><strong>Jet</strong> — Rainbow (blue → green → yellow → red)</p></li>
+<li><p><strong>Viridis</strong> — Perceptually uniform (dark purple → yellow)</p></li>
+<li><p><strong>Coolwarm</strong> — Diverging (blue → white → red) — good for showing positive/negative</p></li>
+<li><p><strong>Plasma</strong> — Perceptually uniform warm palette</p></li>
+<li><p><strong>Inferno</strong> — Dark to bright warm palette</p></li>
+</ul>
+</section>
+<section id="range-control">
+<h3>Range Control<a class="headerlink" href="#range-control" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Auto</strong> — Automatically scales to the min/max values in the visible data</p></li>
+<li><p><strong>Manual</strong> — Set custom min/max values to highlight specific ranges</p></li>
+<li><p><strong>Symmetric</strong> — Centers the range around zero (good for diverging quantities like pressure coefficient)</p></li>
+</ul>
+</section>
+<section id="display-options">
+<h3>Display Options<a class="headerlink" href="#display-options" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Mesh wireframe</strong></p></td>
+<td><p>Overlay mesh edges on surfaces</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Clipping planes</strong></p></td>
+<td><p>Cut away parts of the domain</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Region toggle</strong></p></td>
+<td><p>Show/hide specific boundary patches</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Transparency</strong></p></td>
+<td><p>Make surfaces translucent</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Camera presets</strong></p></td>
+<td><p>Front, Back, Left, Right, Top, Bottom, Isometric views</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="downloading-results">
+<h2>Downloading Results<a class="headerlink" href="#downloading-results" title="Link to this heading">#</a></h2>
+<p>Export your simulation results for further analysis:</p>
+<ul class="simple">
+<li><p><strong>VTU format</strong> — Complete volumetric solution (open in ParaView for advanced post-processing)</p></li>
+<li><p><strong>Screenshots</strong> — Capture the current view directly from the viewer</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./simulation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="running.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Running Simulations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../agent/overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">AI Assistant</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-fields">Available Fields</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-tools">Visualization Tools</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-coloring">Surface Coloring</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slice-planes">Slice Planes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isosurfaces">Isosurfaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streamlines">Streamlines</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glyphs-vectors">Glyphs (Vectors)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantitative-analysis">Quantitative Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#force-and-moment-calculation">Force and Moment Calculation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#point-probes">Point Probes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#line-probes">Line Probes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewer-controls">Viewer Controls</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#colormaps">Colormaps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#range-control">Range Control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#display-options">Display Options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-results">Downloading Results</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

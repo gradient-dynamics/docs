@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Glossary &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/glossary';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Supported Formats" href="../reference/supported-formats.html" />
+    <link rel="prev" title="Frequently Asked Questions" href="faq.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../agent/overview.html">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/knowledge-base/glossary.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Glossary</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a">A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b">B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d">D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f">F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#g">G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h">H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i">I</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k">K</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#l">L</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#m">M</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n">N</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#o">O</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p">P</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r">R</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#s">S</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t">T</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v">V</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#w">W</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#y">Y</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="glossary">
+<h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">#</a></h1>
+<p>Key terms and concepts used throughout the Gradient Dynamics documentation.</p>
+<section id="a">
+<h2>A<a class="headerlink" href="#a" title="Link to this heading">#</a></h2>
+<p><strong>Adaptive Mesh</strong>
+: A mesh that varies cell size across the domain, using smaller cells where detail is needed and larger cells elsewhere.</p>
+<p><strong>AMG (Algebraic Multigrid)</strong>
+: A preconditioner that solves linear systems efficiently by using a hierarchy of coarser approximations. Default in Gradient Dynamics.</p>
+<p><strong>Angle of Attack (AoA)</strong>
+: The angle between the freestream velocity direction and the reference line of a body (e.g., a wing chord). Measured in degrees.</p>
+<p><strong>Aspect Ratio</strong>
+: The ratio of a cell’s longest dimension to its shortest. Boundary layer cells have intentionally high aspect ratios; volume cells should have low aspect ratios.</p>
+</section>
+<section id="b">
+<h2>B<a class="headerlink" href="#b" title="Link to this heading">#</a></h2>
+<p><strong>Boundary Condition</strong>
+: A mathematical specification of what happens at the edge of the computational domain (inlet velocity, outlet pressure, wall no-slip, etc.).</p>
+<p><strong>Boundary Layer</strong>
+: The thin region near a solid surface where the fluid velocity changes from zero (at the wall) to the freestream value. Also refers to the mesh layers (prisms) grown on walls to resolve this region.</p>
+<p><strong>Bluff Body</strong>
+: A non-streamlined body that creates significant flow separation and a large wake. Examples: trucks, buildings, flat plates.</p>
+</section>
+<section id="c">
+<h2>C<a class="headerlink" href="#c" title="Link to this heading">#</a></h2>
+<p><strong>CAD (Computer-Aided Design)</strong>
+: Software and file formats for creating 3D geometry. STEP and IGES are common CAD exchange formats.</p>
+<p><strong>Cd (Drag Coefficient)</strong>
+: A dimensionless number representing aerodynamic drag force, normalized by dynamic pressure and reference area: Cd = Fd / (0.5 × ρ × V² × A).</p>
+<p><strong>Cell</strong>
+: The fundamental volume element of a computational mesh. The flow equations are solved for each cell.</p>
+<p><strong>CFD (Computational Fluid Dynamics)</strong>
+: The use of numerical methods to solve fluid flow equations on a computer.</p>
+<p><strong>CHT (Conjugate Heat Transfer)</strong>
+: A simulation type that couples fluid flow (convection) with solid heat conduction, sharing temperature and heat flux at their interface.</p>
+<p><strong>Cl (Lift Coefficient)</strong>
+: A dimensionless number representing aerodynamic lift force, normalized by dynamic pressure and reference area.</p>
+<p><strong>Convergence</strong>
+: The process by which iterative solver residuals decrease to acceptable levels, indicating the solution has stabilized.</p>
+<p><strong>CGNS (CFD General Notation System)</strong>
+: A standard file format for storing CFD data, supported by many commercial and open-source solvers.</p>
+</section>
+<section id="d">
+<h2>D<a class="headerlink" href="#d" title="Link to this heading">#</a></h2>
+<p><strong>DES (Detached Eddy Simulation)</strong>
+: A hybrid RANS-LES approach that uses RANS near walls and LES in the bulk flow. Good for massively separated flows.</p>
+<p><strong>Divergence</strong>
+: When a simulation fails to converge — residuals increase without bound. Usually indicates a numerical or setup problem.</p>
+<p><strong>Domain</strong>
+: The region of space being simulated. For external flow, this is a wind-tunnel-like box around the geometry.</p>
+</section>
+<section id="f">
+<h2>F<a class="headerlink" href="#f" title="Link to this heading">#</a></h2>
+<p><strong>Face</strong>
+: A polygon shared between two mesh cells (internal face) or between a cell and the domain boundary (boundary face).</p>
+<p><strong>Far-field</strong>
+: The outer boundaries of the domain that are far from the geometry of interest.</p>
+<p><strong>FVM (Finite Volume Method)</strong>
+: A numerical technique that discretizes the governing equations over control volumes (cells). The standard method in CFD.</p>
+</section>
+<section id="g">
+<h2>G<a class="headerlink" href="#g" title="Link to this heading">#</a></h2>
+<p><strong>Gauge Pressure</strong>
+: Pressure relative to a reference value (usually atmospheric). In incompressible CFD, only pressure differences matter, so outlet is typically set to 0 Pa gauge.</p>
+<p><strong>Ground Effect</strong>
+: The aerodynamic influence of the ground on a nearby body (e.g., a car). Requires a moving ground boundary condition for accurate simulation.</p>
+</section>
+<section id="h">
+<h2>H<a class="headerlink" href="#h" title="Link to this heading">#</a></h2>
+<p><strong>Hexahedron (Hex)</strong>
+: A six-faced volume cell. Hexahedral meshes generally provide better numerical accuracy and convergence than tetrahedral meshes.</p>
+</section>
+<section id="i">
+<h2>I<a class="headerlink" href="#i" title="Link to this heading">#</a></h2>
+<p><strong>Isosurface</strong>
+: A 3D surface connecting all points where a field has the same value (e.g., a surface of constant pressure).</p>
+</section>
+<section id="k">
+<h2>K<a class="headerlink" href="#k" title="Link to this heading">#</a></h2>
+<p><strong>k (Turbulent Kinetic Energy)</strong>
+: The kinetic energy contained in turbulent fluctuations. Half the sum of the velocity variance in all three directions. Units: m²/s².</p>
+</section>
+<section id="l">
+<h2>L<a class="headerlink" href="#l" title="Link to this heading">#</a></h2>
+<p><strong>LES (Large Eddy Simulation)</strong>
+: A turbulence modeling approach that resolves large-scale eddies directly and models only the smallest scales. More accurate but much more expensive than RANS.</p>
+</section>
+<section id="m">
+<h2>M<a class="headerlink" href="#m" title="Link to this heading">#</a></h2>
+<p><strong>Manifold</strong>
+: A surface where every edge is shared by exactly two faces. Non-manifold surfaces have topology errors.</p>
+<p><strong>MRF (Multiple Reference Frame)</strong>
+: A steady-state method for simulating rotating machinery. The flow equations in the rotating zone include Coriolis and centrifugal source terms.</p>
+</section>
+<section id="n">
+<h2>N<a class="headerlink" href="#n" title="Link to this heading">#</a></h2>
+<p><strong>No-Slip</strong>
+: The wall boundary condition where fluid velocity equals zero at the surface. This is the physical reality for viscous flows.</p>
+<p><strong>Non-Orthogonality</strong>
+: The angle between a face normal vector and the vector connecting adjacent cell centers. High values indicate poor mesh quality.</p>
+</section>
+<section id="o">
+<h2>O<a class="headerlink" href="#o" title="Link to this heading">#</a></h2>
+<p><strong>Octree</strong>
+: A hierarchical spatial decomposition where each cube is recursively divided into 8 sub-cubes. Used for adaptive mesh generation.</p>
+</section>
+<section id="p">
+<h2>P<a class="headerlink" href="#p" title="Link to this heading">#</a></h2>
+<p><strong>Patch</strong>
+: A named group of boundary faces. Used to apply boundary conditions (e.g., “inlet” patch, “car_body” patch).</p>
+<p><strong>PISO (Pressure-Implicit with Splitting of Operators)</strong>
+: A pressure-velocity coupling algorithm used primarily for transient simulations.</p>
+<p><strong>Prism</strong>
+: A wedge-shaped cell typically used in boundary layers, with triangular faces on the wall and outer surfaces.</p>
+</section>
+<section id="r">
+<h2>R<a class="headerlink" href="#r" title="Link to this heading">#</a></h2>
+<p><strong>RANS (Reynolds-Averaged Navier-Stokes)</strong>
+: A CFD approach that solves time-averaged flow equations with turbulence models. The industry standard for engineering CFD.</p>
+<p><strong>Relaxation Factor</strong>
+: A number between 0 and 1 that controls how much the solution is updated each iteration. Lower values are more stable; higher values converge faster.</p>
+<p><strong>Residual</strong>
+: A measure of how well the discretized equations are satisfied at the current iteration. Lower is better.</p>
+<p><strong>Reynolds Number (Re)</strong>
+: A dimensionless number representing the ratio of inertial to viscous forces: Re = ρVL/μ. Determines whether flow is laminar or turbulent.</p>
+</section>
+<section id="s">
+<h2>S<a class="headerlink" href="#s" title="Link to this heading">#</a></h2>
+<p><strong>SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)</strong>
+: The standard pressure-velocity coupling algorithm for steady-state CFD.</p>
+<p><strong>Skewness</strong>
+: A mesh quality metric measuring how much a cell deviates from its ideal shape (0 = perfect, 1 = degenerate).</p>
+<p><strong>Slip Wall</strong>
+: A boundary condition with zero shear stress — the fluid slides freely along the surface.</p>
+<p><strong>Streamline</strong>
+: A curve that is everywhere tangent to the velocity field. Shows the path a fluid particle would follow.</p>
+</section>
+<section id="t">
+<h2>T<a class="headerlink" href="#t" title="Link to this heading">#</a></h2>
+<p><strong>Turbulence Intensity (TI)</strong>
+: The ratio of velocity fluctuations to the mean velocity, expressed as a percentage. Defines the level of incoming turbulence.</p>
+</section>
+<section id="v">
+<h2>V<a class="headerlink" href="#v" title="Link to this heading">#</a></h2>
+<p><strong>VTU (VTK Unstructured)</strong>
+: A file format for unstructured meshes and field data, used by ParaView and other visualization tools.</p>
+</section>
+<section id="w">
+<h2>W<a class="headerlink" href="#w" title="Link to this heading">#</a></h2>
+<p><strong>Watertight</strong>
+: A surface mesh that is completely closed with no gaps or holes. Required for volume mesh generation.</p>
+</section>
+<section id="y">
+<h2>Y<a class="headerlink" href="#y" title="Link to this heading">#</a></h2>
+<p><strong>y+</strong>
+: A dimensionless wall distance: y+ = (u_τ × y) / ν. Determines the first cell height needed for proper turbulence model behavior.</p>
+<p><strong>ω (Specific Dissipation Rate)</strong>
+: The rate of dissipation per unit turbulent kinetic energy. Used in k-ω turbulence models. Units: 1/s.</p>
+<p><strong>ε (Dissipation Rate)</strong>
+: The rate at which turbulent kinetic energy is dissipated into heat. Used in k-ε turbulence models. Units: m²/s³.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./knowledge-base"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="faq.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Frequently Asked Questions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../reference/supported-formats.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Supported Formats</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a">A</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b">B</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c">C</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d">D</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#f">F</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#g">G</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#h">H</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i">I</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k">K</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#l">L</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#m">M</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#n">N</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#o">O</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#p">P</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r">R</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#s">S</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t">T</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v">V</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#w">W</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#y">Y</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

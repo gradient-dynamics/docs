@@ -1,0 +1,746 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Mesh Configuration with the Assistant &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'agent/mesh-assistant';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Simulation Setup with the Assistant" href="simulation-assistant.html" />
+    <link rel="prev" title="AI Assistant" href="overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">AI Assistant</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/agent/mesh-assistant.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Mesh Configuration with the Assistant</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-analysis">Geometry Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-readiness-check">Basic Readiness Check</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-analysis">Detailed Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repair-geometry">Repair Geometry</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-setup">Domain Setup</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-configuration">Automatic Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specific-requirements">Specific Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-machinery">Rotating Machinery</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-parameters">Mesh Parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guided-recommendations">Guided Recommendations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-layer-setup">Boundary Layer Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-zones">Refinement Zones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-naming">Surface Naming</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-detection">Auto-Detection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specific-naming">Specific Naming</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation">Mesh Generation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-with-current-settings">Generate with Current Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quality-review">Quality Review</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-complete-workflow">Example: Complete Workflow</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="mesh-configuration-with-the-assistant">
+<h1>Mesh Configuration with the Assistant<a class="headerlink" href="#mesh-configuration-with-the-assistant" title="Link to this heading">#</a></h1>
+<p>The AI Assistant can guide you through the entire meshing workflow, from geometry analysis to mesh generation. This page shows common conversation patterns for mesh setup.</p>
+<section id="geometry-analysis">
+<h2>Geometry Analysis<a class="headerlink" href="#geometry-analysis" title="Link to this heading">#</a></h2>
+<section id="basic-readiness-check">
+<h3>Basic Readiness Check<a class="headerlink" href="#basic-readiness-check" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Is my geometry ready for meshing?”</p>
+<p><strong>Assistant:</strong> <em>Runs geometry analysis and reports:</em></p>
+<ul class="simple">
+<li><p>Watertight: Yes/No</p></li>
+<li><p>Manifold: Yes/No</p></li>
+<li><p>Number of bodies detected</p></li>
+<li><p>Bounding dimensions</p></li>
+<li><p>Recommended repairs (if any)</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="detailed-analysis">
+<h3>Detailed Analysis<a class="headerlink" href="#detailed-analysis" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Run a detailed geometry analysis”</p>
+<p><strong>Assistant:</strong> <em>Performs enhanced analysis comparing raw vs. welded mesh, identifies specific problem areas, and provides repair recommendations with severity ratings.</em></p>
+</div></blockquote>
+</section>
+<section id="repair-geometry">
+<h3>Repair Geometry<a class="headerlink" href="#repair-geometry" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Fix the geometry issues”</p>
+<p><strong>Assistant:</strong> <em>Applies recommended repairs (welding, hole filling, non-manifold fixing) and reports the results. For CAD files, offers B-Rep healing.</em></p>
+</div></blockquote>
+</section>
+</section>
+<section id="domain-setup">
+<h2>Domain Setup<a class="headerlink" href="#domain-setup" title="Link to this heading">#</a></h2>
+<section id="automatic-configuration">
+<h3>Automatic Configuration<a class="headerlink" href="#automatic-configuration" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Set up an external aero mesh for a car”</p>
+<p><strong>Assistant:</strong> <em>Analyzes geometry dimensions and creates an external flow domain with:</em></p>
+<ul class="simple">
+<li><p>Appropriately sized wind tunnel box</p></li>
+<li><p>Ground plane enabled</p></li>
+<li><p>Default padding ratios based on car dimensions</p></li>
+<li><p>Presents configuration for confirmation</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="specific-requirements">
+<h3>Specific Requirements<a class="headerlink" href="#specific-requirements" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Set up an internal flow domain for a pipe system”</p>
+<p><strong>Assistant:</strong> <em>Switches to internal flow domain type, identifies inlet/outlet faces, and configures the mesh to fill the internal volume.</em></p>
+</div></blockquote>
+</section>
+<section id="rotating-machinery">
+<h3>Rotating Machinery<a class="headerlink" href="#rotating-machinery" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “This is a centrifugal pump impeller rotating at 3000 RPM”</p>
+<p><strong>Assistant:</strong> <em>Sets up rotating machinery domain type, creates MRF zone with correct axis and speed, identifies rotating and stationary regions.</em></p>
+</div></blockquote>
+</section>
+</section>
+<section id="mesh-parameters">
+<h2>Mesh Parameters<a class="headerlink" href="#mesh-parameters" title="Link to this heading">#</a></h2>
+<section id="guided-recommendations">
+<h3>Guided Recommendations<a class="headerlink" href="#guided-recommendations" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “What mesh settings should I use?”</p>
+<p><strong>Assistant:</strong> <em>Based on the geometry dimensions and domain type, recommends:</em></p>
+<ul class="simple">
+<li><p>Target cell size</p></li>
+<li><p>Boundary layer settings with y+ targeting</p></li>
+<li><p>Refinement levels</p></li>
+<li><p>Estimated cell count</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="boundary-layer-setup">
+<h3>Boundary Layer Setup<a class="headerlink" href="#boundary-layer-setup" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Set up boundary layers for highway speed (120 km/h)”</p>
+<p><strong>Assistant:</strong> <em>Calculates:</em></p>
+<ul class="simple">
+<li><p>Reynolds number based on geometry length</p></li>
+<li><p>Appropriate first layer height for target y+</p></li>
+<li><p>Number of layers and growth rate</p></li>
+<li><p>Presents configuration for confirmation</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="refinement-zones">
+<h3>Refinement Zones<a class="headerlink" href="#refinement-zones" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Add refinement zones for the wake and underbody”</p>
+<p><strong>Assistant:</strong> <em>Creates:</em></p>
+<ul class="simple">
+<li><p>A box refinement zone behind the geometry for the wake</p></li>
+<li><p>A flat box refinement zone under the geometry</p></li>
+<li><p>Sizes and positions based on geometry dimensions</p></li>
+<li><p>Presents each zone for confirmation</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="surface-naming">
+<h2>Surface Naming<a class="headerlink" href="#surface-naming" title="Link to this heading">#</a></h2>
+<section id="auto-detection">
+<h3>Auto-Detection<a class="headerlink" href="#auto-detection" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Detect and name the surfaces”</p>
+<p><strong>Assistant:</strong> <em>Analyzes the geometry and mesh boundary, identifies:</em></p>
+<ul class="simple">
+<li><p>Inlet/outlet faces by position</p></li>
+<li><p>Wall surfaces by orientation</p></li>
+<li><p>Domain boundaries by location</p></li>
+<li><p>Suggests names for each</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="specific-naming">
+<h3>Specific Naming<a class="headerlink" href="#specific-naming" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Name the front face as inlet and the back face as outlet”</p>
+<p><strong>Assistant:</strong> <em>Identifies the specified faces and assigns the names.</em></p>
+</div></blockquote>
+</section>
+</section>
+<section id="mesh-generation">
+<h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Link to this heading">#</a></h2>
+<section id="generate-with-current-settings">
+<h3>Generate with Current Settings<a class="headerlink" href="#generate-with-current-settings" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “Generate the mesh”</p>
+<p><strong>Assistant:</strong> <em>Summarizes the current configuration, shows estimated cell count and credit cost, and submits the mesh generation job with your confirmation.</em></p>
+</div></blockquote>
+</section>
+<section id="quality-review">
+<h3>Quality Review<a class="headerlink" href="#quality-review" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>You:</strong> “How is the mesh quality?”</p>
+<p><strong>Assistant:</strong> <em>Reviews the mesh quality report and explains:</em></p>
+<ul class="simple">
+<li><p>Overall quality rating</p></li>
+<li><p>Any areas of concern (high skewness cells, etc.)</p></li>
+<li><p>Whether the mesh is suitable for your intended simulation</p></li>
+<li><p>Suggestions for improvement if needed</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="example-complete-workflow">
+<h2>Example: Complete Workflow<a class="headerlink" href="#example-complete-workflow" title="Link to this heading">#</a></h2>
+<p>Here’s a full conversation for setting up a vehicle aerodynamics mesh:</p>
+<blockquote>
+<div><p><strong>You:</strong> “I uploaded a car model. Help me set up a mesh for aerodynamic analysis.”</p>
+<p><strong>Assistant:</strong> “Let me analyze your geometry first.”
+<em>Runs analysis…</em>
+“Your geometry looks good — it’s watertight and manifold. The car is 4.5 m long, 1.8 m wide, and 1.4 m high. I’ll set up an external aerodynamics mesh. I recommend:</p>
+<ul class="simple">
+<li><p>External flow domain with ground plane</p></li>
+<li><p>Domain: 6.75 m upstream, 13.5 m downstream, 2.7 m sides, 2.8 m top</p></li>
+<li><p>Base cell size: 0.1 m</p></li>
+<li><p>10 boundary layers, first height 0.001 m (y+ ≈ 30 at 120 km/h)</p></li>
+<li><p>Wake refinement zone: 9 m × 2.7 m × 2.1 m behind the car at 0.05 m cell size</p></li>
+</ul>
+<p><strong>[Confirm]</strong> <strong>[Cancel]</strong>”</p>
+<p><strong>You:</strong> “Confirm. Also add underbody refinement.”</p>
+<p><strong>Assistant:</strong> “Domain created. I’ll add an underbody refinement zone:</p>
+<ul class="simple">
+<li><p>Box: 5.4 m × 2.2 m × 0.3 m under the car</p></li>
+<li><p>Cell size: 0.04 m</p></li>
+</ul>
+<p><strong>[Confirm]</strong>”</p>
+<p><strong>You:</strong> “Confirm. Generate the mesh.”</p>
+<p><strong>Assistant:</strong> “Estimated mesh: ~8 million cells, ~0.5 credits. Submitting mesh generation now.</p>
+<p><strong>[Confirm]</strong>”</p>
+</div></blockquote>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">AI Assistant</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="simulation-assistant.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Simulation Setup with the Assistant</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-analysis">Geometry Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-readiness-check">Basic Readiness Check</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detailed-analysis">Detailed Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#repair-geometry">Repair Geometry</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-setup">Domain Setup</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automatic-configuration">Automatic Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specific-requirements">Specific Requirements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-machinery">Rotating Machinery</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-parameters">Mesh Parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guided-recommendations">Guided Recommendations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-layer-setup">Boundary Layer Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-zones">Refinement Zones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-naming">Surface Naming</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-detection">Auto-Detection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specific-naming">Specific Naming</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation">Mesh Generation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-with-current-settings">Generate with Current Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quality-review">Quality Review</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-complete-workflow">Example: Complete Workflow</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

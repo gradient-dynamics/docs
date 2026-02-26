@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Solver Settings &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/solver-settings';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running Simulations" href="running.html" />
+    <link rel="prev" title="Boundary Conditions" href="boundary-conditions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../agent/overview.html">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/simulation/solver-settings.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Solver Settings</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-velocity-coupling">Pressure-Velocity Coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-factors">Relaxation Factors</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-relaxation-factors-by-model">Default Relaxation Factors by Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solver">Linear Solver</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preconditioners">Preconditioners</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amg-settings">AMG Settings</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretization-schemes">Discretization Schemes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convection-schemes">Convection Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-schemes">Gradient Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-orthogonal-correctors">Non-Orthogonal Correctors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-criteria">Convergence Criteria</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-thresholds">Residual Thresholds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plateau-detection">Plateau Detection</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#startup-controls">Startup Controls</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turbulence-ramping">Turbulence Ramping</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-convergence">Troubleshooting Convergence</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="solver-settings">
+<h1>Solver Settings<a class="headerlink" href="#solver-settings" title="Link to this heading">#</a></h1>
+<p>Solver settings control the numerical algorithms used to solve the flow equations. For most cases, the defaults work well. This page covers advanced tuning options for when you need to troubleshoot convergence or optimize performance.</p>
+<section id="pressure-velocity-coupling">
+<h2>Pressure-Velocity Coupling<a class="headerlink" href="#pressure-velocity-coupling" title="Link to this heading">#</a></h2>
+<p>The coupling algorithm determines how the pressure and velocity equations are solved together.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Best For</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>SIMPLE</strong></p></td>
+<td><p>Semi-Implicit Method for Pressure-Linked Equations</p></td>
+<td><p>Steady-state RANS (default)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SIMPLEC</strong></p></td>
+<td><p>SIMPLE-Consistent — faster convergence for simple flows</p></td>
+<td><p>Well-behaved flows</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>PISO</strong></p></td>
+<td><p>Pressure-Implicit with Splitting of Operators</p></td>
+<td><p>Transient simulations</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>PIMPLE</strong></p></td>
+<td><p>Hybrid SIMPLE-PISO</p></td>
+<td><p>Transient with large time steps</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For <strong>steady-state RANS</strong>, use <strong>SIMPLE</strong> (the default). It provides the best balance of robustness and convergence speed.</p>
+</section>
+<section id="relaxation-factors">
+<h2>Relaxation Factors<a class="headerlink" href="#relaxation-factors" title="Link to this heading">#</a></h2>
+<p>Under-relaxation factors control how aggressively the solution is updated each iteration. Lower values are more stable but converge slower; higher values converge faster but risk instability.</p>
+<section id="default-relaxation-factors-by-model">
+<h3>Default Relaxation Factors by Model<a class="headerlink" href="#default-relaxation-factors-by-model" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>k-ω SST</p></th>
+<th class="head"><p>k-ε</p></th>
+<th class="head"><p>Spalart-Allmaras</p></th>
+<th class="head"><p>RSM</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Velocity (U)</strong></p></td>
+<td><p>0.5</p></td>
+<td><p>0.6</p></td>
+<td><p>0.6</p></td>
+<td><p>0.4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pressure (p)</strong></p></td>
+<td><p>0.2</p></td>
+<td><p>0.3</p></td>
+<td><p>0.3</p></td>
+<td><p>0.2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>k</strong></p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>—</p></td>
+<td><p>0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ω / ε</strong></p></td>
+<td><p>0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>—</p></td>
+<td><p>0.3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Turbulent viscosity</strong></p></td>
+<td><p>0.05</p></td>
+<td><p>0.1</p></td>
+<td><p>0.1</p></td>
+<td><p>0.05</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the simulation diverges, try reducing relaxation factors by 20–30%. If convergence is too slow, try increasing them gradually.</p>
+</div>
+</section>
+</section>
+<section id="linear-solver">
+<h2>Linear Solver<a class="headerlink" href="#linear-solver" title="Link to this heading">#</a></h2>
+<p>The pressure equation is solved using an iterative linear solver with preconditioning.</p>
+<section id="preconditioners">
+<h3>Preconditioners<a class="headerlink" href="#preconditioners" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Preconditioner</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Performance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>AMG</strong></p></td>
+<td><p>Algebraic Multigrid (default)</p></td>
+<td><p>Best for large meshes</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Jacobi</strong></p></td>
+<td><p>Diagonal scaling</p></td>
+<td><p>Simple, fast per iteration</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Chebyshev</strong></p></td>
+<td><p>Polynomial smoothing</p></td>
+<td><p>Good with AMG</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ILU</strong></p></td>
+<td><p>Incomplete LU factorization</p></td>
+<td><p>Good for small meshes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>AMG</strong> is the default and recommended preconditioner. It scales well to large meshes and handles anisotropic cells (boundary layers) effectively.</p>
+</section>
+<section id="amg-settings">
+<h3>AMG Settings<a class="headerlink" href="#amg-settings" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Max coarse levels</strong></p></td>
+<td><p>10</p></td>
+<td><p>Maximum levels in the multigrid hierarchy</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Coarse size</strong></p></td>
+<td><p>100</p></td>
+<td><p>Stop coarsening when matrix is this small</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Smoother</strong></p></td>
+<td><p>Chebyshev</p></td>
+<td><p>Smoothing algorithm at each level</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pre-smooth iterations</strong></p></td>
+<td><p>2</p></td>
+<td><p>Smoothing passes before restriction</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-smooth iterations</strong></p></td>
+<td><p>2</p></td>
+<td><p>Smoothing passes after prolongation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="discretization-schemes">
+<h2>Discretization Schemes<a class="headerlink" href="#discretization-schemes" title="Link to this heading">#</a></h2>
+<section id="convection-schemes">
+<h3>Convection Schemes<a class="headerlink" href="#convection-schemes" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Scheme</p></th>
+<th class="head"><p>Order</p></th>
+<th class="head"><p>Bounded</p></th>
+<th class="head"><p>Best For</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Upwind</strong></p></td>
+<td><p>1st</p></td>
+<td><p>Yes</p></td>
+<td><p>Initial iterations, robustness</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Linear upwind</strong></p></td>
+<td><p>2nd</p></td>
+<td><p>No</p></td>
+<td><p>Production RANS (default)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Van Leer</strong></p></td>
+<td><p>2nd</p></td>
+<td><p>Yes</p></td>
+<td><p>Scalar transport, turbulence</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The solver uses <strong>linear upwind</strong> (2nd order) for velocity by default, providing good accuracy. Turbulence quantities use bounded schemes for stability.</p>
+</section>
+<section id="gradient-schemes">
+<h3>Gradient Schemes<a class="headerlink" href="#gradient-schemes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Weighted Least Squares</strong> — Default for conformal (hex-dominant) meshes. Most accurate.</p></li>
+<li><p><strong>Green-Gauss</strong> — Used for polyhedral meshes. Robust and efficient.</p></li>
+</ul>
+</section>
+<section id="non-orthogonal-correctors">
+<h3>Non-Orthogonal Correctors<a class="headerlink" href="#non-orthogonal-correctors" title="Link to this heading">#</a></h3>
+<p>For meshes with non-orthogonality above 70°, enable non-orthogonal correctors:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>When to Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0 correctors</p></td>
+<td><p>Good quality mesh (non-orthogonality &lt; 60°)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1 corrector</p></td>
+<td><p>Moderate non-orthogonality (60–75°)</p></td>
+</tr>
+<tr class="row-even"><td><p>2 correctors</p></td>
+<td><p>Poor orthogonality (&gt; 75°)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="convergence-criteria">
+<h2>Convergence Criteria<a class="headerlink" href="#convergence-criteria" title="Link to this heading">#</a></h2>
+<section id="residual-thresholds">
+<h3>Residual Thresholds<a class="headerlink" href="#residual-thresholds" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Residual</p></th>
+<th class="head"><p>Default Threshold</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Continuity</strong></p></td>
+<td><p>1e-4</p></td>
+<td><p>Mass conservation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Velocity</strong></p></td>
+<td><p>1e-5</p></td>
+<td><p>Momentum equations</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Turbulence</strong></p></td>
+<td><p>1e-5</p></td>
+<td><p>Turbulence transport</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The simulation stops when all residuals drop below their thresholds, or when the maximum iteration count is reached.</p>
+</section>
+<section id="plateau-detection">
+<h3>Plateau Detection<a class="headerlink" href="#plateau-detection" title="Link to this heading">#</a></h3>
+<p>Studio can automatically detect when residuals have plateaued (stopped decreasing) and terminate early, even if the absolute threshold hasn’t been reached. This is useful for complex flows where residuals may stabilize at a level above the threshold.</p>
+</section>
+</section>
+<section id="startup-controls">
+<h2>Startup Controls<a class="headerlink" href="#startup-controls" title="Link to this heading">#</a></h2>
+<section id="turbulence-ramping">
+<h3>Turbulence Ramping<a class="headerlink" href="#turbulence-ramping" title="Link to this heading">#</a></h3>
+<p>For difficult cases, the solver can gradually introduce turbulence:</p>
+<ol class="arabic simple">
+<li><p><strong>Start iteration</strong> — Iteration at which turbulence equations are activated (flow starts as laminar)</p></li>
+<li><p><strong>Ramp iterations</strong> — Number of iterations to blend from laminar to fully turbulent</p></li>
+</ol>
+<p>This helps establish a stable initial flow field before turbulence modeling kicks in.</p>
+<div class="note admonition">
+<p class="admonition-title">When to Use Ramping</p>
+<p>Use turbulence ramping when:</p>
+<ul class="simple">
+<li><p>The initial iterations diverge immediately</p></li>
+<li><p>Pressure spikes occur at startup</p></li>
+<li><p>Complex geometries with sharp features cause early instability</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="troubleshooting-convergence">
+<h2>Troubleshooting Convergence<a class="headerlink" href="#troubleshooting-convergence" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Symptom</p></th>
+<th class="head"><p>Likely Cause</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Immediate divergence</p></td>
+<td><p>Relaxation too aggressive</p></td>
+<td><p>Reduce all relaxation factors by 30%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Oscillating residuals</p></td>
+<td><p>Mesh quality issues</p></td>
+<td><p>Check mesh quality, add non-orthogonal correctors</p></td>
+</tr>
+<tr class="row-even"><td><p>Slow convergence</p></td>
+<td><p>Relaxation too conservative</p></td>
+<td><p>Gradually increase relaxation factors</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pressure oscillations</p></td>
+<td><p>Rhie-Chow instability</p></td>
+<td><p>Enable RC ramping</p></td>
+</tr>
+<tr class="row-even"><td><p>Turbulence residuals stuck</p></td>
+<td><p>Poor initialization</p></td>
+<td><p>Enable turbulence ramping</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./simulation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="boundary-conditions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Boundary Conditions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="running.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Running Simulations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-velocity-coupling">Pressure-Velocity Coupling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-factors">Relaxation Factors</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-relaxation-factors-by-model">Default Relaxation Factors by Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solver">Linear Solver</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preconditioners">Preconditioners</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amg-settings">AMG Settings</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretization-schemes">Discretization Schemes</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convection-schemes">Convection Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-schemes">Gradient Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-orthogonal-correctors">Non-Orthogonal Correctors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-criteria">Convergence Criteria</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-thresholds">Residual Thresholds</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plateau-detection">Plateau Detection</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#startup-controls">Startup Controls</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turbulence-ramping">Turbulence Ramping</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-convergence">Troubleshooting Convergence</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

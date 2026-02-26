@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>AI Assistant &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'agent/overview';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mesh Configuration with the Assistant" href="mesh-assistant.html" />
+    <link rel="prev" title="Post-Processing" href="../simulation/post-processing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/agent/overview.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>AI Assistant</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-assistant-can-do">What the Assistant Can Do</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-analysis">Geometry Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-configuration">Mesh Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-setup">Simulation Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-interpretation">Results Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-the-assistant">How to Use the Assistant</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-the-panel">Opening the Panel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asking-questions">Asking Questions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confirming-actions">Confirming Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-display">Reasoning Display</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-effective-use">Tips for Effective Use</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#be-specific-about-your-application">Be Specific About Your Application</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-analysis">Start with Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-it-iteratively">Use It Iteratively</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-for-explanations">Ask for Explanations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ai-assistant">
+<h1>AI Assistant<a class="headerlink" href="#ai-assistant" title="Link to this heading">#</a></h1>
+<p>The Gradient Dynamics AI Assistant is an intelligent co-pilot built into Studio that helps you configure meshes, set up simulations, and troubleshoot issues using natural language conversation.</p>
+<section id="what-the-assistant-can-do">
+<h2>What the Assistant Can Do<a class="headerlink" href="#what-the-assistant-can-do" title="Link to this heading">#</a></h2>
+<section id="geometry-analysis">
+<h3>Geometry Analysis<a class="headerlink" href="#geometry-analysis" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Check if your geometry is ready for meshing</p></li>
+<li><p>Identify and fix watertightness, manifold, and topology issues</p></li>
+<li><p>Detect special features like wheels, rotating parts, and surface faces</p></li>
+<li><p>Recommend repair strategies for problematic geometry</p></li>
+</ul>
+</section>
+<section id="mesh-configuration">
+<h3>Mesh Configuration<a class="headerlink" href="#mesh-configuration" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Suggest domain type and sizing based on your application</p></li>
+<li><p>Recommend mesh parameters (cell size, boundary layers, refinement)</p></li>
+<li><p>Configure refinement zones for key flow features</p></li>
+<li><p>Set up multi-region domains for CHT and rotating machinery</p></li>
+</ul>
+</section>
+<section id="simulation-setup">
+<h3>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Select appropriate turbulence models for your application</p></li>
+<li><p>Configure boundary conditions from surface names</p></li>
+<li><p>Set solver parameters and convergence criteria</p></li>
+<li><p>Launch simulations with your confirmation</p></li>
+</ul>
+</section>
+<section id="results-interpretation">
+<h3>Results Interpretation<a class="headerlink" href="#results-interpretation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Calculate force and moment coefficients</p></li>
+<li><p>Explain flow features visible in the results</p></li>
+<li><p>Suggest post-processing views for your application</p></li>
+<li><p>Provide context on whether results look reasonable</p></li>
+</ul>
+</section>
+</section>
+<section id="how-to-use-the-assistant">
+<h2>How to Use the Assistant<a class="headerlink" href="#how-to-use-the-assistant" title="Link to this heading">#</a></h2>
+<section id="opening-the-panel">
+<h3>Opening the Panel<a class="headerlink" href="#opening-the-panel" title="Link to this heading">#</a></h3>
+<p>The AI Assistant appears as a panel on the right side of the workspace. Click the <strong>Assistant</strong> button in the toolbar to toggle it open or closed.</p>
+</section>
+<section id="asking-questions">
+<h3>Asking Questions<a class="headerlink" href="#asking-questions" title="Link to this heading">#</a></h3>
+<p>Type your question or instruction in natural language at the bottom of the panel. Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Is my geometry ready for meshing?&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Set up an external aerodynamics mesh for a car at 120 km/h&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;What turbulence model should I use for pipe flow?&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Run a simulation with k-omega SST at 30 m/s&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="confirming-actions">
+<h3>Confirming Actions<a class="headerlink" href="#confirming-actions" title="Link to this heading">#</a></h3>
+<p>When the assistant wants to make changes to your project (e.g., creating a domain box, setting boundary conditions, launching a simulation), it presents the action for your approval:</p>
+<blockquote>
+<div><p><strong>Assistant:</strong> I’d like to create an external flow domain with the following dimensions:</p>
+<ul class="simple">
+<li><p>Upstream: 6.75 m</p></li>
+<li><p>Downstream: 13.5 m</p></li>
+<li><p>Sides: 2.7 m each</p></li>
+<li><p>Top: 3.6 m</p></li>
+</ul>
+<p><strong>[Confirm]</strong> <strong>[Cancel]</strong></p>
+</div></blockquote>
+<p>Click <strong>Confirm</strong> to apply the action, or <strong>Cancel</strong> to reject it and provide different instructions.</p>
+</section>
+<section id="reasoning-display">
+<h3>Reasoning Display<a class="headerlink" href="#reasoning-display" title="Link to this heading">#</a></h3>
+<p>The assistant shows a collapsible <strong>“See reasoning”</strong> section that reveals its thought process. This helps you understand:</p>
+<ul class="simple">
+<li><p>Why it chose specific parameters</p></li>
+<li><p>What trade-offs it considered</p></li>
+<li><p>What assumptions it made about your application</p></li>
+</ul>
+</section>
+</section>
+<section id="tips-for-effective-use">
+<h2>Tips for Effective Use<a class="headerlink" href="#tips-for-effective-use" title="Link to this heading">#</a></h2>
+<section id="be-specific-about-your-application">
+<h3>Be Specific About Your Application<a class="headerlink" href="#be-specific-about-your-application" title="Link to this heading">#</a></h3>
+<p>Instead of:</p>
+<blockquote>
+<div><p>“Mesh this geometry”</p>
+</div></blockquote>
+<p>Say:</p>
+<blockquote>
+<div><p>“Create an external aerodynamics mesh for a sedan at highway speed with boundary layers”</p>
+</div></blockquote>
+<p>The more context you provide, the better the recommendations.</p>
+</section>
+<section id="start-with-analysis">
+<h3>Start with Analysis<a class="headerlink" href="#start-with-analysis" title="Link to this heading">#</a></h3>
+<p>Before configuring, ask the assistant to analyze your geometry:</p>
+<blockquote>
+<div><p>“Analyze my geometry and tell me if it’s ready for meshing”</p>
+</div></blockquote>
+<p>This catches problems early and informs the meshing strategy.</p>
+</section>
+<section id="use-it-iteratively">
+<h3>Use It Iteratively<a class="headerlink" href="#use-it-iteratively" title="Link to this heading">#</a></h3>
+<p>The assistant works best as an interactive partner:</p>
+<ol class="arabic simple">
+<li><p>Start with a question: <em>“What domain type should I use?”</em></p></li>
+<li><p>Refine based on the response: <em>“Use external flow with a ground plane”</em></p></li>
+<li><p>Request specific actions: <em>“Set boundary layers to 10 layers with y+ = 30”</em></p></li>
+<li><p>Confirm each step before moving to the next</p></li>
+</ol>
+</section>
+<section id="ask-for-explanations">
+<h3>Ask for Explanations<a class="headerlink" href="#ask-for-explanations" title="Link to this heading">#</a></h3>
+<p>If you’re unsure about a parameter or recommendation:</p>
+<blockquote>
+<div><p>“Why did you choose 10 boundary layers instead of 5?”</p>
+</div></blockquote>
+<blockquote>
+<div><p>“What does the skewness metric mean and is mine acceptable?”</p>
+</div></blockquote>
+<p>The assistant will explain the reasoning and help you make informed decisions.</p>
+</section>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The assistant operates within the context of your <strong>current project</strong> — it doesn’t have access to other projects</p></li>
+<li><p>It requires your <strong>explicit confirmation</strong> before making changes</p></li>
+<li><p>For very complex multi-physics setups, manual configuration may be needed alongside assistant guidance</p></li>
+<li><p>The assistant’s suggestions are recommendations — always apply your engineering judgment</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../simulation/post-processing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Post-Processing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="mesh-assistant.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Mesh Configuration with the Assistant</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-assistant-can-do">What the Assistant Can Do</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-analysis">Geometry Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-configuration">Mesh Configuration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-setup">Simulation Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-interpretation">Results Interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-the-assistant">How to Use the Assistant</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#opening-the-panel">Opening the Panel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asking-questions">Asking Questions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confirming-actions">Confirming Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reasoning-display">Reasoning Display</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-effective-use">Tips for Effective Use</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#be-specific-about-your-application">Be Specific About Your Application</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-with-analysis">Start with Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-it-iteratively">Use It Iteratively</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ask-for-explanations">Ask for Explanations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

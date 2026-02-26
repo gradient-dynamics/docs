@@ -1,0 +1,25 @@
+title: Gradient Dynamics Documentation
+author: Gradient Dynamics
+copyright: "2026"
+logo: _static/logo/GD_WordMark_PNG-06.png
+
+execute:
+  execute_notebooks: "off"
+
+html:
+  favicon: ""
+  use_issues_button: false
+  use_repository_button: false
+  use_edit_page_button: false
+  home_page_in_navbar: true
+  extra_css:
+    - _static/custom.css
+
+sphinx:
+  config:
+    html_theme: sphinx_book_theme
+    html_theme_options:
+      show_navbar_depth: 2
+      show_toc_level: 2
+      navigation_with_keys: true
+    suppress_warnings: ["myst.header"]

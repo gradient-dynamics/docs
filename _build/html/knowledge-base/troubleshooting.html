@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Troubleshooting &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/troubleshooting';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
+    <link rel="prev" title="Best Practices" href="best-practices.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../agent/overview.html">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="best-practices.html">Best Practices</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/knowledge-base/troubleshooting.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Troubleshooting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-issues">Geometry Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-is-not-watertight">“Geometry is not watertight”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-manifold-edges-detected">“Non-manifold edges detected”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-is-very-large-small">“Geometry is very large/small”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-issues">Meshing Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation-fails">Mesh generation fails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#very-high-cell-count">Very high cell count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poor-mesh-quality-high-skewness">Poor mesh quality (high skewness)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-layers-fail-to-generate">Boundary layers fail to generate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-issues">Simulation Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-diverges-immediately">Simulation diverges immediately</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-oscillate-but-don-t-decrease">Residuals oscillate but don’t decrease</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-plateau-at-a-high-level-e-g-1e-2">Residuals plateau at a high level (e.g., 1e-2)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unrealistic-pressure-or-velocity-values">Unrealistic pressure or velocity values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-takes-too-long">Simulation takes too long</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-issues">Post-Processing Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-look-wrong-or-asymmetric">Results look wrong or asymmetric</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#force-coefficients-seem-too-high-or-too-low">Force coefficients seem too high or too low</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#account-and-platform-issues">Account and Platform Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#credit-limit-reached">“Credit limit reached”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation-or-simulation-stuck-in-pending">Mesh generation or simulation stuck in “Pending”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="troubleshooting">
+<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h1>
+<p>Common issues and their solutions when working with Gradient Dynamics Studio.</p>
+<section id="geometry-issues">
+<h2>Geometry Issues<a class="headerlink" href="#geometry-issues" title="Link to this heading">#</a></h2>
+<section id="geometry-is-not-watertight">
+<h3>“Geometry is not watertight”<a class="headerlink" href="#geometry-is-not-watertight" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Gaps between faces in the surface mesh.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>For STL/OBJ files: Run <strong>vertex welding</strong> in the Geometry tab. This merges nearby vertices that should be connected.</p></li>
+<li><p>For STEP/IGES files: Run <strong>CAD healing</strong> to sew adjacent faces.</p></li>
+<li><p>If welding doesn’t fix it: The geometry has genuine holes. Run <strong>hole filling</strong> to patch them.</p></li>
+<li><p>If issues persist: Return to your CAD software and fix the model.</p></li>
+</ol>
+</section>
+<section id="non-manifold-edges-detected">
+<h3>“Non-manifold edges detected”<a class="headerlink" href="#non-manifold-edges-detected" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> An edge is shared by more than two faces (T-junction topology) or faces overlap.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Run <strong>non-manifold edge repair</strong> — Studio will remove duplicate faces near problem edges.</p></li>
+<li><p>In severe cases, simplify the geometry in your CAD tool to eliminate the topology issue.</p></li>
+</ol>
+</section>
+<section id="geometry-is-very-large-small">
+<h3>“Geometry is very large/small”<a class="headerlink" href="#geometry-is-very-large-small" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Incorrect units — the geometry was exported in millimeters, inches, or another unit instead of meters.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Re-export the geometry in meters from your CAD software</p></li>
+<li><p>Scale the geometry in your CAD tool before upload</p></li>
+</ol>
+</section>
+</section>
+<section id="meshing-issues">
+<h2>Meshing Issues<a class="headerlink" href="#meshing-issues" title="Link to this heading">#</a></h2>
+<section id="mesh-generation-fails">
+<h3>Mesh generation fails<a class="headerlink" href="#mesh-generation-fails" title="Link to this heading">#</a></h3>
+<p><strong>Possible causes and solutions:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cause</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Non-watertight geometry</p></td>
+<td><p>Fix geometry first (see above)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cell size too small for geometry</p></td>
+<td><p>Increase minimum cell size</p></td>
+</tr>
+<tr class="row-even"><td><p>Too many refinement levels</p></td>
+<td><p>Reduce to 8–10 levels</p></td>
+</tr>
+<tr class="row-odd"><td><p>Complex geometry features</p></td>
+<td><p>Simplify small features in CAD</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="very-high-cell-count">
+<h3>Very high cell count<a class="headerlink" href="#very-high-cell-count" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Cell size is too small relative to the domain, or excessive refinement.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Increase the target cell size</p></li>
+<li><p>Reduce refinement levels</p></li>
+<li><p>Use refinement zones instead of global refinement</p></li>
+<li><p>Enable symmetry to halve the domain</p></li>
+</ol>
+</section>
+<section id="poor-mesh-quality-high-skewness">
+<h3>Poor mesh quality (high skewness)<a class="headerlink" href="#poor-mesh-quality-high-skewness" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Complex geometry features or extreme size transitions.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Increase refinement levels (smoother transitions)</p></li>
+<li><p>Add refinement zones near problem areas</p></li>
+<li><p>Reduce boundary layer growth rate</p></li>
+<li><p>Simplify geometry features near the problem area</p></li>
+</ol>
+</section>
+<section id="boundary-layers-fail-to-generate">
+<h3>Boundary layers fail to generate<a class="headerlink" href="#boundary-layers-fail-to-generate" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Insufficient space between surfaces, or geometry issues preventing layer growth.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Check for narrow gaps between surfaces — layers from opposite walls can collide</p></li>
+<li><p>Reduce the number of layers or first layer height</p></li>
+<li><p>Ensure the geometry is clean near wall surfaces</p></li>
+</ol>
+</section>
+</section>
+<section id="simulation-issues">
+<h2>Simulation Issues<a class="headerlink" href="#simulation-issues" title="Link to this heading">#</a></h2>
+<section id="simulation-diverges-immediately">
+<h3>Simulation diverges immediately<a class="headerlink" href="#simulation-diverges-immediately" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Usually aggressive relaxation or very poor mesh quality.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Reduce relaxation factors by 30% (velocity: 0.5→0.3, pressure: 0.2→0.15)</p></li>
+<li><p>Enable turbulence ramping (delay turbulence activation by 50 iterations)</p></li>
+<li><p>Check mesh quality — fix any cells with skewness &gt; 0.95</p></li>
+<li><p>Verify boundary conditions are physically consistent</p></li>
+</ol>
+</section>
+<section id="residuals-oscillate-but-don-t-decrease">
+<h3>Residuals oscillate but don’t decrease<a class="headerlink" href="#residuals-oscillate-but-don-t-decrease" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> The solver is struggling with the numerics or the flow is inherently unsteady.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Reduce relaxation factors</p></li>
+<li><p>Enable non-orthogonal correctors if mesh quality is moderate</p></li>
+<li><p>For inherently unsteady flows (e.g., bluff body vortex shedding), the flow may not have a steady-state solution — consider transient simulation</p></li>
+<li><p>Check that boundary conditions don’t conflict</p></li>
+</ol>
+</section>
+<section id="residuals-plateau-at-a-high-level-e-g-1e-2">
+<h3>Residuals plateau at a high level (e.g., 1e-2)<a class="headerlink" href="#residuals-plateau-at-a-high-level-e-g-1e-2" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> The mesh may be too coarse, boundary conditions may be inconsistent, or the solver is hitting stability limits.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Refine the mesh in areas of high gradients</p></li>
+<li><p>Check boundary conditions for consistency (e.g., mass flow in = mass flow out)</p></li>
+<li><p>Review the logs for limiter warnings — extensive velocity clamping suggests the mesh needs refinement</p></li>
+<li><p>Try a more robust turbulence model (k-ω SST if not already using it)</p></li>
+</ol>
+</section>
+<section id="unrealistic-pressure-or-velocity-values">
+<h3>Unrealistic pressure or velocity values<a class="headerlink" href="#unrealistic-pressure-or-velocity-values" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Poor boundary conditions, mesh errors, or insufficient convergence.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Check inlet velocity and outlet pressure values</p></li>
+<li><p>Verify the geometry scale (wrong scale = wrong Reynolds number)</p></li>
+<li><p>Ensure the simulation has converged (check residual plot)</p></li>
+<li><p>Check for negative cell volumes in the mesh quality report</p></li>
+</ol>
+</section>
+<section id="simulation-takes-too-long">
+<h3>Simulation takes too long<a class="headerlink" href="#simulation-takes-too-long" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Very large mesh, slow convergence, or excessively tight criteria.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Reduce mesh size (start coarser)</p></li>
+<li><p>Increase relaxation factors slightly (if convergence is stable)</p></li>
+<li><p>Relax convergence criteria (1e-4 is adequate for most engineering applications)</p></li>
+<li><p>Reduce max iterations and check if results are already stable</p></li>
+</ol>
+</section>
+</section>
+<section id="post-processing-issues">
+<h2>Post-Processing Issues<a class="headerlink" href="#post-processing-issues" title="Link to this heading">#</a></h2>
+<section id="results-look-wrong-or-asymmetric">
+<h3>Results look wrong or asymmetric<a class="headerlink" href="#results-look-wrong-or-asymmetric" title="Link to this heading">#</a></h3>
+<p><strong>Possible causes:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Insufficient convergence</strong> — Run more iterations</p></li>
+<li><p><strong>Asymmetric mesh</strong> — Check that the mesh is symmetric for a symmetric problem</p></li>
+<li><p><strong>Wrong boundary conditions</strong> — Verify all surfaces have correct conditions</p></li>
+<li><p><strong>Physical asymmetry</strong> — Some flows are genuinely asymmetric (vortex shedding, flow bifurcation)</p></li>
+</ol>
+</section>
+<section id="force-coefficients-seem-too-high-or-too-low">
+<h3>Force coefficients seem too high or too low<a class="headerlink" href="#force-coefficients-seem-too-high-or-too-low" title="Link to this heading">#</a></h3>
+<p><strong>Check:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Reference area</strong> — Is it correct? Drag uses frontal area; lift uses planform area.</p></li>
+<li><p><strong>Reference velocity</strong> — Must match the inlet freestream velocity</p></li>
+<li><p><strong>Surface selection</strong> — Are you measuring forces on the correct surfaces?</p></li>
+<li><p><strong>Convergence</strong> — Forces may not have converged even if residuals look okay. Run more iterations.</p></li>
+</ol>
+</section>
+</section>
+<section id="account-and-platform-issues">
+<h2>Account and Platform Issues<a class="headerlink" href="#account-and-platform-issues" title="Link to this heading">#</a></h2>
+<section id="credit-limit-reached">
+<h3>“Credit limit reached”<a class="headerlink" href="#credit-limit-reached" title="Link to this heading">#</a></h3>
+<p>Your credit balance has been exhausted.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Wait for monthly credit reset (Free tier)</p></li>
+<li><p>Upgrade to a higher tier for more credits</p></li>
+<li><p>Optimize your workflow — use coarser meshes for initial setup, fine meshes only for final analysis</p></li>
+</ol>
+</section>
+<section id="mesh-generation-or-simulation-stuck-in-pending">
+<h3>Mesh generation or simulation stuck in “Pending”<a class="headerlink" href="#mesh-generation-or-simulation-stuck-in-pending" title="Link to this heading">#</a></h3>
+<p><strong>Cause:</strong> Cloud compute resources are being allocated.</p>
+<p><strong>Solutions:</strong></p>
+<ol class="arabic simple">
+<li><p>Wait a few minutes — resource allocation may take time during peak usage</p></li>
+<li><p>Check the status periodically</p></li>
+<li><p>Contact support if the job is stuck for more than 15 minutes</p></li>
+</ol>
+</section>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading">#</a></h2>
+<p>If these troubleshooting steps don’t resolve your issue:</p>
+<ol class="arabic simple">
+<li><p><strong>Ask the AI Assistant</strong> — Describe the problem in natural language</p></li>
+<li><p><strong>Check the logs</strong> — Detailed error messages are in the Logs panel</p></li>
+<li><p><strong>Contact support</strong> — Include your project ID and a description of the issue</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./knowledge-base"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="best-practices.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Best Practices</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="faq.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Frequently Asked Questions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-issues">Geometry Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-is-not-watertight">“Geometry is not watertight”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-manifold-edges-detected">“Non-manifold edges detected”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-is-very-large-small">“Geometry is very large/small”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-issues">Meshing Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation-fails">Mesh generation fails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#very-high-cell-count">Very high cell count</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poor-mesh-quality-high-skewness">Poor mesh quality (high skewness)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-layers-fail-to-generate">Boundary layers fail to generate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-issues">Simulation Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-diverges-immediately">Simulation diverges immediately</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-oscillate-but-don-t-decrease">Residuals oscillate but don’t decrease</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-plateau-at-a-high-level-e-g-1e-2">Residuals plateau at a high level (e.g., 1e-2)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unrealistic-pressure-or-velocity-values">Unrealistic pressure or velocity values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-takes-too-long">Simulation takes too long</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing-issues">Post-Processing Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results-look-wrong-or-asymmetric">Results look wrong or asymmetric</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#force-coefficients-seem-too-high-or-too-low">Force coefficients seem too high or too low</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#account-and-platform-issues">Account and Platform Issues</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#credit-limit-reached">“Credit limit reached”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation-or-simulation-stuck-in-pending">Mesh generation or simulation stuck in “Pending”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help">Getting Help</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

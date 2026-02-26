@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Example: Electronics Cooling &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/electronics-cooling';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example: Rotating Machinery (Fan / Pump)" href="rotating-machinery.html" />
+    <link rel="prev" title="Example: Internal Pipe Flow" href="internal-pipe-flow.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../agent/overview.html">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/electronics-cooling.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Example: Electronics Cooling</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-create-a-meshing-project">Step 1: Create a Meshing Project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-geometry-preparation">Step 2: Geometry Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-domain-configuration">Step 3: Domain Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-multi-region-setup-cht">Step 4: Multi-Region Setup (CHT)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regions">Regions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interfaces">Interfaces</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-surface-naming">Step 5: Surface Naming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-mesh-settings">Step 6: Mesh Settings</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-zones">Refinement Zones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-simulation-setup">Step 7: Simulation Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-results-analysis">Step 8: Results Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-distribution">Temperature Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#airflow-patterns">Airflow Patterns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heat-sink-performance">Heat Sink Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hot-spot-identification">Hot Spot Identification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-optimization-workflow">Design Optimization Workflow</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-improvements">Common Improvements</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="example-electronics-cooling">
+<h1>Example: Electronics Cooling<a class="headerlink" href="#example-electronics-cooling" title="Link to this heading">#</a></h1>
+<p>This example demonstrates setting up a thermal management simulation for an electronics enclosure. You’ll model airflow over heat-generating components and evaluate cooling effectiveness.</p>
+<section id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Generate a mesh for an electronics enclosure with heat-generating components</p></li>
+<li><p>Run a simulation to evaluate airflow and temperature distribution</p></li>
+<li><p>Identify hot spots and areas of poor cooling</p></li>
+<li><p>Compare different cooling configurations</p></li>
+</ul>
+</section>
+<section id="step-1-create-a-meshing-project">
+<h2>Step 1: Create a Meshing Project<a class="headerlink" href="#step-1-create-a-meshing-project" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Dashboard</strong> → <strong>New Project</strong> → <strong>Meshing</strong></p></li>
+<li><p>Name: “Electronics Cooling”</p></li>
+<li><p>Upload your enclosure geometry (STEP format)</p></li>
+</ol>
+</section>
+<section id="step-2-geometry-preparation">
+<h2>Step 2: Geometry Preparation<a class="headerlink" href="#step-2-geometry-preparation" title="Link to this heading">#</a></h2>
+<p>Electronics cooling geometries typically include:</p>
+<ul class="simple">
+<li><p><strong>Enclosure</strong> — The outer housing that contains the electronics</p></li>
+<li><p><strong>Components</strong> — PCBs, processors, heat sinks, fans</p></li>
+<li><p><strong>Vents</strong> — Intake and exhaust openings</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">Geometry Simplification</p>
+<p>For CFD, simplify your geometry:</p>
+<ul class="simple">
+<li><p>Remove small features (screws, labels, textures) that don’t affect flow</p></li>
+<li><p>Close small gaps that the mesh can’t resolve</p></li>
+<li><p>Combine parts that aren’t thermally distinct into single bodies</p></li>
+<li><p>Keep heat sinks and other flow-critical features</p></li>
+</ul>
+<p>The AI Assistant can suggest which features to keep and which to remove.</p>
+</div>
+</section>
+<section id="step-3-domain-configuration">
+<h2>Step 3: Domain Configuration<a class="headerlink" href="#step-3-domain-configuration" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Select <strong>Internal Flow</strong> (if air flows through the enclosure via vents)</p></li>
+<li><p>The fluid volume is the air inside the enclosure</p></li>
+<li><p>Identify inlet vents and outlet vents as surfaces</p></li>
+</ol>
+<p>For <strong>conjugate heat transfer</strong> (modeling solid heat conduction through heat sinks):</p>
+<ol class="arabic simple">
+<li><p>Select <strong>Conjugate Heat Transfer (CHT)</strong> domain type</p></li>
+<li><p>Define fluid region (air inside the enclosure)</p></li>
+<li><p>Define solid regions (heat sink, PCB, processor package)</p></li>
+</ol>
+</section>
+<section id="step-4-multi-region-setup-cht">
+<h2>Step 4: Multi-Region Setup (CHT)<a class="headerlink" href="#step-4-multi-region-setup-cht" title="Link to this heading">#</a></h2>
+<section id="regions">
+<h3>Regions<a class="headerlink" href="#regions" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Region</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Material</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">air</span></code></p></td>
+<td><p>Fluid</p></td>
+<td><p>Air (ρ = 1.225 kg/m³, μ = 1.81e-5 Pa·s)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">heatsink</span></code></p></td>
+<td><p>Solid</p></td>
+<td><p>Aluminum (k = 205 W/m·K)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pcb</span></code></p></td>
+<td><p>Solid</p></td>
+<td><p>FR4 (k = 0.3 W/m·K)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="interfaces">
+<h3>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface</p></th>
+<th class="head"><p>Regions</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">air_heatsink</span></code></p></td>
+<td><p>air ↔ heatsink</p></td>
+<td><p>Perfect contact</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">heatsink_pcb</span></code></p></td>
+<td><p>heatsink ↔ pcb</p></td>
+<td><p>Contact resistance (if thermal paste modeled)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="step-5-surface-naming">
+<h2>Step 5: Surface Naming<a class="headerlink" href="#step-5-surface-naming" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Surface</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Condition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Intake vent</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">inlet</span></code></p></td>
+<td><p>Velocity inlet</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exhaust vent</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">outlet</span></code></p></td>
+<td><p>Pressure outlet</p></td>
+</tr>
+<tr class="row-even"><td><p>Enclosure walls</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">enclosure_wall</span></code></p></td>
+<td><p>No-slip wall (adiabatic)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Processor top</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">processor</span></code></p></td>
+<td><p>Heat flux wall (e.g., 65 W)</p></td>
+</tr>
+<tr class="row-even"><td><p>Heat sink fins</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">heatsink_surface</span></code></p></td>
+<td><p>No-slip wall (coupled for CHT)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="step-6-mesh-settings">
+<h2>Step 6: Mesh Settings<a class="headerlink" href="#step-6-mesh-settings" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Target cell size</p></td>
+<td><p>5 mm</p></td>
+</tr>
+<tr class="row-odd"><td><p>Min cell size</p></td>
+<td><p>0.5 mm</p></td>
+</tr>
+<tr class="row-even"><td><p>Refinement levels</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Boundary layers</p></td>
+<td><p>Enabled (fluid region only)</p></td>
+</tr>
+<tr class="row-even"><td><p>BL layers</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>First layer height</p></td>
+<td><p>0.1 mm</p></td>
+</tr>
+<tr class="row-even"><td><p>Growth rate</p></td>
+<td><p>1.2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="refinement-zones">
+<h3>Refinement Zones<a class="headerlink" href="#refinement-zones" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Zone</p></th>
+<th class="head"><p>Location</p></th>
+<th class="head"><p>Cell Size</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Heat sink region</p></td>
+<td><p>Around heat sink fins</p></td>
+<td><p>1 mm</p></td>
+<td><p>Resolve fin gaps</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vent regions</p></td>
+<td><p>At intake/exhaust openings</p></td>
+<td><p>2 mm</p></td>
+<td><p>Resolve jet flows</p></td>
+</tr>
+<tr class="row-even"><td><p>Component zone</p></td>
+<td><p>Around hot components</p></td>
+<td><p>2 mm</p></td>
+<td><p>Thermal resolution</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="step-7-simulation-setup">
+<h2>Step 7: Simulation Setup<a class="headerlink" href="#step-7-simulation-setup" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Turbulence model</p></td>
+<td><p>k-ω SST</p></td>
+</tr>
+<tr class="row-odd"><td><p>Inlet velocity</p></td>
+<td><p>Based on fan curve (e.g., 2 m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>Outlet pressure</p></td>
+<td><p>0 Pa</p></td>
+</tr>
+<tr class="row-odd"><td><p>Enclosure walls</p></td>
+<td><p>Adiabatic wall (no heat loss)</p></td>
+</tr>
+<tr class="row-even"><td><p>Processor surface</p></td>
+<td><p>Heat flux: 65 W / surface area</p></td>
+</tr>
+<tr class="row-odd"><td><p>Turbulence intensity</p></td>
+<td><p>5%</p></td>
+</tr>
+<tr class="row-even"><td><p>Max iterations</p></td>
+<td><p>1000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="step-8-results-analysis">
+<h2>Step 8: Results Analysis<a class="headerlink" href="#step-8-results-analysis" title="Link to this heading">#</a></h2>
+<section id="temperature-distribution">
+<h3>Temperature Distribution<a class="headerlink" href="#temperature-distribution" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Color surfaces by <strong>Temperature</strong></p></li>
+<li><p>Identify the maximum temperature on the processor</p></li>
+<li><p>Check that the maximum temperature is below the thermal design limit (typically 85–100°C)</p></li>
+</ol>
+</section>
+<section id="airflow-patterns">
+<h3>Airflow Patterns<a class="headerlink" href="#airflow-patterns" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Add <strong>streamlines</strong> seeded from the intake vent</p></li>
+<li><p>Trace the airflow path through the enclosure</p></li>
+<li><p>Identify:</p>
+<ul class="simple">
+<li><p>Areas with good airflow (near vents, through heat sink)</p></li>
+<li><p>Dead zones with stagnant air (poor cooling)</p></li>
+<li><p>Short-circuiting paths (air going directly from inlet to outlet without cooling components)</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="heat-sink-performance">
+<h3>Heat Sink Performance<a class="headerlink" href="#heat-sink-performance" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Add <strong>slice planes</strong> through the heat sink fins, colored by velocity</p></li>
+<li><p>Check that air flows through all fin channels</p></li>
+<li><p>Low-velocity or recirculating regions indicate poor heat sink utilization</p></li>
+</ol>
+</section>
+<section id="hot-spot-identification">
+<h3>Hot Spot Identification<a class="headerlink" href="#hot-spot-identification" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Color all solid surfaces by temperature</p></li>
+<li><p>Hottest regions indicate inadequate cooling</p></li>
+<li><p>Common hot spots:</p>
+<ul class="simple">
+<li><p>Components far from airflow path</p></li>
+<li><p>Areas behind flow obstructions</p></li>
+<li><p>Stagnation zones between closely packed components</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="design-optimization-workflow">
+<h2>Design Optimization Workflow<a class="headerlink" href="#design-optimization-workflow" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Baseline</strong> — Run the initial configuration and record temperatures</p></li>
+<li><p><strong>Modify</strong> — Adjust vent positions, fan speed, or heat sink design</p></li>
+<li><p><strong>Re-mesh</strong> — Generate a new mesh for the modified geometry</p></li>
+<li><p><strong>Re-simulate</strong> — Run the simulation with the same conditions</p></li>
+<li><p><strong>Compare</strong> — Check if maximum temperature decreased</p></li>
+</ol>
+<section id="common-improvements">
+<h3>Common Improvements<a class="headerlink" href="#common-improvements" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Change</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Increase fan speed</p></td>
+<td><p>Lower temperatures, more noise</p></td>
+</tr>
+<tr class="row-odd"><td><p>Add/reposition vents</p></td>
+<td><p>Better airflow to hot spots</p></td>
+</tr>
+<tr class="row-even"><td><p>Larger heat sink</p></td>
+<td><p>More surface area for cooling</p></td>
+</tr>
+<tr class="row-odd"><td><p>Thermal pads/paste</p></td>
+<td><p>Better component-to-heatsink contact</p></td>
+</tr>
+<tr class="row-even"><td><p>Baffles/guides</p></td>
+<td><p>Direct airflow to problem areas</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./examples"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="internal-pipe-flow.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Example: Internal Pipe Flow</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rotating-machinery.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Example: Rotating Machinery (Fan / Pump)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">Objective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-create-a-meshing-project">Step 1: Create a Meshing Project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-geometry-preparation">Step 2: Geometry Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-domain-configuration">Step 3: Domain Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-multi-region-setup-cht">Step 4: Multi-Region Setup (CHT)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regions">Regions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interfaces">Interfaces</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-surface-naming">Step 5: Surface Naming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-mesh-settings">Step 6: Mesh Settings</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-zones">Refinement Zones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-simulation-setup">Step 7: Simulation Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-results-analysis">Step 8: Results Analysis</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-distribution">Temperature Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#airflow-patterns">Airflow Patterns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#heat-sink-performance">Heat Sink Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hot-spot-identification">Hot Spot Identification</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-optimization-workflow">Design Optimization Workflow</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-improvements">Common Improvements</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

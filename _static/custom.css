@@ -1,0 +1,24 @@
+/* Gradient Dynamics documentation custom styles */
+
+:root {
+  --gd-primary: #2563eb;
+  --gd-secondary: #1e40af;
+  --gd-accent: #3b82f6;
+}
+
+.bd-header {
+  background-color: var(--gd-primary) !important;
+}
+
+.admonition.tip {
+  border-left-color: var(--gd-accent);
+}
+
+/* Clean table styling */
+table {
+  width: 100%;
+}
+
+table th {
+  background-color: #f1f5f9;
+}

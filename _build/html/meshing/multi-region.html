@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
@@ -375,24 +375,23 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-multi-region">When to Use Multi-Region</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-regions">Creating Regions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-the-regions-tab">From the Regions Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#region-types">Region Types</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-multi-body-cad">From Multi-Body CAD</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#region-types">Region Types</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fluid-region">Fluid Region</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solid-region">Solid Region</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-region-mrf">Rotating Region (MRF)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#porous-region">Porous Region</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#region-ids-in-the-exported-mesh">Region IDs in the Exported Mesh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interfaces">Interfaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-detection">Auto-Detection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-interface-setup">Manual Interface Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interface-types">Interface Types</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-interfaces">Configuring Interfaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-vs-non-conformal">Conformal vs. Non-Conformal</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-region-mesh-settings">Per-Region Mesh Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-region-example-pipe-cht">Multi-Region Example: Pipe CHT</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-region-export">Multi-Region Export</a></li>
 </ul>
             </nav>
@@ -407,7 +406,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="multi-region-meshing">
 <h1>Multi-Region Meshing<a class="headerlink" href="#multi-region-meshing" title="Link to this heading">#</a></h1>
-<p>Multi-region meshing creates separate mesh zones for different physical domains within the same simulation. This is required for conjugate heat transfer (CHT), rotating machinery, and any problem involving different materials or physics in adjacent regions.</p>
+<p>Multi-region meshing creates separate mesh zones for different physical domains within the same simulation. Each region is independently meshed and assigned a unique ID, then coupled at shared interfaces.</p>
 <section id="when-to-use-multi-region">
 <h2>When to Use Multi-Region<a class="headerlink" href="#when-to-use-multi-region" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -438,6 +437,21 @@ document.write(`
 </table>
 </div>
 </section>
+<section id="how-it-works">
+<h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
+<p>When you set up a multi-region mesh, the mesher:</p>
+<ol class="arabic simple">
+<li><p><strong>Meshes each region independently</strong> using its own cell size and boundary layer settings</p></li>
+<li><p><strong>Assigns a unique region ID</strong> to every region (integers starting from 0, in the order regions are defined)</p></li>
+<li><p><strong>Tags every cell</strong> with its region ID — so the complete mesh knows which cells belong to which region</p></li>
+<li><p><strong>Detects or constructs interfaces</strong> between touching regions</p></li>
+<li><p><strong>Exports with zone information</strong> so your solver can apply different physics per region</p></li>
+</ol>
+<div class="note admonition">
+<p class="admonition-title">Region IDs</p>
+<p>Region IDs are assigned automatically in the order regions are defined — the first region gets ID 0, the second gets ID 1, and so on. You reference regions by <strong>name</strong> (not ID) when setting up interfaces and boundary conditions. The IDs appear in the exported mesh and are used by solvers to assign physics per zone.</p>
+</div>
+</section>
 <section id="creating-regions">
 <h2>Creating Regions<a class="headerlink" href="#creating-regions" title="Link to this heading">#</a></h2>
 <section id="from-the-regions-tab">
@@ -445,66 +459,124 @@ document.write(`
 <ol class="arabic simple">
 <li><p>Navigate to the <strong>Regions</strong> tab</p></li>
 <li><p>Click <strong>Add Region</strong></p></li>
-<li><p>Configure:</p>
-<ul class="simple">
-<li><p><strong>Name</strong> — Descriptive label (e.g., <code class="docutils literal notranslate"><span class="pre">fluid</span></code>, <code class="docutils literal notranslate"><span class="pre">heatsink</span></code>, <code class="docutils literal notranslate"><span class="pre">impeller</span></code>)</p></li>
-<li><p><strong>Type</strong> — Fluid, Solid, Porous, or Rotating</p></li>
-<li><p><strong>Material</strong> — Select from the material library or enter custom properties</p></li>
-<li><p><strong>Mesh size</strong> — Per-region cell size override</p></li>
-</ul>
-</li>
+<li><p>Configure each region:</p></li>
 </ol>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>Unique label for this region</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fluid</span></code>, <code class="docutils literal notranslate"><span class="pre">heatsink</span></code>, <code class="docutils literal notranslate"><span class="pre">rotor</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>Physics type for this zone</p></td>
+<td><p>Fluid, Solid, Porous, Rotating</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CAD geometry</strong></p></td>
+<td><p>The solid body or volume that defines this region</p></td>
+<td><p>Select from uploaded bodies</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Cell size</strong></p></td>
+<td><p>Target mesh cell size for this region</p></td>
+<td><p>2 mm</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Boundary layers</strong></p></td>
+<td><p>Enable/configure BL for this region</p></td>
+<td><p>Enabled for fluid, disabled for solid</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="region-types">
+<h3>Region Types<a class="headerlink" href="#region-types" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Typical Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Fluid</strong></p></td>
+<td><p>Standard incompressible flow</p></td>
+<td><p>Air, water, coolant</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Solid</strong></p></td>
+<td><p>Solid material, thermal conduction only</p></td>
+<td><p>Aluminum heat sink, PCB, housing</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Porous</strong></p></td>
+<td><p>Fluid with added flow resistance</p></td>
+<td><p>Filter, packed bed, heat exchanger</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Rotating</strong></p></td>
+<td><p>Fluid in a rotating reference frame (MRF)</p></td>
+<td><p>Fan impeller, pump rotor, turbine</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="from-multi-body-cad">
 <h3>From Multi-Body CAD<a class="headerlink" href="#from-multi-body-cad" title="Link to this heading">#</a></h3>
-<p>When you upload a multi-body STEP file, each solid body is automatically detected. You can assign each body to a region:</p>
-<ol class="arabic simple">
-<li><p>Studio detects the bodies and lists them</p></li>
-<li><p>Assign each body as <strong>Fluid</strong> or <strong>Solid</strong></p></li>
-<li><p>Interfaces between touching bodies are automatically identified</p></li>
-</ol>
+<p>When you upload a multi-body STEP file, each solid body is automatically detected. You can then assign each body to a named region with its type and mesh settings. The bodies are listed in the feature tree — click each one to configure it.</p>
 </section>
 </section>
-<section id="region-types">
-<h2>Region Types<a class="headerlink" href="#region-types" title="Link to this heading">#</a></h2>
-<section id="fluid-region">
-<h3>Fluid Region<a class="headerlink" href="#fluid-region" title="Link to this heading">#</a></h3>
-<p>Standard fluid flow region. Configure:</p>
+<section id="region-ids-in-the-exported-mesh">
+<h2>Region IDs in the Exported Mesh<a class="headerlink" href="#region-ids-in-the-exported-mesh" title="Link to this heading">#</a></h2>
+<p>Every cell in the exported mesh carries a region tag. In the output:</p>
 <ul class="simple">
-<li><p>Density and viscosity (or select a material like Air, Water)</p></li>
-<li><p>Reference pressure and temperature</p></li>
+<li><p><strong>OpenFOAM</strong> — Each region exports as a separate <code class="docutils literal notranslate"><span class="pre">polyMesh</span></code> with a <code class="docutils literal notranslate"><span class="pre">cellZones</span></code> file</p></li>
+<li><p><strong>ANSYS Fluent</strong> — Zone types are set per region (Fluid = 1, Solid = 17)</p></li>
+<li><p><strong>CGNS</strong> — Separate zones per region with proper zone type labels</p></li>
+<li><p><strong>VTU</strong> — A <code class="docutils literal notranslate"><span class="pre">cell_region_ids</span></code> array tags every cell with its integer region ID</p></li>
 </ul>
-</section>
-<section id="solid-region">
-<h3>Solid Region<a class="headerlink" href="#solid-region" title="Link to this heading">#</a></h3>
-<p>Solid material for thermal conduction. No fluid equations are solved. Configure:</p>
-<ul class="simple">
-<li><p>Thermal conductivity</p></li>
-<li><p>Density and specific heat capacity</p></li>
-</ul>
-</section>
-<section id="rotating-region-mrf">
-<h3>Rotating Region (MRF)<a class="headerlink" href="#rotating-region-mrf" title="Link to this heading">#</a></h3>
-<p>A fluid region with a rotating reference frame. Configure:</p>
-<ul class="simple">
-<li><p><strong>Rotation axis</strong> — Direction vector (e.g., [0, 0, 1] for Z-axis)</p></li>
-<li><p><strong>Rotation origin</strong> — Center point of rotation</p></li>
-<li><p><strong>Angular velocity</strong> — In RPM or rad/s</p></li>
-</ul>
-</section>
-<section id="porous-region">
-<h3>Porous Region<a class="headerlink" href="#porous-region" title="Link to this heading">#</a></h3>
-<p>A fluid region with additional resistance modeling. Configure:</p>
-<ul class="simple">
-<li><p>Darcy coefficient (viscous resistance)</p></li>
-<li><p>Forchheimer coefficient (inertial resistance)</p></li>
-<li><p>Porosity</p></li>
-</ul>
-</section>
+<p>Example region metadata in a 2-region CHT mesh:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Region Name</p></th>
+<th class="head"><p>Region ID</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Cells</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pipe_wall</span></code></p></td>
+<td><p>0</p></td>
+<td><p>Solid</p></td>
+<td><p>8,965</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">internal_flow</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Fluid</p></td>
+<td><p>3,624</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="interfaces">
 <h2>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading">#</a></h2>
-<p>Where two regions touch, an <strong>interface</strong> must be defined. Interfaces control how information is transferred between regions.</p>
+<p>Where two regions share a boundary, an <strong>interface</strong> couples them. Interfaces are defined by referencing the <strong>names</strong> of the two regions they connect.</p>
+<section id="auto-detection">
+<h3>Auto-Detection<a class="headerlink" href="#auto-detection" title="Link to this heading">#</a></h3>
+<p>Enable <strong>Auto-detect interfaces</strong> to have Studio automatically identify touching faces between regions. This works well for clean, imported multi-body CAD where bodies share exact face geometry.</p>
+</section>
+<section id="manual-interface-setup">
+<h3>Manual Interface Setup<a class="headerlink" href="#manual-interface-setup" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Navigate to the <strong>Interfaces</strong> tab</p></li>
+<li><p>Click <strong>Add Interface</strong></p></li>
+<li><p>Select the two region names (e.g., <code class="docutils literal notranslate"><span class="pre">pipe_wall</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">internal_flow</span></code>)</p></li>
+<li><p>Choose the interface type</p></li>
+</ol>
+</section>
 <section id="interface-types">
 <h3>Interface Types<a class="headerlink" href="#interface-types" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -515,62 +587,137 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Perfect contact</strong></p></td>
-<td><p>Direct thermal coupling, no resistance</p></td>
-<td><p>Metal-to-metal contact</p></td>
+<tr class="row-even"><td><p><strong>CHT</strong></p></td>
+<td><p>Conjugate heat transfer coupling</p></td>
+<td><p>Fluid-solid thermal problems</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Contact resistance</strong></p></td>
-<td><p>Thermal resistance between regions</p></td>
+<tr class="row-odd"><td><p><strong>CHT with contact resistance</strong></p></td>
+<td><p>Adds thermal resistance at the boundary</p></td>
 <td><p>Imperfect contact, thermal paste</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Thin wall</strong></p></td>
-<td><p>Modeled as a thin solid layer</p></td>
-<td><p>Sheet metal, PCB layers</p></td>
+<tr class="row-even"><td><p><strong>CHT thin wall</strong></p></td>
+<td><p>Models a thin solid layer at the interface</p></td>
+<td><p>Sheet metal, PCB copper layer</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Frozen rotor</strong></p></td>
 <td><p>Steady-state rotating-stationary coupling</p></td>
-<td><p>Fans, compressors (steady RANS)</p></td>
+<td><p>Fans, pumps (steady RANS)</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Mixing plane</strong></p></td>
 <td><p>Circumferentially averaged interface</p></td>
 <td><p>Turbomachinery stage coupling</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>Sliding mesh</strong></p></td>
+<td><p>Transient rotating interface</p></td>
+<td><p>Time-accurate turbomachinery</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Periodic</strong></p></td>
+<td><p>Repeating pattern coupling</p></td>
+<td><p>Sector models, cyclic symmetry</p></td>
+</tr>
 </tbody>
 </table>
 </div>
 </section>
-<section id="configuring-interfaces">
-<h3>Configuring Interfaces<a class="headerlink" href="#configuring-interfaces" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>Navigate to the <strong>Interfaces</strong> tab</p></li>
-<li><p>Select the two regions that share a boundary</p></li>
-<li><p>Choose the interface type</p></li>
-<li><p>Configure type-specific parameters (e.g., contact resistance value, wall thickness)</p></li>
-</ol>
+<section id="conformal-vs-non-conformal">
+<h3>Conformal vs. Non-Conformal<a class="headerlink" href="#conformal-vs-non-conformal" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Conformal</strong> — Faces on both sides of the interface match exactly (1:1 node correspondence). Best accuracy, requires geometry to be matched in CAD.</p></li>
+<li><p><strong>Non-conformal</strong> — Faces don’t match exactly. More flexible but requires interpolation at the interface. Used when mesh sizes differ significantly between regions.</p></li>
+</ul>
 </section>
 </section>
 <section id="per-region-mesh-settings">
 <h2>Per-Region Mesh Settings<a class="headerlink" href="#per-region-mesh-settings" title="Link to this heading">#</a></h2>
-<p>Each region can have independent mesh settings:</p>
-<ul class="simple">
-<li><p><strong>Cell size</strong> — Different resolution for fluid vs. solid zones</p></li>
-<li><p><strong>Boundary layers</strong> — Enable/disable per region (typically enabled for fluid, disabled for solid)</p></li>
-<li><p><strong>Refinement</strong> — Region-specific refinement levels</p></li>
-</ul>
+<p>Each region has independent mesh control:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Fluid Region</p></th>
+<th class="head"><p>Solid Region</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Cell size</strong></p></td>
+<td><p>Smaller (resolve flow)</p></td>
+<td><p>Larger (save cells)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Boundary layers</strong></p></td>
+<td><p>Enabled</p></td>
+<td><p>Disabled</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min cell size</strong></p></td>
+<td><p>Flow-dependent</p></td>
+<td><p>Less critical</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>For CHT problems, the solid region often needs a coarser mesh than the fluid region. Set the solid cell size 2–4× larger than the fluid cell size to save cells without sacrificing accuracy.</p>
+<p>For CHT problems, the solid region typically needs a coarser mesh than the fluid region. Set the solid cell size 2–4× larger than the fluid cell size to save cells without sacrificing thermal accuracy.</p>
 </div>
+</section>
+<section id="multi-region-example-pipe-cht">
+<h2>Multi-Region Example: Pipe CHT<a class="headerlink" href="#multi-region-example-pipe-cht" title="Link to this heading">#</a></h2>
+<p>A conjugate heat transfer pipe — fluid flowing inside a solid pipe wall:</p>
+<p><strong>Regions:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Cell Size</p></th>
+<th class="head"><p>Boundary Layers</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pipe_wall</span></code></p></td>
+<td><p>Solid</p></td>
+<td><p>1.5 mm</p></td>
+<td><p>Disabled</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">internal_flow</span></code></p></td>
+<td><p>Fluid</p></td>
+<td><p>2.0 mm</p></td>
+<td><p>Enabled, 5 layers, first height 0.1 mm</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Interface:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Region A</p></th>
+<th class="head"><p>Region B</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cht_interface</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pipe_wall</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">internal_flow</span></code></p></td>
+<td><p>CHT</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Resulting region IDs in exported mesh:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pipe_wall</span></code> → Region ID 0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">internal_flow</span></code> → Region ID 1</p></li>
+</ul>
 </section>
 <section id="multi-region-export">
 <h2>Multi-Region Export<a class="headerlink" href="#multi-region-export" title="Link to this heading">#</a></h2>
 <p>When exporting a multi-region mesh:</p>
 <ul class="simple">
-<li><p>Each region is exported as a separate <strong>cell zone</strong> with proper labeling</p></li>
-<li><p>Interfaces are marked with matching patch names on both sides</p></li>
-<li><p>Format-specific zone types are applied (e.g., Fluent zone type 1 for fluid, 17 for solid)</p></li>
-<li><p>OpenFOAM exports include a <code class="docutils literal notranslate"><span class="pre">cellZones</span></code> file and proper <code class="docutils literal notranslate"><span class="pre">regionProperties</span></code></p></li>
+<li><p>Each region is exported as a separate <strong>cell zone</strong> with proper labeling and its region ID</p></li>
+<li><p>Interface patches on both sides carry matching names (e.g., <code class="docutils literal notranslate"><span class="pre">pipe_wall_to_internal_flow</span></code>)</p></li>
+<li><p>Format-specific zone types are applied automatically</p></li>
+<li><p>OpenFOAM exports include <code class="docutils literal notranslate"><span class="pre">regionProperties</span></code> and per-region <code class="docutils literal notranslate"><span class="pre">constant/</span></code> directories</p></li>
 </ul>
+<p>See <a class="reference internal" href="export.html"><span class="doc">Mesh Export</span></a> for format-specific details.</p>
 </section>
 </section>
 
@@ -639,24 +786,23 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-multi-region">When to Use Multi-Region</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-regions">Creating Regions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-the-regions-tab">From the Regions Tab</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#region-types">Region Types</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-multi-body-cad">From Multi-Body CAD</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#region-types">Region Types</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fluid-region">Fluid Region</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solid-region">Solid Region</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotating-region-mrf">Rotating Region (MRF)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#porous-region">Porous Region</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#region-ids-in-the-exported-mesh">Region IDs in the Exported Mesh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interfaces">Interfaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auto-detection">Auto-Detection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-interface-setup">Manual Interface Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interface-types">Interface Types</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-interfaces">Configuring Interfaces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-vs-non-conformal">Conformal vs. Non-Conformal</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#per-region-mesh-settings">Per-Region Mesh Settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-region-example-pipe-cht">Multi-Region Example: Pipe CHT</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-region-export">Multi-Region Export</a></li>
 </ul>
   </nav></div>
@@ -682,7 +828,7 @@ By Gradient Dynamics
 
   <p class="copyright">
     
-      © Copyright 2025.
+      © Copyright 2026.
       <br/>
     
   </p>

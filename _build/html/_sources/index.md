@@ -1,6 +1,6 @@
-# Gradient Dynamics Studio
+# Gradient Dynamics
 
-**Production CFD in the browser.** Upload geometry, generate meshes, run simulations, and visualize results — all from a single web-based platform with GPU-accelerated cloud compute.
+**Production Multiphysics in the browser.** Upload geometry, generate meshes, run simulations, and visualize results — all from a single web-based platform with GPU-native cloud compute.
 
 ```{admonition} Beta
 :class: warning
@@ -24,7 +24,7 @@ No software installation. No license management. Just open your browser and star
 GPU-accelerated hex-dominant adaptive meshing with boundary layers, refinement zones, and multi-region support. Export to OpenFOAM, ANSYS Fluent, CGNS, and more.
 
 ### [Simulation](simulation/setup.md)
-Steady-state RANS CFD with k-ω SST, k-ε, Spalart-Allmaras, and more. Cloud GPU execution with live residual monitoring and convergence tracking.
+Steady-state CFD with multiple simulation types and turbulence models. Cloud GPU execution with live residual monitoring and convergence tracking.
 
 ### [AI Assistant](agent/overview.md)
 An intelligent assistant that analyzes your geometry, suggests mesh configurations, sets up boundary conditions, and guides you through the entire workflow using natural language.

@@ -149,7 +149,7 @@ Common issues and their solutions when working with Gradient Dynamics Studio.
 Your credit balance has been exhausted.
 
 **Solutions:**
-1. Wait for monthly credit reset (Free tier)
+1. Wait for monthly credit reset
 2. Upgrade to a higher tier for more credits
 3. Optimize your workflow — use coarser meshes for initial setup, fine meshes only for final analysis
 

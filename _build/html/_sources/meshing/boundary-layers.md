@@ -1,98 +1,66 @@
-# Boundary Layers
+# Near-Wall Resolution
 
-Boundary layers are thin layers of prismatic cells grown from wall surfaces. They are **essential** for accurately capturing the velocity gradient near walls in CFD simulations, which directly affects drag, heat transfer, and separation predictions.
+Accurate prediction of wall-bounded flows — drag, heat transfer, separation — depends on resolving the thin region of rapidly-changing velocity near solid surfaces. In Gradient Dynamics, near-wall resolution is achieved through **AMR block refinement** near geometry surfaces, without the need for traditional prismatic boundary layer extrusion.
 
-## Why Boundary Layers Matter
+## How It Works
 
-In real fluid flow, velocity changes rapidly from zero at a solid wall (no-slip condition) to the freestream value over a thin region called the boundary layer. To resolve this gradient accurately, the mesh needs:
+The structured Cartesian cut-cell approach resolves near-wall flow by **recursively refining blocks** in the AMR hierarchy near geometry surfaces. The cut-cells at the geometry boundary form the wall-adjacent layer, and the resolution of those cells is set by the AMR level applied near the surface.
 
-- Very thin cells at the wall
-- Gradually expanding cells moving away from the wall
-- Alignment of cell faces parallel to the wall surface
+This is different from traditional unstructured meshing approaches, which grow prismatic "prism layers" from wall surfaces. With block AMR:
 
-Without boundary layers, the solver must interpolate across large cells near walls, leading to inaccurate wall shear stress and heat transfer predictions.
+- Near-wall resolution is controlled by the **surface refinement level** setting
+- The wall-adjacent cell size is `base_cell_size / 2^(AMR_levels_near_wall)`
+- Resolution increases geometrically approaching the surface — similar in effect to growth-rate prism layers, but achieved through the block hierarchy
+- No separate configuration of layer count, first-layer height, or growth rate is needed
 
-## Configuration Parameters
+## Wall Cell Size and y+
 
-| Parameter | Description | Typical Range |
-|-----------|-------------|---------------|
-| **Number of layers** | Total prism layers grown from the wall | 5 – 15 |
-| **First layer height** | Thickness of the cell immediately adjacent to the wall | 0.00001 – 0.001 m |
-| **Growth rate** | Ratio of each layer's thickness to the previous one | 1.15 – 1.2 |
+The y+ value of the first wall cell determines which wall treatment your turbulence model uses. You control y+ through the **near-wall AMR level** setting (in the Mesh Settings tab → Surface Refinement → Near-Wall Levels).
 
-### First Layer Height and y+
+### Estimating Wall Cell Size
 
-The **first layer height** determines the y+ value at the wall, which must match your turbulence model's requirements:
+For a given near-wall AMR level `n` and base cell size `h`:
 
-| Turbulence Model | Target y+ | Description |
-|-----------------|-----------|-------------|
-| k-ω SST | ~1 (resolved) or ~30 (wall function) | y+ ≈ 30 is the practical default |
-| k-ε | 30 – 300 | Wall function approach |
-| Spalart-Allmaras | ~1 or ~30 | Flexible, works with both |
-
-```{admonition} y+ Rule of Thumb
-:class: tip
-
-For a target y+ of 30 (standard RANS):
-- **Highway vehicle (30 m/s):** First layer height ≈ 0.001 m
-- **Race car (80 m/s):** First layer height ≈ 0.0003 m
-- **Aircraft cruise (250 m/s):** First layer height ≈ 0.00005 m
-
-These are approximate — use the y+ calculator in the Mesh Settings tab for precise values based on your flow conditions.
+```
+wall_cell_size ≈ h / 2^n
 ```
 
-### Number of Layers
+Use the **y+ calculator** in the Mesh Settings tab to compute the expected y+ for your flow speed and geometry scale.
 
-More layers provide a smoother transition from the wall to the volume mesh:
+### y+ Guidelines by Turbulence Model
 
-- **5 layers** — Minimum for wall-function RANS (y+ ≈ 30)
-- **10 layers** — Good balance for most RANS simulations
-- **15+ layers** — Recommended for wall-resolved simulations (y+ ≈ 1)
+| Turbulence Model | Target y+ | Near-Wall AMR |
+|-----------------|-----------|---------------|
+| k-ω SST | ~30 (wall function) | Medium (default) |
+| k-ω SST | ~1 (resolved) | Fine or Very Fine |
+| k-ε | 30 – 300 | Medium |
+| Spalart-Allmaras | ~1 or ~30 | Medium to Fine |
 
-### Growth Rate
-
-Controls how quickly layers expand away from the wall:
-
-- **1.15** — Conservative growth, more layers needed but smoother transition
-- **1.2** — Standard for most applications
-- **1.3+** — Aggressive growth, may cause quality issues at the transition to volume cells
-
-```{admonition} Quality Consideration
-:class: warning
-If the growth rate is too high, the last boundary layer cell may be much larger than the adjacent volume cell, causing a poor quality transition. Keep growth rate below 1.25 for best results.
+```{tip}
+For most RANS simulations, the default **Medium** surface refinement with y+ ≈ 30 (wall function) gives good results. Use **Fine** or **Very Fine** only when wall-resolved treatment is needed (LES, detailed heat transfer, or sensitive separation prediction).
 ```
 
-## Where Boundary Layers Are Applied
-
-Boundary layers are grown from **wall-type** surfaces:
-
-- Geometry surfaces (car body, wing surface, pipe wall)
-- Ground plane (if enabled)
-
-They are **not** grown from:
-
-- Inlet and outlet boundaries
-- Symmetry planes
-- Far-field boundaries
-
-## Enabling Boundary Layers
+## Configuring Near-Wall Resolution
 
 1. Navigate to the **Mesh Settings** tab
-2. Toggle **Boundary Layers** to **Enabled**
-3. Set the number of layers, first layer height, and growth rate
-4. Optionally use the y+ calculator to determine the correct first layer height
+2. Under **Surface Refinement**, set the **Near-Wall Levels** slider
+3. Use the **y+ Calculator** to verify the resulting wall cell size for your flow speed
+4. Generate the mesh and check the reported y+ distribution in the **Mesh Quality** panel
+
+## Anisotropic Near-Wall Refinement
+
+For high-Reynolds-number flows where extreme wall resolution would be costly in all directions, enable **anisotropic near-wall refinement**. This refines blocks in the wall-normal direction more aggressively than in the wall-parallel directions, reducing cell count while maintaining y+ targets.
 
 ```{note}
-Boundary layers require a Starter tier or higher subscription.
+Anisotropic near-wall refinement is available on Pro tier and above.
 ```
 
-## Troubleshooting
+## Mesh Quality Near Walls
 
-### Layers colliding with nearby surfaces
-If two wall surfaces are very close together, boundary layers from each side can collide. The mesher automatically detects this and reduces layers in tight gaps.
+The wall-adjacent cut-cells are the only cells that deviate from perfect Cartesian quality. The mesher automatically:
 
-### Poor quality at layer termination
-Where boundary layers end (e.g., at the trailing edge of a wing), there can be quality issues. Adding a refinement zone in these areas helps smooth the transition.
+- Merges very small cut-cell slivers (volume fraction < 0.1) with neighboring cells
+- Reports the minimum cut-cell volume fraction in the quality report
+- Flags problematic cut-cells for inspection in the 3D viewer
 
-### High aspect ratio warnings
-Boundary layer cells are intentionally thin (high aspect ratio). This is expected and desirable — the warning can be disregarded for BL cells specifically. Aspect ratios of 100+ are normal for boundary layer prisms.
+High aspect-ratio cells in the near-wall region are expected and desirable — these are flagged informatively, not as errors.

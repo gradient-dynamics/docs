@@ -17,7 +17,7 @@ Measures how much a cell deviates from its ideal shape (e.g., a perfect hexahedr
 
 ```{admonition} Target
 :class: tip
-Maximum skewness should be below **0.85** throughout the mesh. The octree meshing approach naturally produces cells with good skewness.
+Maximum skewness should be below **0.85** throughout the mesh. Cartesian cells in the block AMR hierarchy have zero skewness by construction — poor skewness values only appear at cut-cells adjacent to geometry surfaces.
 ```
 
 ### Non-Orthogonality
@@ -36,7 +36,7 @@ The angle between the face normal vector and the vector connecting adjacent cell
 The ratio of the longest cell dimension to the shortest.
 
 - **Volume cells:** Should be below 10 for the bulk mesh
-- **Boundary layer cells:** High aspect ratios (50–200) are expected and acceptable — BL prisms are intentionally thin
+- **Near-wall cut-cells:** High aspect ratios are expected and acceptable in cells with aggressive near-wall AMR refinement — this is by design
 
 ### Cell Volume
 
@@ -74,19 +74,19 @@ If quality is not satisfactory:
 
 | Issue | Solution |
 |-------|----------|
-| High skewness near geometry | Increase surface refinement or reduce cell size |
-| High non-orthogonality at transitions | Increase refinement levels for smoother size transitions |
-| Poor quality at BL termination | Add a refinement zone around the transition region |
+| High skewness near geometry | Increase surface refinement AMR level |
+| High non-orthogonality at transitions | Increase AMR levels for smoother size transitions between blocks |
+| Very small cut-cell volume fraction | Geometry has tiny slivers — simplify or repair the surface |
 | Negative volumes | Check geometry for self-intersections and repair |
-| Poor quality in narrow gaps | Increase gap refinement or simplify geometry |
+| Poor quality in narrow gaps | Increase gap refinement AMR level or simplify geometry |
 
 ## Quality vs. Cell Count Trade-off
 
 Higher quality generally requires more cells:
 
-- **More refinement levels** → Smoother transitions → Better quality
-- **Smaller cell size** → More uniform sizing → Better quality
-- **Lower BL growth rate** → More gradual expansion → Better quality
+- **More AMR levels** → Smoother transitions → Better quality
+- **Smaller base cell size** → More uniform sizing → Better quality
+- **Higher surface refinement** → Better cut-cell quality near geometry
 
 Balance quality against your cell count budget and available compute credits.
 

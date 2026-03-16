@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/best-practices';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -381,12 +382,13 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing">Meshing</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-coarse-then-refine">Start Coarse, Then Refine</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-layers">Boundary Layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#near-wall-resolution">Near-Wall Resolution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-zones">Refinement Zones</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-sizing">Domain Sizing</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-type">Solver Type</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turbulence-model-selection">Turbulence Model Selection</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence">Convergence</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-pitfalls">Common Pitfalls</a></li>
@@ -426,7 +428,7 @@ document.write(`
 <li><p><strong>Use STEP format</strong> for CAD files — it preserves topology that helps meshing and surface identification</p></li>
 <li><p><strong>Simplify complex assemblies</strong> — remove small features (screws, bolts, labels) that don’t affect flow</p></li>
 <li><p><strong>Close gaps and holes</strong> — the geometry must be watertight for volume meshing</p></li>
-<li><p><strong>Remove internal surfaces</strong> — overlapping or duplicate faces cause meshing errors</p></li>
+<li><p><strong>Remove internal surfaces</strong> — overlapping or duplicate faces cause cut-cell meshing errors</p></li>
 </ul>
 </section>
 <section id="geometry-scale">
@@ -443,20 +445,20 @@ document.write(`
 <section id="start-coarse-then-refine">
 <h3>Start Coarse, Then Refine<a class="headerlink" href="#start-coarse-then-refine" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p><strong>Coarse mesh first</strong> — Run a quick mesh (2× target cell size) to verify the setup</p></li>
-<li><p><strong>Check quality</strong> — Review skewness and non-orthogonality</p></li>
-<li><p><strong>Refine</strong> — Reduce cell size and regenerate</p></li>
+<li><p><strong>Coarse mesh first</strong> — Run a quick mesh (lower AMR levels) to verify the setup</p></li>
+<li><p><strong>Check quality</strong> — Review cut-cell volume fractions and any flagged problem cells</p></li>
+<li><p><strong>Refine</strong> — Increase AMR levels and regenerate</p></li>
 <li><p><strong>Compare</strong> — Check that key quantities (Cd, pressure drop) change by &lt; 5% between meshes</p></li>
 </ol>
 <p>This “mesh independence study” ensures your results are not artifacts of the mesh resolution.</p>
 </section>
-<section id="boundary-layers">
-<h3>Boundary Layers<a class="headerlink" href="#boundary-layers" title="Link to this heading">#</a></h3>
+<section id="near-wall-resolution">
+<h3>Near-Wall Resolution<a class="headerlink" href="#near-wall-resolution" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>Always use boundary layers</strong> for external aerodynamics and wall-bounded internal flows</p></li>
-<li><p><strong>Match y+ to your turbulence model</strong> — y+ ≈ 30 for wall-function RANS, y+ ≈ 1 for resolved</p></li>
-<li><p><strong>Use at least 10 layers</strong> — fewer may not adequately resolve the boundary layer profile</p></li>
-<li><p><strong>Keep growth rate ≤ 1.2</strong> — avoids poor quality transitions to the volume mesh</p></li>
+<li><p><strong>Use the y+ calculator</strong> to determine the appropriate near-wall AMR level for your flow speed and turbulence model</p></li>
+<li><p><strong>y+ ≈ 30</strong> (wall-function RANS, medium surface refinement) works well for most external aerodynamics</p></li>
+<li><p><strong>y+ ≈ 1</strong> (wall-resolved, fine or very fine surface refinement) is needed for LES, detailed heat transfer, or sensitive separation</p></li>
+<li><p>Do not over-refine walls unnecessarily — each additional near-wall AMR level multiplies local cell count significantly</p></li>
 </ul>
 </section>
 <section id="refinement-zones">
@@ -464,7 +466,7 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Focus refinement where it matters</strong> — wakes, separation zones, stagnation regions</p></li>
 <li><p><strong>Don’t over-refine far-field regions</strong> — cells far from the geometry contribute little to accuracy</p></li>
-<li><p><strong>Avoid extreme size jumps</strong> — no more than 4:1 cell size ratio between adjacent regions</p></li>
+<li><p><strong>Avoid extreme level jumps</strong> — 2–3 AMR level difference between adjacent regions is the practical limit</p></li>
 <li><p><strong>Cover the full wake</strong> — for bluff bodies, the wake zone should extend at least 3× body length downstream</p></li>
 </ul>
 </section>
@@ -480,6 +482,10 @@ document.write(`
 </section>
 <section id="simulation">
 <h2>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
+<section id="solver-type">
+<h3>Solver Type<a class="headerlink" href="#solver-type" title="Link to this heading">#</a></h3>
+<p>Use the <strong>density-based solver</strong> (the default) for all standard CFD applications. It runs significantly faster on GPU hardware than the pressure-based solver and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. Reserve the pressure-based solver only for cases that specifically require an incompressible formulation.</p>
+</section>
 <section id="turbulence-model-selection">
 <h3>Turbulence Model Selection<a class="headerlink" href="#turbulence-model-selection" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -511,10 +517,11 @@ document.write(`
 <section id="convergence">
 <h3>Convergence<a class="headerlink" href="#convergence" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>Monitor residuals</strong> — all should decrease monotonically and reach at least 1e-4</p></li>
+<li><p><strong>Monitor residuals</strong> — density residual should decrease monotonically to at least 1e-5</p></li>
 <li><p><strong>Check integrated quantities</strong> — Cd, Cl, pressure drop should plateau before you declare convergence</p></li>
 <li><p><strong>Residuals alone are not sufficient</strong> — a simulation can have low residuals but wrong results if the setup is incorrect</p></li>
 <li><p><strong>Run enough iterations</strong> — 500 minimum for RANS, 1000+ for complex geometries</p></li>
+<li><p><strong>Use CFL ramping</strong> for difficult starting conditions — let the solver build up gradually</p></li>
 </ul>
 </section>
 <section id="common-pitfalls">
@@ -535,17 +542,21 @@ document.write(`
 <td><p>Incorrect turbulence levels in domain</p></td>
 <td><p>Use 1% for external, 5% for internal</p></td>
 </tr>
-<tr class="row-even"><td><p>Too aggressive relaxation</p></td>
-<td><p>Divergence</p></td>
-<td><p>Start with model defaults</p></td>
+<tr class="row-even"><td><p>CFL too high at startup</p></td>
+<td><p>Immediate divergence</p></td>
+<td><p>Enable CFL ramping; start at CFL 0.5</p></td>
 </tr>
 <tr class="row-odd"><td><p>Coarse mesh near features of interest</p></td>
 <td><p>Inaccurate local flow</p></td>
-<td><p>Add refinement zones</p></td>
+<td><p>Add refinement zones at correct AMR level</p></td>
 </tr>
 <tr class="row-even"><td><p>Ignoring mesh quality warnings</p></td>
 <td><p>Poor convergence or wrong results</p></td>
-<td><p>Fix quality issues before simulating</p></td>
+<td><p>Inspect flagged cut-cells before simulating</p></td>
+</tr>
+<tr class="row-odd"><td><p>Using pressure-based solver for large meshes</p></td>
+<td><p>Slow GPU performance</p></td>
+<td><p>Switch to density-based solver</p></td>
 </tr>
 </tbody>
 </table>
@@ -580,7 +591,7 @@ document.write(`
 <p>The AI Assistant saves time by:</p>
 <ul class="simple">
 <li><p>Automating geometry analysis and repair recommendations</p></li>
-<li><p>Suggesting appropriate mesh settings for your application</p></li>
+<li><p>Suggesting appropriate mesh settings and AMR levels for your application</p></li>
 <li><p>Auto-detecting boundary conditions from surface names</p></li>
 <li><p>Interpreting quality reports and results</p></li>
 </ul>
@@ -678,12 +689,13 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing">Meshing</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#start-coarse-then-refine">Start Coarse, Then Refine</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-layers">Boundary Layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#near-wall-resolution">Near-Wall Resolution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-zones">Refinement Zones</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-sizing">Domain Sizing</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-type">Solver Type</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#turbulence-model-selection">Turbulence Model Selection</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence">Convergence</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-pitfalls">Common Pitfalls</a></li>

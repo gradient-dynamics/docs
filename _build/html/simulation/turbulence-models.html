@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/turbulence-models';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Boundary Conditions" href="boundary-conditions.html" />
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="current nav bd-sidenav">
@@ -411,6 +412,7 @@ document.write(`
 <li><p>Good all-around performance for external and internal flows</p></li>
 </ul>
 <p><strong>Best for:</strong> Vehicle aerodynamics, wing analysis, duct flows, general-purpose CFD</p>
+<p><strong>Wall treatment:</strong> Supports both y+ ≈ 30 (wall function, medium near-wall AMR) and y+ ≈ 1 (wall-resolved, fine near-wall AMR)</p>
 <p><strong>Tier:</strong> Starter and above</p>
 </section>
 <hr class="docutils" />
@@ -507,7 +509,8 @@ document.write(`
 <th class="head"><p>Cost</p></th>
 <th class="head"><p>Separation Accuracy</p></th>
 <th class="head"><p>Stability</p></th>
-<th class="head"><p>Recommended y+</p></th>
+<th class="head"><p>Target y+</p></th>
+<th class="head"><p>Near-Wall AMR</p></th>
 </tr>
 </thead>
 <tbody>
@@ -517,6 +520,7 @@ document.write(`
 <td><p>Good</p></td>
 <td><p>High</p></td>
 <td><p>1 or 30</p></td>
+<td><p>Medium (30) / Fine (1)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>k-ε</strong></p></td>
 <td><p>2</p></td>
@@ -524,6 +528,7 @@ document.write(`
 <td><p>Fair</p></td>
 <td><p>Very High</p></td>
 <td><p>30–300</p></td>
+<td><p>Medium</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Spalart-Allmaras</strong></p></td>
 <td><p>1</p></td>
@@ -531,6 +536,7 @@ document.write(`
 <td><p>Fair</p></td>
 <td><p>High</p></td>
 <td><p>1 or 30</p></td>
+<td><p>Medium (30) / Fine (1)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>RSM</strong></p></td>
 <td><p>7</p></td>
@@ -538,6 +544,7 @@ document.write(`
 <td><p>Very Good</p></td>
 <td><p>Medium</p></td>
 <td><p>1 or 30</p></td>
+<td><p>Medium (30) / Fine (1)</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>LES</strong></p></td>
 <td><p>0 (resolved)</p></td>
@@ -545,6 +552,7 @@ document.write(`
 <td><p>Excellent</p></td>
 <td><p>Medium</p></td>
 <td><p>~1</p></td>
+<td><p>Fine / Very Fine</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>DES</strong></p></td>
 <td><p>2 (hybrid)</p></td>
@@ -552,10 +560,12 @@ document.write(`
 <td><p>Very Good</p></td>
 <td><p>Medium</p></td>
 <td><p>~1</p></td>
+<td><p>Fine</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>The <strong>Near-Wall AMR</strong> column indicates the surface refinement setting to use in Mesh Settings to achieve the target y+. See <a class="reference internal" href="../meshing/boundary-layers.html"><span class="std std-doc">Near-Wall Resolution</span></a> for how to configure this.</p>
 </section>
 <section id="choosing-a-model">
 <h2>Choosing a Model<a class="headerlink" href="#choosing-a-model" title="Link to this heading">#</a></h2>

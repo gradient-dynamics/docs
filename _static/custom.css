@@ -1,5 +1,27 @@
 /* Gradient Dynamics documentation custom styles */
 
+/* Collapsible nav section captions */
+.bd-docs-nav .caption {
+  position: relative;
+  padding-right: 1.5rem;
+  user-select: none;
+}
+
+.bd-docs-nav .caption::after {
+  content: '▸';
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  transition: transform 0.15s ease;
+  color: var(--pst-color-muted, #6c757d);
+}
+
+.bd-docs-nav .caption.nav-section-expanded::after {
+  content: '▾';
+}
+
 :root {
   --gd-primary: #2563eb;
   --gd-secondary: #1e40af;

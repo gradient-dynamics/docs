@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,10 +59,11 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'meshing/refinement-zones';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Surfaces" href="surfaces.html" />
-    <link rel="prev" title="Boundary Layers" href="boundary-layers.html" />
+    <link rel="next" title="Surfaces and Named Selections" href="surfaces.html" />
+    <link rel="prev" title="Near-Wall Resolution" href="boundary-layers.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -375,6 +376,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-refinement-zones">Why Use Refinement Zones?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-zones-work-with-block-amr">How Zones Work with Block AMR</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zone-shapes">Zone Shapes</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#box">Box</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylinder">Cylinder</a></li>
@@ -382,7 +384,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-refinement-zones">Adding Refinement Zones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-cell-size">Refinement Cell Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-the-refinement-level">Setting the Refinement Level</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-refinement-strategies">Common Refinement Strategies</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vehicle-aerodynamics">Vehicle Aerodynamics</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#airfoil-wing">Airfoil / Wing</a></li>
@@ -406,14 +408,22 @@ document.write(`
 <p>Refinement zones allow you to increase mesh resolution in specific regions of the domain without refining the entire mesh. This is essential for capturing flow features like wakes, separation zones, and shear layers.</p>
 <section id="why-use-refinement-zones">
 <h2>Why Use Refinement Zones?<a class="headerlink" href="#why-use-refinement-zones" title="Link to this heading">#</a></h2>
-<p>The base mesh resolution is set by the target cell size, which applies uniformly across the domain. But many flow features are localized:</p>
+<p>The base mesh resolution applies uniformly across the domain, but many flow features are localized:</p>
 <ul class="simple">
 <li><p><strong>Wake behind a vehicle</strong> — Needs finer cells to resolve turbulent structures</p></li>
 <li><p><strong>Separation region</strong> around a wing — Needs resolution to capture recirculation</p></li>
 <li><p><strong>Gap between components</strong> — Needs fine cells to resolve flow through narrow passages</p></li>
 <li><p><strong>Jet or exhaust plume</strong> — Needs fine cells along the jet path</p></li>
 </ul>
-<p>Refinement zones let you concentrate cells where they matter most, keeping the total cell count manageable.</p>
+<p>Refinement zones concentrate AMR block refinement where it matters most, keeping the total cell count manageable.</p>
+</section>
+<section id="how-zones-work-with-block-amr">
+<h2>How Zones Work with Block AMR<a class="headerlink" href="#how-zones-work-with-block-amr" title="Link to this heading">#</a></h2>
+<p>Refinement zones specify a <strong>target AMR level</strong> within a defined region. All AMR blocks that fall within the zone are refined to at least this level, regardless of their proximity to a geometry surface. This integrates seamlessly with the block AMR hierarchy — there is no separate treatment for zone boundaries.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Zone refinement and surface refinement combine automatically. Blocks inside a zone near a geometry surface will be refined to the maximum of the zone level and the surface refinement level.</p>
+</div>
 </section>
 <section id="zone-shapes">
 <h2>Zone Shapes<a class="headerlink" href="#zone-shapes" title="Link to this heading">#</a></h2>
@@ -459,20 +469,20 @@ document.write(`
 <li><p><strong>Numerical input</strong> — Enter exact coordinates and dimensions in the panel</p></li>
 </ul>
 </li>
-<li><p>Set the <strong>refinement cell size</strong> — this overrides the base cell size within the zone</p></li>
+<li><p>Set the <strong>refinement level</strong> — this sets the minimum AMR level within the zone</p></li>
 </ol>
 </section>
-<section id="refinement-cell-size">
-<h2>Refinement Cell Size<a class="headerlink" href="#refinement-cell-size" title="Link to this heading">#</a></h2>
-<p>Each zone has its own target cell size that applies within its volume. The cell size should be:</p>
+<section id="setting-the-refinement-level">
+<h2>Setting the Refinement Level<a class="headerlink" href="#setting-the-refinement-level" title="Link to this heading">#</a></h2>
+<p>Each zone specifies a minimum AMR level for blocks within it. The level should be:</p>
 <ul class="simple">
-<li><p><strong>Smaller</strong> than the base mesh cell size (otherwise the zone has no effect)</p></li>
-<li><p><strong>Proportional</strong> to the feature you want to capture</p></li>
-<li><p><strong>Not too small</strong> relative to the base mesh — very large jumps in cell size cause poor quality transitions</p></li>
+<li><p><strong>Higher</strong> than the coarse background AMR level (otherwise the zone has no effect)</p></li>
+<li><p><strong>Proportional</strong> to the feature size you want to capture</p></li>
+<li><p><strong>Not excessively higher</strong> than the surrounding level — the AMR block hierarchy transitions smoothly between levels, but very large jumps increase cell count significantly</p></li>
 </ul>
 <div class="tip admonition">
 <p class="admonition-title">Sizing Guideline</p>
-<p>A good rule of thumb: the refinement zone cell size should be no more than <strong>4× smaller</strong> than the surrounding cells per refinement level. The octree mesher handles transitions automatically, but extreme jumps require more transition cells.</p>
+<p>Each AMR level doubles resolution in each dimension, so 2 extra levels = 4× finer cells. For wake capture, 1–2 additional AMR levels beyond the background is usually sufficient. For tight gaps or critical geometry features, 2–3 additional levels may be needed.</p>
 </div>
 </section>
 <section id="common-refinement-strategies">
@@ -484,29 +494,29 @@ document.write(`
 <tr class="row-odd"><th class="head"><p>Zone</p></th>
 <th class="head"><p>Shape</p></th>
 <th class="head"><p>Position</p></th>
-<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Additional AMR Levels</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Wake zone</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Behind vehicle, 2–3× car length</p></td>
-<td><p>Capture wake structure</p></td>
+<td><p>+1–2</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Underbody zone</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Under vehicle, ground to floor</p></td>
-<td><p>Resolve ground effect</p></td>
+<td><p>+1</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Wheel zones</strong></p></td>
 <td><p>Cylinder</p></td>
 <td><p>Around each wheel</p></td>
-<td><p>Capture wheel rotation effects</p></td>
+<td><p>+2</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Front zone</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Ahead of vehicle, 0.5× length</p></td>
-<td><p>Resolve stagnation region</p></td>
+<td><p>+1</p></td>
 </tr>
 </tbody>
 </table>
@@ -519,24 +529,24 @@ document.write(`
 <tr class="row-odd"><th class="head"><p>Zone</p></th>
 <th class="head"><p>Shape</p></th>
 <th class="head"><p>Position</p></th>
-<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Additional AMR Levels</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Leading edge</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Extends upstream of LE</p></td>
-<td><p>Capture stagnation</p></td>
+<td><p>+2</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Trailing edge</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Behind TE, 1–2× chord</p></td>
-<td><p>Resolve wake and mixing</p></td>
+<td><p>+2</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Suction side</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Above airfoil</p></td>
-<td><p>Capture separation bubble</p></td>
+<td><p>+1</p></td>
 </tr>
 </tbody>
 </table>
@@ -549,24 +559,24 @@ document.write(`
 <tr class="row-odd"><th class="head"><p>Zone</p></th>
 <th class="head"><p>Shape</p></th>
 <th class="head"><p>Position</p></th>
-<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Additional AMR Levels</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Bend region</strong></p></td>
 <td><p>Box/Cylinder</p></td>
 <td><p>Around pipe bends</p></td>
-<td><p>Capture separation in turns</p></td>
+<td><p>+1–2</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Constriction</strong></p></td>
 <td><p>Cylinder</p></td>
 <td><p>At flow restrictions</p></td>
-<td><p>Resolve acceleration</p></td>
+<td><p>+2</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Mixing zone</strong></p></td>
 <td><p>Box</p></td>
 <td><p>Downstream of junctions</p></td>
-<td><p>Capture flow mixing</p></td>
+<td><p>+1</p></td>
 </tr>
 </tbody>
 </table>
@@ -580,7 +590,7 @@ document.write(`
 <li><p><strong>Delete</strong> — Remove zones you no longer need</p></li>
 <li><p><strong>Toggle visibility</strong> — Show/hide zones in the 3D viewer for clarity</p></li>
 </ul>
-<p>Multiple refinement zones can overlap. Where zones overlap, the <strong>finest</strong> (smallest cell size) takes precedence.</p>
+<p>Multiple refinement zones can overlap. Where zones overlap, the <strong>highest</strong> AMR level (finest resolution) takes precedence.</p>
 </section>
 </section>
 
@@ -620,7 +630,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Boundary Layers</p>
+        <p class="prev-next-title">Near-Wall Resolution</p>
       </div>
     </a>
     <a class="right-next"
@@ -628,7 +638,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Surfaces</p>
+        <p class="prev-next-title">Surfaces and Named Selections</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -649,6 +659,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-refinement-zones">Why Use Refinement Zones?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-zones-work-with-block-amr">How Zones Work with Block AMR</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zone-shapes">Zone Shapes</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#box">Box</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cylinder">Cylinder</a></li>
@@ -656,7 +667,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-refinement-zones">Adding Refinement Zones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-cell-size">Refinement Cell Size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-the-refinement-level">Setting the Refinement Level</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-refinement-strategies">Common Refinement Strategies</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vehicle-aerodynamics">Vehicle Aerodynamics</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#airfoil-wing">Airfoil / Wing</a></li>

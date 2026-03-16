@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/running';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Post-Processing" href="post-processing.html" />
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="current nav bd-sidenav">
@@ -407,6 +408,7 @@ document.write(`
 <ol class="arabic simple">
 <li><p>Review your configuration in the <strong>Simulation</strong> tab:</p>
 <ul class="simple">
+<li><p>Solver type selected (density-based recommended)</p></li>
 <li><p>Turbulence model selected</p></li>
 <li><p>Boundary conditions assigned to all surfaces</p></li>
 <li><p>Solver settings configured</p></li>
@@ -458,7 +460,15 @@ document.write(`
 <h2>Monitoring Convergence<a class="headerlink" href="#monitoring-convergence" title="Link to this heading">#</a></h2>
 <section id="residual-plot">
 <h3>Residual Plot<a class="headerlink" href="#residual-plot" title="Link to this heading">#</a></h3>
-<p>While the simulation runs, the <strong>convergence plot</strong> updates in real time showing:</p>
+<p>While the simulation runs, the <strong>convergence plot</strong> updates in real time. The residuals shown depend on your solver type:</p>
+<p><strong>Density-based solver (default):</strong></p>
+<ul class="simple">
+<li><p><strong>Density residual</strong> — Primary convergence indicator for the coupled system</p></li>
+<li><p><strong>Momentum residuals</strong> (ρu, ρv, ρw) — Momentum equation errors</p></li>
+<li><p><strong>Energy residual</strong> — Energy equation error</p></li>
+<li><p><strong>Turbulence residuals</strong> (k, ω or ε) — Turbulence model errors</p></li>
+</ul>
+<p><strong>Pressure-based solver:</strong></p>
 <ul class="simple">
 <li><p><strong>Continuity residual</strong> — Mass conservation error</p></li>
 <li><p><strong>Velocity residuals</strong> (Ux, Uy, Uz) — Momentum equation errors</p></li>
@@ -469,7 +479,7 @@ document.write(`
 <ul class="simple">
 <li><p>Residuals should <strong>decrease monotonically</strong> (trending downward)</p></li>
 <li><p>A converged solution shows residuals reaching a <strong>plateau</strong> at a low level</p></li>
-<li><p>Oscillating residuals indicate the solution is struggling — consider adjusting settings</p></li>
+<li><p>Oscillating residuals indicate the solution is struggling — consider adjusting CFL (density-based) or relaxation factors (pressure-based)</p></li>
 </ul>
 </section>
 <section id="convergence-indicators">
@@ -487,10 +497,13 @@ document.write(`
 <tr class="row-odd"><td><p>1e-2 to 1e-4</p></td>
 <td><p>Partially converged — trends are established</p></td>
 </tr>
-<tr class="row-even"><td><p>&lt; 1e-4</p></td>
-<td><p>Well converged — engineering quantities are stable</p></td>
+<tr class="row-even"><td><p>&lt; 1e-5</p></td>
+<td><p>Well converged — engineering quantities are stable (density-based target)</p></td>
 </tr>
-<tr class="row-odd"><td><p>&lt; 1e-6</p></td>
+<tr class="row-odd"><td><p>&lt; 1e-4</p></td>
+<td><p>Well converged — suitable for pressure-based solver</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt; 1e-6</p></td>
 <td><p>Tightly converged — research-grade accuracy</p></td>
 </tr>
 </tbody>
@@ -498,7 +511,7 @@ document.write(`
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>For engineering applications, convergence to 1e-4 in continuity is usually sufficient. Force and moment coefficients typically stabilize well before residuals reach their final level.</p>
+<p>For engineering applications, convergence to 1e-5 (density residual) is usually sufficient. Force and moment coefficients typically stabilize well before residuals reach their final level — always verify that Cd, Cl, and pressure drop have plateaued.</p>
 </div>
 </section>
 </section>
@@ -545,7 +558,7 @@ document.write(`
 <tbody>
 <tr class="row-even"><td><p>Floating point exception</p></td>
 <td><p>Solution diverged</p></td>
-<td><p>Reduce relaxation factors</p></td>
+<td><p>Reduce CFL (density-based) or relaxation factors (pressure-based)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Negative cell volume</p></td>
 <td><p>Mesh error</p></td>

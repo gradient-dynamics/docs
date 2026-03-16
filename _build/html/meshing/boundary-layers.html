@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Boundary Layers &#8212; Gradient Dynamics Documentation</title>
+    <title>Near-Wall Resolution &#8212; Gradient Dynamics Documentation</title>
   
   
   
@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'meshing/boundary-layers';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Refinement Zones" href="refinement-zones.html" />
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Boundary Layers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -364,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Boundary Layers</h1>
+    <h1>Near-Wall Resolution</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -374,21 +375,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-boundary-layers-matter">Why Boundary Layers Matter</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-parameters">Configuration Parameters</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-layer-height-and-y">First Layer Height and y+</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#number-of-layers">Number of Layers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#growth-rate">Growth Rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wall-cell-size-and-y">Wall Cell Size and y+</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-wall-cell-size">Estimating Wall Cell Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#y-guidelines-by-turbulence-model">y+ Guidelines by Turbulence Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-boundary-layers-are-applied">Where Boundary Layers Are Applied</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-boundary-layers">Enabling Boundary Layers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layers-colliding-with-nearby-surfaces">Layers colliding with nearby surfaces</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poor-quality-at-layer-termination">Poor quality at layer termination</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-aspect-ratio-warnings">High aspect ratio warnings</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-near-wall-resolution">Configuring Near-Wall Resolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anisotropic-near-wall-refinement">Anisotropic Near-Wall Refinement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-quality-near-walls">Mesh Quality Near Walls</a></li>
 </ul>
             </nav>
         </div>
@@ -400,145 +395,92 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="boundary-layers">
-<h1>Boundary Layers<a class="headerlink" href="#boundary-layers" title="Link to this heading">#</a></h1>
-<p>Boundary layers are thin layers of prismatic cells grown from wall surfaces. They are <strong>essential</strong> for accurately capturing the velocity gradient near walls in CFD simulations, which directly affects drag, heat transfer, and separation predictions.</p>
-<section id="why-boundary-layers-matter">
-<h2>Why Boundary Layers Matter<a class="headerlink" href="#why-boundary-layers-matter" title="Link to this heading">#</a></h2>
-<p>In real fluid flow, velocity changes rapidly from zero at a solid wall (no-slip condition) to the freestream value over a thin region called the boundary layer. To resolve this gradient accurately, the mesh needs:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="near-wall-resolution">
+<h1>Near-Wall Resolution<a class="headerlink" href="#near-wall-resolution" title="Link to this heading">#</a></h1>
+<p>Accurate prediction of wall-bounded flows — drag, heat transfer, separation — depends on resolving the thin region of rapidly-changing velocity near solid surfaces. In Gradient Dynamics, near-wall resolution is achieved through <strong>AMR block refinement</strong> near geometry surfaces, without the need for traditional prismatic boundary layer extrusion.</p>
+<section id="how-it-works">
+<h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
+<p>The structured Cartesian cut-cell approach resolves near-wall flow by <strong>recursively refining blocks</strong> in the AMR hierarchy near geometry surfaces. The cut-cells at the geometry boundary form the wall-adjacent layer, and the resolution of those cells is set by the AMR level applied near the surface.</p>
+<p>This is different from traditional unstructured meshing approaches, which grow prismatic “prism layers” from wall surfaces. With block AMR:</p>
 <ul class="simple">
-<li><p>Very thin cells at the wall</p></li>
-<li><p>Gradually expanding cells moving away from the wall</p></li>
-<li><p>Alignment of cell faces parallel to the wall surface</p></li>
+<li><p>Near-wall resolution is controlled by the <strong>surface refinement level</strong> setting</p></li>
+<li><p>The wall-adjacent cell size is <code class="docutils literal notranslate"><span class="pre">base_cell_size</span> <span class="pre">/</span> <span class="pre">2^(AMR_levels_near_wall)</span></code></p></li>
+<li><p>Resolution increases geometrically approaching the surface — similar in effect to growth-rate prism layers, but achieved through the block hierarchy</p></li>
+<li><p>No separate configuration of layer count, first-layer height, or growth rate is needed</p></li>
 </ul>
-<p>Without boundary layers, the solver must interpolate across large cells near walls, leading to inaccurate wall shear stress and heat transfer predictions.</p>
 </section>
-<section id="configuration-parameters">
-<h2>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Parameter</p></th>
-<th class="head"><p>Description</p></th>
-<th class="head"><p>Typical Range</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Number of layers</strong></p></td>
-<td><p>Total prism layers grown from the wall</p></td>
-<td><p>5 – 15</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>First layer height</strong></p></td>
-<td><p>Thickness of the cell immediately adjacent to the wall</p></td>
-<td><p>0.00001 – 0.001 m</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Growth rate</strong></p></td>
-<td><p>Ratio of each layer’s thickness to the previous one</p></td>
-<td><p>1.15 – 1.2</p></td>
-</tr>
-</tbody>
-</table>
+<section id="wall-cell-size-and-y">
+<h2>Wall Cell Size and y+<a class="headerlink" href="#wall-cell-size-and-y" title="Link to this heading">#</a></h2>
+<p>The y+ value of the first wall cell determines which wall treatment your turbulence model uses. You control y+ through the <strong>near-wall AMR level</strong> setting (in the Mesh Settings tab → Surface Refinement → Near-Wall Levels).</p>
+<section id="estimating-wall-cell-size">
+<h3>Estimating Wall Cell Size<a class="headerlink" href="#estimating-wall-cell-size" title="Link to this heading">#</a></h3>
+<p>For a given near-wall AMR level <code class="docutils literal notranslate"><span class="pre">n</span></code> and base cell size <code class="docutils literal notranslate"><span class="pre">h</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wall_cell_size ≈ h / 2^n
+</pre></div>
 </div>
-<section id="first-layer-height-and-y">
-<h3>First Layer Height and y+<a class="headerlink" href="#first-layer-height-and-y" title="Link to this heading">#</a></h3>
-<p>The <strong>first layer height</strong> determines the y+ value at the wall, which must match your turbulence model’s requirements:</p>
+<p>Use the <strong>y+ calculator</strong> in the Mesh Settings tab to compute the expected y+ for your flow speed and geometry scale.</p>
+</section>
+<section id="y-guidelines-by-turbulence-model">
+<h3>y+ Guidelines by Turbulence Model<a class="headerlink" href="#y-guidelines-by-turbulence-model" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Turbulence Model</p></th>
 <th class="head"><p>Target y+</p></th>
-<th class="head"><p>Description</p></th>
+<th class="head"><p>Near-Wall AMR</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>k-ω SST</p></td>
-<td><p>~1 (resolved) or ~30 (wall function)</p></td>
-<td><p>y+ ≈ 30 is the practical default</p></td>
+<td><p>~30 (wall function)</p></td>
+<td><p>Medium (default)</p></td>
 </tr>
-<tr class="row-odd"><td><p>k-ε</p></td>
+<tr class="row-odd"><td><p>k-ω SST</p></td>
+<td><p>~1 (resolved)</p></td>
+<td><p>Fine or Very Fine</p></td>
+</tr>
+<tr class="row-even"><td><p>k-ε</p></td>
 <td><p>30 – 300</p></td>
-<td><p>Wall function approach</p></td>
+<td><p>Medium</p></td>
 </tr>
-<tr class="row-even"><td><p>Spalart-Allmaras</p></td>
+<tr class="row-odd"><td><p>Spalart-Allmaras</p></td>
 <td><p>~1 or ~30</p></td>
-<td><p>Flexible, works with both</p></td>
+<td><p>Medium to Fine</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="tip admonition">
-<p class="admonition-title">y+ Rule of Thumb</p>
-<p>For a target y+ of 30 (standard RANS):</p>
-<ul class="simple">
-<li><p><strong>Highway vehicle (30 m/s):</strong> First layer height ≈ 0.001 m</p></li>
-<li><p><strong>Race car (80 m/s):</strong> First layer height ≈ 0.0003 m</p></li>
-<li><p><strong>Aircraft cruise (250 m/s):</strong> First layer height ≈ 0.00005 m</p></li>
-</ul>
-<p>These are approximate — use the y+ calculator in the Mesh Settings tab for precise values based on your flow conditions.</p>
-</div>
-</section>
-<section id="number-of-layers">
-<h3>Number of Layers<a class="headerlink" href="#number-of-layers" title="Link to this heading">#</a></h3>
-<p>More layers provide a smoother transition from the wall to the volume mesh:</p>
-<ul class="simple">
-<li><p><strong>5 layers</strong> — Minimum for wall-function RANS (y+ ≈ 30)</p></li>
-<li><p><strong>10 layers</strong> — Good balance for most RANS simulations</p></li>
-<li><p><strong>15+ layers</strong> — Recommended for wall-resolved simulations (y+ ≈ 1)</p></li>
-</ul>
-</section>
-<section id="growth-rate">
-<h3>Growth Rate<a class="headerlink" href="#growth-rate" title="Link to this heading">#</a></h3>
-<p>Controls how quickly layers expand away from the wall:</p>
-<ul class="simple">
-<li><p><strong>1.15</strong> — Conservative growth, more layers needed but smoother transition</p></li>
-<li><p><strong>1.2</strong> — Standard for most applications</p></li>
-<li><p><strong>1.3+</strong> — Aggressive growth, may cause quality issues at the transition to volume cells</p></li>
-</ul>
-<div class="warning admonition">
-<p class="admonition-title">Quality Consideration</p>
-<p>If the growth rate is too high, the last boundary layer cell may be much larger than the adjacent volume cell, causing a poor quality transition. Keep growth rate below 1.25 for best results.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For most RANS simulations, the default <strong>Medium</strong> surface refinement with y+ ≈ 30 (wall function) gives good results. Use <strong>Fine</strong> or <strong>Very Fine</strong> only when wall-resolved treatment is needed (LES, detailed heat transfer, or sensitive separation prediction).</p>
 </div>
 </section>
 </section>
-<section id="where-boundary-layers-are-applied">
-<h2>Where Boundary Layers Are Applied<a class="headerlink" href="#where-boundary-layers-are-applied" title="Link to this heading">#</a></h2>
-<p>Boundary layers are grown from <strong>wall-type</strong> surfaces:</p>
-<ul class="simple">
-<li><p>Geometry surfaces (car body, wing surface, pipe wall)</p></li>
-<li><p>Ground plane (if enabled)</p></li>
-</ul>
-<p>They are <strong>not</strong> grown from:</p>
-<ul class="simple">
-<li><p>Inlet and outlet boundaries</p></li>
-<li><p>Symmetry planes</p></li>
-<li><p>Far-field boundaries</p></li>
-</ul>
-</section>
-<section id="enabling-boundary-layers">
-<h2>Enabling Boundary Layers<a class="headerlink" href="#enabling-boundary-layers" title="Link to this heading">#</a></h2>
+<section id="configuring-near-wall-resolution">
+<h2>Configuring Near-Wall Resolution<a class="headerlink" href="#configuring-near-wall-resolution" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Navigate to the <strong>Mesh Settings</strong> tab</p></li>
-<li><p>Toggle <strong>Boundary Layers</strong> to <strong>Enabled</strong></p></li>
-<li><p>Set the number of layers, first layer height, and growth rate</p></li>
-<li><p>Optionally use the y+ calculator to determine the correct first layer height</p></li>
+<li><p>Under <strong>Surface Refinement</strong>, set the <strong>Near-Wall Levels</strong> slider</p></li>
+<li><p>Use the <strong>y+ Calculator</strong> to verify the resulting wall cell size for your flow speed</p></li>
+<li><p>Generate the mesh and check the reported y+ distribution in the <strong>Mesh Quality</strong> panel</p></li>
 </ol>
+</section>
+<section id="anisotropic-near-wall-refinement">
+<h2>Anisotropic Near-Wall Refinement<a class="headerlink" href="#anisotropic-near-wall-refinement" title="Link to this heading">#</a></h2>
+<p>For high-Reynolds-number flows where extreme wall resolution would be costly in all directions, enable <strong>anisotropic near-wall refinement</strong>. This refines blocks in the wall-normal direction more aggressively than in the wall-parallel directions, reducing cell count while maintaining y+ targets.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Boundary layers require a Starter tier or higher subscription.</p>
+<p>Anisotropic near-wall refinement is available on Pro tier and above.</p>
 </div>
 </section>
-<section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
-<section id="layers-colliding-with-nearby-surfaces">
-<h3>Layers colliding with nearby surfaces<a class="headerlink" href="#layers-colliding-with-nearby-surfaces" title="Link to this heading">#</a></h3>
-<p>If two wall surfaces are very close together, boundary layers from each side can collide. The mesher automatically detects this and reduces layers in tight gaps.</p>
-</section>
-<section id="poor-quality-at-layer-termination">
-<h3>Poor quality at layer termination<a class="headerlink" href="#poor-quality-at-layer-termination" title="Link to this heading">#</a></h3>
-<p>Where boundary layers end (e.g., at the trailing edge of a wing), there can be quality issues. Adding a refinement zone in these areas helps smooth the transition.</p>
-</section>
-<section id="high-aspect-ratio-warnings">
-<h3>High aspect ratio warnings<a class="headerlink" href="#high-aspect-ratio-warnings" title="Link to this heading">#</a></h3>
-<p>Boundary layer cells are intentionally thin (high aspect ratio). This is expected and desirable — the warning can be disregarded for BL cells specifically. Aspect ratios of 100+ are normal for boundary layer prisms.</p>
-</section>
+<section id="mesh-quality-near-walls">
+<h2>Mesh Quality Near Walls<a class="headerlink" href="#mesh-quality-near-walls" title="Link to this heading">#</a></h2>
+<p>The wall-adjacent cut-cells are the only cells that deviate from perfect Cartesian quality. The mesher automatically:</p>
+<ul class="simple">
+<li><p>Merges very small cut-cell slivers (volume fraction &lt; 0.1) with neighboring cells</p></li>
+<li><p>Reports the minimum cut-cell volume fraction in the quality report</p></li>
+<li><p>Flags problematic cut-cells for inspection in the 3D viewer</p></li>
+</ul>
+<p>High aspect-ratio cells in the near-wall region are expected and desirable — these are flagged informatively, not as errors.</p>
 </section>
 </section>
 
@@ -606,21 +548,15 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-boundary-layers-matter">Why Boundary Layers Matter</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-parameters">Configuration Parameters</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-layer-height-and-y">First Layer Height and y+</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#number-of-layers">Number of Layers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#growth-rate">Growth Rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wall-cell-size-and-y">Wall Cell Size and y+</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-wall-cell-size">Estimating Wall Cell Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#y-guidelines-by-turbulence-model">y+ Guidelines by Turbulence Model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-boundary-layers-are-applied">Where Boundary Layers Are Applied</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-boundary-layers">Enabling Boundary Layers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#layers-colliding-with-nearby-surfaces">Layers colliding with nearby surfaces</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poor-quality-at-layer-termination">Poor quality at layer termination</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#high-aspect-ratio-warnings">High aspect ratio warnings</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-near-wall-resolution">Configuring Near-Wall Resolution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anisotropic-near-wall-refinement">Anisotropic Near-Wall Refinement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-quality-near-walls">Mesh Quality Near Walls</a></li>
 </ul>
   </nav></div>
 

@@ -15,6 +15,8 @@ The **Shear Stress Transport** model combines the best properties of k-ω (near 
 
 **Best for:** Vehicle aerodynamics, wing analysis, duct flows, general-purpose CFD
 
+**Wall treatment:** Supports both y+ ≈ 30 (wall function, medium near-wall AMR) and y+ ≈ 1 (wall-resolved, fine near-wall AMR)
+
 **Tier:** Starter and above
 
 ---
@@ -110,14 +112,16 @@ A hybrid approach: RANS near walls and LES in the bulk flow. Combines the effici
 
 ## Model Comparison
 
-| Model | Equations | Cost | Separation Accuracy | Stability | Recommended y+ |
-|-------|-----------|------|-------------------|-----------|-----------------|
-| **k-ω SST** | 2 | Low | Good | High | 1 or 30 |
-| **k-ε** | 2 | Low | Fair | Very High | 30–300 |
-| **Spalart-Allmaras** | 1 | Very Low | Fair | High | 1 or 30 |
-| **RSM** | 7 | High | Very Good | Medium | 1 or 30 |
-| **LES** | 0 (resolved) | Very High | Excellent | Medium | ~1 |
-| **DES** | 2 (hybrid) | High | Very Good | Medium | ~1 |
+| Model | Equations | Cost | Separation Accuracy | Stability | Target y+ | Near-Wall AMR |
+|-------|-----------|------|-------------------|-----------|-----------|---------------|
+| **k-ω SST** | 2 | Low | Good | High | 1 or 30 | Medium (30) / Fine (1) |
+| **k-ε** | 2 | Low | Fair | Very High | 30–300 | Medium |
+| **Spalart-Allmaras** | 1 | Very Low | Fair | High | 1 or 30 | Medium (30) / Fine (1) |
+| **RSM** | 7 | High | Very Good | Medium | 1 or 30 | Medium (30) / Fine (1) |
+| **LES** | 0 (resolved) | Very High | Excellent | Medium | ~1 | Fine / Very Fine |
+| **DES** | 2 (hybrid) | High | Very Good | Medium | ~1 | Fine |
+
+The **Near-Wall AMR** column indicates the surface refinement setting to use in Mesh Settings to achieve the target y+. See [Near-Wall Resolution](../meshing/boundary-layers.md) for how to configure this.
 
 ## Choosing a Model
 

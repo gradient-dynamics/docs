@@ -10,7 +10,7 @@ Guidelines for getting accurate, reliable results from Gradient Dynamics Studio.
 - **Use STEP format** for CAD files — it preserves topology that helps meshing and surface identification
 - **Simplify complex assemblies** — remove small features (screws, bolts, labels) that don't affect flow
 - **Close gaps and holes** — the geometry must be watertight for volume meshing
-- **Remove internal surfaces** — overlapping or duplicate faces cause meshing errors
+- **Remove internal surfaces** — overlapping or duplicate faces cause cut-cell meshing errors
 
 ### Geometry Scale
 
@@ -22,25 +22,25 @@ Guidelines for getting accurate, reliable results from Gradient Dynamics Studio.
 
 ### Start Coarse, Then Refine
 
-1. **Coarse mesh first** — Run a quick mesh (2× target cell size) to verify the setup
-2. **Check quality** — Review skewness and non-orthogonality
-3. **Refine** — Reduce cell size and regenerate
+1. **Coarse mesh first** — Run a quick mesh (lower AMR levels) to verify the setup
+2. **Check quality** — Review cut-cell volume fractions and any flagged problem cells
+3. **Refine** — Increase AMR levels and regenerate
 4. **Compare** — Check that key quantities (Cd, pressure drop) change by < 5% between meshes
 
 This "mesh independence study" ensures your results are not artifacts of the mesh resolution.
 
-### Boundary Layers
+### Near-Wall Resolution
 
-- **Always use boundary layers** for external aerodynamics and wall-bounded internal flows
-- **Match y+ to your turbulence model** — y+ ≈ 30 for wall-function RANS, y+ ≈ 1 for resolved
-- **Use at least 10 layers** — fewer may not adequately resolve the boundary layer profile
-- **Keep growth rate ≤ 1.2** — avoids poor quality transitions to the volume mesh
+- **Use the y+ calculator** to determine the appropriate near-wall AMR level for your flow speed and turbulence model
+- **y+ ≈ 30** (wall-function RANS, medium surface refinement) works well for most external aerodynamics
+- **y+ ≈ 1** (wall-resolved, fine or very fine surface refinement) is needed for LES, detailed heat transfer, or sensitive separation
+- Do not over-refine walls unnecessarily — each additional near-wall AMR level multiplies local cell count significantly
 
 ### Refinement Zones
 
 - **Focus refinement where it matters** — wakes, separation zones, stagnation regions
 - **Don't over-refine far-field regions** — cells far from the geometry contribute little to accuracy
-- **Avoid extreme size jumps** — no more than 4:1 cell size ratio between adjacent regions
+- **Avoid extreme level jumps** — 2–3 AMR level difference between adjacent regions is the practical limit
 - **Cover the full wake** — for bluff bodies, the wake zone should extend at least 3× body length downstream
 
 ### Domain Sizing
@@ -51,6 +51,10 @@ This "mesh independence study" ensures your results are not artifacts of the mes
 - **When in doubt, go larger** — the extra cells are cheap compared to a wrong solution
 
 ## Simulation
+
+### Solver Type
+
+Use the **density-based solver** (the default) for all standard CFD applications. It runs significantly faster on GPU hardware than the pressure-based solver and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. Reserve the pressure-based solver only for cases that specifically require an incompressible formulation.
 
 ### Turbulence Model Selection
 
@@ -64,10 +68,11 @@ This "mesh independence study" ensures your results are not artifacts of the mes
 
 ### Convergence
 
-- **Monitor residuals** — all should decrease monotonically and reach at least 1e-4
+- **Monitor residuals** — density residual should decrease monotonically to at least 1e-5
 - **Check integrated quantities** — Cd, Cl, pressure drop should plateau before you declare convergence
 - **Residuals alone are not sufficient** — a simulation can have low residuals but wrong results if the setup is incorrect
 - **Run enough iterations** — 500 minimum for RANS, 1000+ for complex geometries
+- **Use CFL ramping** for difficult starting conditions — let the solver build up gradually
 
 ### Common Pitfalls
 
@@ -75,9 +80,10 @@ This "mesh independence study" ensures your results are not artifacts of the mes
 |---------|-------------|-----------|
 | Forgetting moving ground for vehicle aero | Unrealistic ground boundary layer | Set ground as moving wall at freestream speed |
 | Wrong turbulence intensity at inlet | Incorrect turbulence levels in domain | Use 1% for external, 5% for internal |
-| Too aggressive relaxation | Divergence | Start with model defaults |
-| Coarse mesh near features of interest | Inaccurate local flow | Add refinement zones |
-| Ignoring mesh quality warnings | Poor convergence or wrong results | Fix quality issues before simulating |
+| CFL too high at startup | Immediate divergence | Enable CFL ramping; start at CFL 0.5 |
+| Coarse mesh near features of interest | Inaccurate local flow | Add refinement zones at correct AMR level |
+| Ignoring mesh quality warnings | Poor convergence or wrong results | Inspect flagged cut-cells before simulating |
+| Using pressure-based solver for large meshes | Slow GPU performance | Switch to density-based solver |
 
 ## Post-Processing
 
@@ -101,7 +107,7 @@ This "mesh independence study" ensures your results are not artifacts of the mes
 
 The AI Assistant saves time by:
 - Automating geometry analysis and repair recommendations
-- Suggesting appropriate mesh settings for your application
+- Suggesting appropriate mesh settings and AMR levels for your application
 - Auto-detecting boundary conditions from surface names
 - Interpreting quality reports and results
 

@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,9 +59,10 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'meshing/mesh-settings';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Boundary Layers" href="boundary-layers.html" />
+    <link rel="next" title="Near-Wall Resolution" href="boundary-layers.html" />
     <link rel="prev" title="Domain Setup" href="domain-setup.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -209,7 +210,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -374,19 +375,21 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core Parameters</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-cell-size">Target Cell Size</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-cell-size">Minimum Cell Size</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-levels">Refinement Levels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-mesher-works">How the Mesher Works</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cartesian-block-amr">Cartesian Block AMR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cut-cell-geometry-representation">Cut-Cell Geometry Representation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation">Mesh Generation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core Parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#base-cell-size">Base Cell Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amr-refinement-levels">AMR Refinement Levels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-refinement">Surface Refinement</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curvature-based-refinement">Curvature-Based Refinement</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cell-count-estimation">Cell Count Estimation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-quality-targets">Mesh Quality Targets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-quality">Mesh Quality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-time">Meshing Time</a></li>
 </ul>
             </nav>
         </div>
@@ -401,15 +404,37 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="mesh-settings">
 <h1>Mesh Settings<a class="headerlink" href="#mesh-settings" title="Link to this heading">#</a></h1>
 <p>Mesh settings control the resolution, quality, and structure of the generated mesh. These parameters are configured in the <strong>Mesh Settings</strong> tab.</p>
+<section id="how-the-mesher-works">
+<h2>How the Mesher Works<a class="headerlink" href="#how-the-mesher-works" title="Link to this heading">#</a></h2>
+<p>Gradient Dynamics uses a <strong>structured Cartesian cut-cell</strong> mesher with <strong>block-based Adaptive Mesh Refinement (AMR)</strong>. This approach is purpose-built for GPU-native simulation.</p>
+<section id="cartesian-block-amr">
+<h3>Cartesian Block AMR<a class="headerlink" href="#cartesian-block-amr" title="Link to this heading">#</a></h3>
+<p>The domain is divided into a regular grid of <strong>blocks</strong>, each containing a fixed array of Cartesian (hexahedral) cells. Where higher resolution is needed — near surfaces, in wakes, or in user-defined zones — blocks are recursively refined by splitting each block into eight sub-blocks at double the resolution. This produces a fully structured, hierarchical mesh.</p>
+<div class="note admonition">
+<p class="admonition-title">Why Cartesian Block AMR?</p>
+<p>Structured Cartesian meshes are the optimal topology for GPU-accelerated simulation. Their regular, predictable memory layout enables fully coalesced memory access patterns, branch-free compute kernels, and maximum utilization of GPU L1/L2 cache — resulting in significantly faster solves compared to unstructured mesh topologies.</p>
+</div>
+</section>
+<section id="cut-cell-geometry-representation">
+<h3>Cut-Cell Geometry Representation<a class="headerlink" href="#cut-cell-geometry-representation" title="Link to this heading">#</a></h3>
+<p>Where Cartesian blocks intersect a solid geometry surface, the cells are <strong>cut</strong> by the geometry boundary to form partial cells that conform to the surface. This means:</p>
+<ul class="simple">
+<li><p>No geometry approximation — surfaces are represented exactly at the finest AMR level</p></li>
+<li><p>No prismatic boundary layer extrusion required</p></li>
+<li><p>Near-wall resolution is achieved by AMR block refinement near surfaces (see <a class="reference internal" href="boundary-layers.html"><span class="std std-doc">Near-Wall Resolution</span></a>)</p></li>
+</ul>
+<p>The result is a mesh that is structurally regular everywhere except at geometry boundaries, where cut-cells provide an accurate surface representation.</p>
+</section>
+</section>
 <section id="core-parameters">
 <h2>Core Parameters<a class="headerlink" href="#core-parameters" title="Link to this heading">#</a></h2>
-<section id="target-cell-size">
-<h3>Target Cell Size<a class="headerlink" href="#target-cell-size" title="Link to this heading">#</a></h3>
-<p>The <strong>base cell size</strong> sets the overall resolution of the mesh in the bulk of the domain. Smaller values produce finer meshes with more cells.</p>
+<section id="base-cell-size">
+<h3>Base Cell Size<a class="headerlink" href="#base-cell-size" title="Link to this heading">#</a></h3>
+<p>The <strong>base cell size</strong> sets the resolution of the coarsest level of the block grid. All refinement levels subdivide from this baseline.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Application</p></th>
-<th class="head"><p>Typical Cell Size</p></th>
+<th class="head"><p>Typical Base Cell Size</p></th>
 </tr>
 </thead>
 <tbody>
@@ -430,78 +455,80 @@ document.write(`
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Start with a coarser mesh to verify your setup, then refine. A coarse mesh runs in seconds and lets you catch configuration errors early.</p>
+<p>Start with a coarser base cell size to verify your setup, then refine. A coarse mesh generates in seconds and lets you catch configuration errors early.</p>
 </div>
 </section>
-<section id="minimum-cell-size">
-<h3>Minimum Cell Size<a class="headerlink" href="#minimum-cell-size" title="Link to this heading">#</a></h3>
-<p>The smallest cell the mesher will create. This prevents excessive refinement in tight geometric features that could produce millions of unnecessary cells.</p>
-<p>Set this to roughly <strong>1/10th to 1/100th</strong> of your target cell size, depending on the geometric detail you need to resolve.</p>
-</section>
-<section id="refinement-levels">
-<h3>Refinement Levels<a class="headerlink" href="#refinement-levels" title="Link to this heading">#</a></h3>
-<p>Controls the <strong>octree depth</strong> — how many times the mesh can subdivide to capture geometric features. Higher values allow finer resolution near surfaces.</p>
+<section id="amr-refinement-levels">
+<h3>AMR Refinement Levels<a class="headerlink" href="#amr-refinement-levels" title="Link to this heading">#</a></h3>
+<p>Controls the maximum depth of block refinement. Each level doubles the resolution (halves the cell size) in all three dimensions.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Level</p></th>
-<th class="head"><p>Relative Size</p></th>
+<tr class="row-odd"><th class="head"><p>Max AMR Level</p></th>
+<th class="head"><p>Finest Cell Size (relative to base)</p></th>
 <th class="head"><p>Use Case</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>6</p></td>
-<td><p>Coarse</p></td>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>1/8 base</p></td>
 <td><p>Quick preview, large domains</p></td>
 </tr>
-<tr class="row-odd"><td><p>8</p></td>
-<td><p>Medium</p></td>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>1/16 base</p></td>
 <td><p>General-purpose CFD</p></td>
 </tr>
-<tr class="row-even"><td><p>10</p></td>
-<td><p>Fine</p></td>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>1/32 base</p></td>
 <td><p>Detailed analysis</p></td>
 </tr>
-<tr class="row-odd"><td><p>12</p></td>
-<td><p>Very fine</p></td>
-<td><p>Boundary layer resolution, LES</p></td>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>1/64 base</p></td>
+<td><p>High-fidelity near-wall resolution, LES</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The mesher applies refinement automatically based on proximity to surfaces and user-defined refinement zones. You set the maximum number of levels; the mesher decides where to apply them.</p>
+</section>
+<section id="surface-refinement">
+<h3>Surface Refinement<a class="headerlink" href="#surface-refinement" title="Link to this heading">#</a></h3>
+<p>Controls the number of AMR levels applied in blocks that intersect or are adjacent to geometry surfaces. Higher values produce finer cut-cells at the geometry boundary.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Setting</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Coarse</strong></p></td>
+<td><p>2 levels near surfaces</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Medium</strong></p></td>
+<td><p>3–4 levels near surfaces (default)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Fine</strong></p></td>
+<td><p>5 levels near surfaces</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Very Fine</strong></p></td>
+<td><p>6 levels — use for LES or high-detail geometry</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-</section>
-<section id="mesh-generation">
-<h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Link to this heading">#</a></h2>
-<section id="how-it-works">
-<h3>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h3>
-<p>Gradient Dynamics uses an <strong>adaptive octree</strong> meshing approach:</p>
-<ol class="arabic simple">
-<li><p>The domain is divided into a regular grid of hexahedral cells</p></li>
-<li><p>Cells near the geometry surface are recursively refined (subdivided into 8 smaller cells)</p></li>
-<li><p><strong>Transition layers</strong> of pyramids smooth the size changes between refinement levels</p></li>
-<li><p><strong>Boundary layer prisms</strong> are grown from wall surfaces (if enabled)</p></li>
-<li><p>The result is a hex-dominant mesh with pyramidal transitions and prismatic boundary layers</p></li>
-</ol>
-<p>This approach produces meshes with:</p>
-<ul class="simple">
-<li><p>Excellent quality metrics (low skewness, good orthogonality)</p></li>
-<li><p>Efficient cell counts (fine only where needed)</p></li>
-<li><p>Good solver convergence properties</p></li>
-</ul>
-</section>
 <section id="curvature-based-refinement">
 <h3>Curvature-Based Refinement<a class="headerlink" href="#curvature-based-refinement" title="Link to this heading">#</a></h3>
-<p>When enabled, the mesher automatically refines cells in areas of high surface curvature. This captures curved features (fillets, leading edges, rounded bodies) without requiring manual refinement zones.</p>
+<p>When enabled, the mesher automatically increases refinement levels in blocks adjacent to regions of high surface curvature (tight fillets, leading edges, rounded geometry). This captures curved features accurately without manual zone configuration.</p>
 </section>
 </section>
 <section id="cell-count-estimation">
 <h2>Cell Count Estimation<a class="headerlink" href="#cell-count-estimation" title="Link to this heading">#</a></h2>
 <p>The number of cells in your mesh depends on:</p>
 <ul class="simple">
-<li><p><strong>Domain volume</strong> — Larger domains = more cells</p></li>
-<li><p><strong>Target cell size</strong> — Smaller cells = more cells (cubic relationship)</p></li>
-<li><p><strong>Refinement levels</strong> — Higher refinement = more cells near surfaces</p></li>
-<li><p><strong>Boundary layers</strong> — Add significant cell count near walls</p></li>
+<li><p><strong>Domain volume</strong> — Larger domains require more coarse-level blocks</p></li>
+<li><p><strong>Base cell size</strong> — Smaller base size = more blocks (cubic relationship)</p></li>
+<li><p><strong>Max AMR levels</strong> — Each additional level can multiply local cell count by up to 8×</p></li>
+<li><p><strong>Geometry complexity</strong> — More surface area and curvature drives more surface refinement blocks</p></li>
 </ul>
 <div class="note admonition">
 <p class="admonition-title">Cell Count Limits by Tier</p>
@@ -512,19 +539,16 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Free</p></td>
-<td><p>2 million</p></td>
-</tr>
-<tr class="row-odd"><td><p>Starter</p></td>
+<tr class="row-even"><td><p>Starter</p></td>
 <td><p>50 million</p></td>
 </tr>
-<tr class="row-even"><td><p>Pro</p></td>
+<tr class="row-odd"><td><p>Pro</p></td>
 <td><p>100 million</p></td>
 </tr>
-<tr class="row-odd"><td><p>Team</p></td>
+<tr class="row-even"><td><p>Team</p></td>
 <td><p>500 million</p></td>
 </tr>
-<tr class="row-even"><td><p>Enterprise</p></td>
+<tr class="row-odd"><td><p>Enterprise</p></td>
 <td><p>Unlimited</p></td>
 </tr>
 </tbody>
@@ -532,9 +556,9 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="mesh-quality-targets">
-<h2>Mesh Quality Targets<a class="headerlink" href="#mesh-quality-targets" title="Link to this heading">#</a></h2>
-<p>The mesher automatically optimizes for quality during generation. Key quality targets:</p>
+<section id="mesh-quality">
+<h2>Mesh Quality<a class="headerlink" href="#mesh-quality" title="Link to this heading">#</a></h2>
+<p>Cartesian cut-cell block AMR meshes have inherently excellent quality in the bulk of the domain — all Cartesian cells have zero skewness and perfect orthogonality by construction. Quality metrics are only relevant at the cut-cell layer adjacent to geometry surfaces.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Metric</p></th>
@@ -543,22 +567,50 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Skewness</strong></p></td>
-<td><p>&lt; 0.85</p></td>
-<td><p>Measures cell shape distortion</p></td>
+<tr class="row-even"><td><p><strong>Cut-cell volume fraction</strong></p></td>
+<td><p>&gt; 0.1</p></td>
+<td><p>Minimum ratio of cut-cell volume to full-cell volume — very small slivers are merged</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Non-orthogonality</strong></p></td>
 <td><p>&lt; 70°</p></td>
-<td><p>Angle between face normal and cell-to-cell vector</p></td>
+<td><p>Relevant only at cut-cell faces</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Aspect ratio</strong></p></td>
 <td><p>&lt; 100</p></td>
-<td><p>Ratio of longest to shortest cell dimension</p></td>
+<td><p>Near-wall AMR blocks can be refined anisotropically if needed</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>The mesher automatically merges or adjusts very small cut-cell slivers to maintain solver stability.</p>
 <p>See <a class="reference internal" href="mesh-quality.html"><span class="std std-doc">Mesh Quality</span></a> for details on interpreting quality metrics after mesh generation.</p>
+</section>
+<section id="meshing-time">
+<h2>Meshing Time<a class="headerlink" href="#meshing-time" title="Link to this heading">#</a></h2>
+<p>After clicking <strong>Generate Mesh</strong>, the job runs on cloud GPUs. Typical generation times:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mesh Size</p></th>
+<th class="head"><p>Typical Time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>&lt; 5 million cells</p></td>
+<td><p>1 – 3 minutes</p></td>
+</tr>
+<tr class="row-odd"><td><p>5 – 20 million cells</p></td>
+<td><p>3 – 8 minutes</p></td>
+</tr>
+<tr class="row-even"><td><p>20 – 100 million cells</p></td>
+<td><p>8 – 30 minutes</p></td>
+</tr>
+<tr class="row-odd"><td><p>&gt; 100 million cells</p></td>
+<td><p>30 minutes – 1 hour</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>As a rough guide, expect <strong>1–10 million cells per minute</strong> — simpler geometries and lower AMR levels are at the faster end; complex surfaces with many AMR levels are at the slower end. Monitor progress in the <strong>Logs</strong> panel.</p>
 </section>
 </section>
 
@@ -606,7 +658,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Boundary Layers</p>
+        <p class="prev-next-title">Near-Wall Resolution</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -626,19 +678,21 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core Parameters</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-cell-size">Target Cell Size</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-cell-size">Minimum Cell Size</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#refinement-levels">Refinement Levels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-mesher-works">How the Mesher Works</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cartesian-block-amr">Cartesian Block AMR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cut-cell-geometry-representation">Cut-Cell Geometry Representation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation">Mesh Generation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How It Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parameters">Core Parameters</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#base-cell-size">Base Cell Size</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#amr-refinement-levels">AMR Refinement Levels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#surface-refinement">Surface Refinement</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curvature-based-refinement">Curvature-Based Refinement</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cell-count-estimation">Cell Count Estimation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-quality-targets">Mesh Quality Targets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-quality">Mesh Quality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-time">Meshing Time</a></li>
 </ul>
   </nav></div>
 

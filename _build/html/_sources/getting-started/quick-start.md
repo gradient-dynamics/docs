@@ -58,22 +58,16 @@ Navigate to the **Mesh Settings** tab:
 
 | Parameter | Description | Typical Range |
 |-----------|-------------|---------------|
-| **Target cell size** | Base cell size in the domain | 0.01 – 1.0 m |
-| **Min cell size** | Smallest allowed cell | 0.001 – 0.1 m |
-| **Refinement levels** | Octree refinement depth | 6 – 12 |
+| **Base cell size** | Coarsest cell size in the block grid | 0.01 – 1.0 m |
+| **Max AMR levels** | Maximum refinement depth | 3 – 6 |
+| **Surface refinement** | AMR levels near geometry surfaces | Medium – Fine |
 
-### Enable Boundary Layers (recommended for CFD)
+### Near-Wall Resolution
 
-Boundary layers are critical for capturing near-wall flow physics:
-
-| Parameter | Description | Typical Value |
-|-----------|-------------|---------------|
-| **Number of layers** | Prism layers on wall surfaces | 5 – 15 |
-| **First layer height** | Controls y+ value | 0.00001 – 0.001 m |
-| **Growth rate** | Layer thickness expansion | 1.15 – 1.2 |
+For wall-bounded flows, set the **Near-Wall AMR level** in the Surface Refinement section. Use the **y+ calculator** to verify the resulting wall cell size for your flow speed.
 
 ```{tip}
-Use the **y+ calculator** to determine the correct first layer height for your flow conditions. For standard RANS with k-ω SST, target y+ ≈ 30.
+For standard RANS with k-ω SST, Medium near-wall refinement targeting y+ ≈ 30 is a good starting point.
 ```
 
 ## Step 7: Add Refinement Zones (Optional)
@@ -92,7 +86,7 @@ In the **Surfaces** tab, assign names to boundary patches:
 
 1. Click on a surface in the 3D viewer to select it
 2. Give it a descriptive name: `inlet`, `outlet`, `wall`, `car_body`, `ground`, etc.
-3. These names carry through to your exported mesh and simulation setup
+3. These names carry through to simulation boundary condition setup
 
 ## Step 9: Generate the Mesh
 
@@ -101,14 +95,11 @@ In the **Surfaces** tab, assign names to boundary patches:
 3. Monitor progress in the **Logs** panel
 4. Once complete, the mesh appears in the 3D viewer
 
-Review mesh quality in the **Mesh Quality** tab — check skewness, aspect ratio, and non-orthogonality histograms.
+Review mesh quality in the **Mesh Quality** tab — check cut-cell volume fractions and non-orthogonality.
 
-## Step 10: Export or Simulate
+## Step 10: Simulate
 
-You can now:
-
-- **Export** the mesh in the **Export** tab (OpenFOAM, Fluent, CGNS, VTU, Gmsh, Nastran)
-- **Create a CFD project** to run a simulation using this mesh
+With the mesh ready, create a **CFD project** to run a simulation directly in Studio.
 
 ---
 
@@ -118,25 +109,25 @@ You can now:
 
 1. Return to the Dashboard and click **New Project**
 2. Select **CFD** as the project type
-3. Select the mesh you generated (or upload one)
+3. Select the mesh you generated (or start fresh and generate one in the CFD project)
 
 ### Configure the Simulation
 
 In the **Simulation** tab:
 
-1. **Turbulence model** — Select k-ω SST (recommended for most external flows)
-2. **Boundary conditions** — Studio auto-detects boundaries from your named surfaces:
+1. **Solver type** — Select **Density-based** (default, recommended)
+2. **Turbulence model** — Select k-ω SST (recommended for most external flows)
+3. **Boundary conditions** — Studio auto-detects boundaries from your named surfaces:
    - Set inlet velocity (e.g., 30 m/s)
    - Set outlet pressure (typically 0 Pa gauge)
    - Walls are automatically set as no-slip
-3. **Solver settings** — SIMPLE algorithm with default relaxation factors works for most cases
 4. **Max iterations** — 500–2000 for steady-state RANS
 
 ### Run the Simulation
 
 1. Click **Run Simulation** — the credit cost estimate is shown before you confirm
 2. Monitor **live residuals** in the convergence plot
-3. Watch for residuals dropping below your convergence criteria
+3. Watch for residuals dropping to the convergence criterion
 
 ### View Results
 
@@ -155,7 +146,7 @@ At any point, open the **AI Assistant** panel and ask questions in natural langu
 
 > "Set up an external aerodynamics mesh for this car geometry"
 
-> "What boundary layer settings should I use for highway speed?"
+> "What near-wall AMR settings should I use for highway speed?"
 
 > "Run a simulation at 60 mph with k-omega SST"
 

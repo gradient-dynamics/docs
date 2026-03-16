@@ -82,9 +82,9 @@ The mesh settings tab includes a y+ calculator to help determine the correct fir
 
 Without boundary layers, results near walls will be inaccurate.
 
-### What export formats are available?
+### What geometry formats can I upload?
 
-OpenFOAM, ANSYS Fluent (.msh), CGNS, VTU, VTK, Gmsh, and Nastran. Free tier is limited to VTU; all other formats require Starter tier or higher.
+STEP (.step, .stp), IGES (.iges, .igs), STL, and OBJ. STEP is recommended as it preserves face topology and named faces, enabling automatic surface detection and per-face mesh controls.
 
 ## Simulation
 
@@ -134,7 +134,7 @@ Yes. When you click **Run Simulation** or **Generate Mesh**, a cost estimate is 
 
 ### What happens if I run out of credits?
 
-Jobs will not be submitted until credits are available. Free tier credits reset monthly. Paid tiers have larger allocations and overage billing options.
+Jobs will not be submitted until credits are available. Credits reset monthly and overage billing options are available on higher tiers.
 
 ## AI Assistant
 

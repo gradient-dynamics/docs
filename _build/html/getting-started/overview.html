@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started/overview';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Quick Start" href="quick-start.html" />
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -209,7 +210,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -381,6 +382,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#credits">Credits</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technology">Technology</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-cartesian-cut-cell-meshing">Structured Cartesian Cut-Cell Meshing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-native-density-based-solvers">GPU-Native Density-Based Solvers</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-overview">Workflow Overview</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-workflow">Meshing Workflow</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cfd-workflow">CFD Workflow</a></li>
@@ -406,7 +412,7 @@ document.write(`
 <h2>Platform Concepts<a class="headerlink" href="#platform-concepts" title="Link to this heading">#</a></h2>
 <section id="projects">
 <h3>Projects<a class="headerlink" href="#projects" title="Link to this heading">#</a></h3>
-<p>Everything in Gradient Dynamics is organized into <strong>projects</strong>. There are two project types:</p>
+<p>Everything in Studio is organized into <strong>projects</strong>. There are two project types:</p>
 <ul class="simple">
 <li><p><strong>Meshing Projects</strong> — Generate high-quality meshes for use in external solvers or within the platform</p></li>
 <li><p><strong>CFD Projects</strong> — Complete end-to-end workflow: geometry → mesh → simulation → results</p></li>
@@ -454,6 +460,24 @@ document.write(`
 <p>Your remaining credit balance is shown in the dashboard. See <a class="reference internal" href="../reference/subscription-tiers.html"><span class="std std-doc">Subscription Tiers</span></a> for details on plans and credit allocations.</p>
 </section>
 </section>
+<section id="technology">
+<h2>Technology<a class="headerlink" href="#technology" title="Link to this heading">#</a></h2>
+<section id="structured-cartesian-cut-cell-meshing">
+<h3>Structured Cartesian Cut-Cell Meshing<a class="headerlink" href="#structured-cartesian-cut-cell-meshing" title="Link to this heading">#</a></h3>
+<p>Gradient Dynamics uses a <strong>structured Cartesian cut-cell</strong> mesher with <strong>block-based Adaptive Mesh Refinement (AMR)</strong>. The domain is divided into a hierarchy of regular Cartesian blocks, with blocks near geometry surfaces refined to capture geometric detail through cut-cell representation.</p>
+<p>This architecture is purpose-built for GPU simulation: the structured, regular memory layout of Cartesian block meshes enables coalesced GPU memory access and fully parallel cell updates — delivering mesh generation and simulation performance that is not possible with unstructured mesh topologies.</p>
+</section>
+<section id="gpu-native-density-based-solvers">
+<h3>GPU-Native Density-Based Solvers<a class="headerlink" href="#gpu-native-density-based-solvers" title="Link to this heading">#</a></h3>
+<p>Simulations in Gradient Dynamics run on <strong>density-based solvers</strong> that solve the compressible Navier-Stokes equations using explicit or implicit time marching. These solvers are natively suited to GPU execution:</p>
+<ul class="simple">
+<li><p>All solution variables update simultaneously in a single parallel sweep across all cells</p></li>
+<li><p>No global pressure-velocity coupling iterations that would limit GPU parallelism</p></li>
+<li><p>Low-Mach preconditioning ensures accuracy for subsonic flows without sacrificing performance</p></li>
+</ul>
+<p>Pressure-based (incompressible) solvers are also available for cases that specifically require them, but the density-based solver is recommended for optimal GPU performance.</p>
+</section>
+</section>
 <section id="workflow-overview">
 <h2>Workflow Overview<a class="headerlink" href="#workflow-overview" title="Link to this heading">#</a></h2>
 <section id="meshing-workflow">
@@ -464,10 +488,10 @@ document.write(`
 <ol class="arabic simple">
 <li><p><strong>Upload</strong> a CAD file (STEP, IGES) or surface mesh (STL, OBJ)</p></li>
 <li><p><strong>Analyze</strong> geometry for watertightness, manifold issues, and repair if needed</p></li>
-<li><p><strong>Configure</strong> the domain type (external, internal, rotating, etc.) and domain box</p></li>
-<li><p><strong>Set</strong> mesh parameters — cell size, boundary layers, refinement zones</p></li>
+<li><p><strong>Configure</strong> the domain type (external, internal, rotating, etc.) and domain bounds</p></li>
+<li><p><strong>Set</strong> mesh parameters — base cell size, AMR refinement levels, refinement zones</p></li>
 <li><p><strong>Generate</strong> the mesh on cloud GPUs</p></li>
-<li><p><strong>Export</strong> to your solver format of choice (OpenFOAM, Fluent, CGNS, etc.)</p></li>
+<li><p><strong>Proceed</strong> directly to simulation, or inspect the mesh quality first</p></li>
 </ol>
 </section>
 <section id="cfd-workflow">
@@ -477,7 +501,7 @@ document.write(`
 </div>
 <ol class="arabic simple">
 <li><p><strong>Upload</strong> geometry and generate a mesh (or use a mesh from a Meshing project)</p></li>
-<li><p><strong>Configure</strong> the simulation — turbulence model, boundary conditions, solver settings</p></li>
+<li><p><strong>Configure</strong> the simulation — solver type, turbulence model, boundary conditions</p></li>
 <li><p><strong>Run</strong> the simulation on cloud GPUs with live monitoring</p></li>
 <li><p><strong>Post-process</strong> — visualize fields, extract forces, generate slice planes and streamlines</p></li>
 </ol>
@@ -604,6 +628,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-workspace">The Workspace</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-compute">Cloud Compute</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technology">Technology</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-cartesian-cut-cell-meshing">Structured Cartesian Cut-Cell Meshing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-native-density-based-solvers">GPU-Native Density-Based Solvers</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-overview">Workflow Overview</a><ul class="visible nav section-nav flex-column">

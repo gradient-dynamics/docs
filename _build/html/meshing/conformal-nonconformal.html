@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Conformal vs Non-Conformal Meshes &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'meshing/conformal-nonconformal';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mesh Quality" href="mesh-quality.html" />
+    <link rel="prev" title="Multi-Region Meshing" href="multi-region.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meshing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Near-Wall Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces and Named Selections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Conformal vs Non-Conformal Meshes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mesh-quality.html">Mesh Quality</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">AI Assistant</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../agent/overview.html">AI Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knowledge-base/glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/meshing/conformal-nonconformal.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Conformal vs Non-Conformal Meshes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-conformal-mesh">What Is a Conformal Mesh?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-non-conformal-mesh">What Is a Non-Conformal Mesh?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-solver-detects-mesh-type">How the Solver Detects Mesh Type</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-modes">Solver Modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-meshes-are-conformal">Which Meshes Are Conformal?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-region-interfaces">Multi-Region Interfaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-interface">Conformal Interface</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-conformal-interface">Non-Conformal Interface</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-on-solver-accuracy-and-stability">Impact on Solver Accuracy and Stability</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-meshes">Conformal meshes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-conformal-meshes">Non-conformal meshes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenarios-at-a-glance">Scenarios at a Glance</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="conformal-vs-non-conformal-meshes">
+<h1>Conformal vs Non-Conformal Meshes<a class="headerlink" href="#conformal-vs-non-conformal-meshes" title="Link to this heading">#</a></h1>
+<p>Understanding the difference between conformal and non-conformal mesh connectivity is important for multi-region setups, rotating machinery, and getting the most out of the solver. This page explains what each means, how the solver detects and handles them, and when each is appropriate.</p>
+<section id="what-is-a-conformal-mesh">
+<h2>What Is a Conformal Mesh?<a class="headerlink" href="#what-is-a-conformal-mesh" title="Link to this heading">#</a></h2>
+<p>A <strong>conformal mesh</strong> has exactly one shared face between every pair of adjacent cells. All cell faces line up perfectly across region boundaries — each face on one side has a matching face on the other side with 1:1 correspondence.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Conformal interface:
+
+  Region A  |  Region B
+  __________|__________
+  |    |    ||    |    |
+  |    |    ||    |    |
+  |____|____||____|____|
+              ↑
+         Faces match 1:1
+</pre></div>
+</div>
+<p><strong>Properties:</strong></p>
+<ul class="simple">
+<li><p>Faces on both sides of a boundary are identical in size and position</p></li>
+<li><p>No interpolation needed at the interface — values transfer directly</p></li>
+<li><p>Most numerically accurate at interfaces</p></li>
+<li><p>Easier to achieve on simple geometries with matched CAD faces</p></li>
+</ul>
+</section>
+<section id="what-is-a-non-conformal-mesh">
+<h2>What Is a Non-Conformal Mesh?<a class="headerlink" href="#what-is-a-non-conformal-mesh" title="Link to this heading">#</a></h2>
+<p>A <strong>non-conformal mesh</strong> has mismatched faces across a boundary. One cell may share parts of its face with multiple cells on the other side — this is common with block AMR meshes at refinement level boundaries, hanging nodes, and size transitions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Non-conformal interface:
+
+  Region A (coarse)  |  Region B (fine)
+  ___________________|_________________
+  |                  ||    |    |    |
+  |                  ||    |    |    |
+  |__________________||____|____|____|
+                       ↑
+         One large face ↔ multiple small faces
+         Requires interpolation
+</pre></div>
+</div>
+<p><strong>Properties:</strong></p>
+<ul class="simple">
+<li><p>Cells of different sizes meet at a boundary — one large face corresponds to multiple small faces</p></li>
+<li><p>Values are interpolated across mismatched faces (area-weighted averaging)</p></li>
+<li><p>Slightly less accurate at the interface than conformal</p></li>
+<li><p>Essential for block AMR meshes and multi-region setups with different cell sizes</p></li>
+</ul>
+</section>
+<section id="how-the-solver-detects-mesh-type">
+<h2>How the Solver Detects Mesh Type<a class="headerlink" href="#how-the-solver-detects-mesh-type" title="Link to this heading">#</a></h2>
+<p>When a simulation is submitted, the solver automatically analyses the mesh connectivity and classifies it:</p>
+<p><strong>Detection logic:</strong></p>
+<ul class="simple">
+<li><p>Counts the number of unique cell-pair connections vs. the total number of internal faces</p></li>
+<li><p>If more than ~1% of faces share a cell pair that already has another face (duplicate pairs), the mesh is classified as <strong>non-conformal / polyhedral</strong></p></li>
+<li><p>Otherwise it is classified as <strong>conformal</strong></p></li>
+</ul>
+<p>This detection is entirely automatic — you don’t need to specify the mesh type manually. The solver uses this classification to choose the appropriate numerical treatment.</p>
+<div class="note admonition">
+<p class="admonition-title">What you’ll see in the logs</p>
+<p>After the solver initialises, the logs will report either:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Polyhedral</span> <span class="pre">mesh</span> <span class="pre">mode</span> <span class="pre">ENABLED</span></code> — non-conformal mode active</p>
+<p>If no such message appears, the solver is running in standard conformal mode.</p>
+</div>
+</section>
+<section id="solver-modes">
+<h2>Solver Modes<a class="headerlink" href="#solver-modes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mode</p></th>
+<th class="head"><p>When Active</p></th>
+<th class="head"><p>Treatment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Conformal (auto)</strong></p></td>
+<td><p>Mesh detected as conformal (duplicate_ratio ≈ 0)</p></td>
+<td><p>Standard finite volume — direct face flux computation, no interpolation overhead</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Non-conformal / Polyhedral (auto)</strong></p></td>
+<td><p>Mesh detected as non-conformal</p></td>
+<td><p>Cell-pair aggregation — multiple faces between the same cell pair are grouped and fluxes are summed</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Conformal (forced)</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mesh_mode:</span> <span class="pre">conformal</span></code> in settings</p></td>
+<td><p>Forces conformal path regardless of mesh</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Polyhedral (forced)</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mesh_mode:</span> <span class="pre">polyhedral</span></code> in settings</p></td>
+<td><p>Forces polyhedral path regardless of mesh</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For most users, <strong>auto mode is correct</strong> and no manual override is needed.</p>
+</section>
+<section id="which-meshes-are-conformal">
+<h2>Which Meshes Are Conformal?<a class="headerlink" href="#which-meshes-are-conformal" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mesh Type</p></th>
+<th class="head"><p>Typical Classification</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cartesian cut-cell block AMR (single region)</p></td>
+<td><p><strong>Conformal</strong></p></td>
+<td><p>Standard Gradient Dynamics mesh with no multi-region boundaries</p></td>
+</tr>
+<tr class="row-odd"><td><p>Block AMR with matched multi-region interfaces</p></td>
+<td><p><strong>Conformal</strong></p></td>
+<td><p>Regions share exact face geometry at their boundary</p></td>
+</tr>
+<tr class="row-even"><td><p>Block AMR with refinement level transitions</p></td>
+<td><p><strong>Non-conformal</strong></p></td>
+<td><p>Different AMR levels create hanging nodes at block boundaries</p></td>
+</tr>
+<tr class="row-odd"><td><p>Multi-region with different cell sizes</p></td>
+<td><p><strong>Non-conformal</strong></p></td>
+<td><p>Mismatched faces at the region interface</p></td>
+</tr>
+<tr class="row-even"><td><p>Rotating MRF zone</p></td>
+<td><p><strong>Non-conformal</strong></p></td>
+<td><p>Rotating/stationary interface cannot be conformal</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sliding mesh (transient rotating)</p></td>
+<td><p><strong>Non-conformal</strong></p></td>
+<td><p>Interface slides — faces never align exactly</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="multi-region-interfaces">
+<h2>Multi-Region Interfaces<a class="headerlink" href="#multi-region-interfaces" title="Link to this heading">#</a></h2>
+<p>When you set up a multi-region mesh (CHT, rotating machinery, porous zones), the interface between regions can be either conformal or non-conformal depending on how the geometry is set up and how the mesh sizes compare.</p>
+<section id="conformal-interface">
+<h3>Conformal Interface<a class="headerlink" href="#conformal-interface" title="Link to this heading">#</a></h3>
+<p>Achieved when:</p>
+<ul class="simple">
+<li><p>The two regions share an exactly matching face topology (imported as touching bodies in a single STEP file)</p></li>
+<li><p>Both regions use the same or very similar cell sizes at the interface</p></li>
+<li><p>The <strong>Conformal</strong> option is selected in the Interface settings</p></li>
+</ul>
+<p><strong>Advantages:</strong></p>
+<ul class="simple">
+<li><p>Most accurate thermal or flow coupling</p></li>
+<li><p>No interpolation error at the interface</p></li>
+<li><p>Better convergence for CHT problems</p></li>
+</ul>
+</section>
+<section id="non-conformal-interface">
+<h3>Non-Conformal Interface<a class="headerlink" href="#non-conformal-interface" title="Link to this heading">#</a></h3>
+<p>Occurs when:</p>
+<ul class="simple">
+<li><p>The two regions have significantly different cell sizes (e.g., coarse solid + fine fluid)</p></li>
+<li><p>Geometry was imported as separate files with slight positional mismatches</p></li>
+<li><p>Different mesh topologies on each side</p></li>
+</ul>
+<p><strong>Advantages:</strong></p>
+<ul class="simple">
+<li><p>More flexible — doesn’t require matched geometry</p></li>
+<li><p>Allows very different resolutions on each side</p></li>
+<li><p>Necessary for rotating zones (MRF, sliding mesh)</p></li>
+</ul>
+<div class="tip admonition">
+<p class="admonition-title">CHT recommendation</p>
+<p>For conjugate heat transfer, use <strong>conformal interfaces</strong> where possible. Import your geometry as a single multi-body STEP file with touching faces, and set both regions to similar cell sizes at the wall. This gives the most accurate heat flux prediction at the fluid-solid boundary.</p>
+</div>
+</section>
+</section>
+<section id="impact-on-solver-accuracy-and-stability">
+<h2>Impact on Solver Accuracy and Stability<a class="headerlink" href="#impact-on-solver-accuracy-and-stability" title="Link to this heading">#</a></h2>
+<section id="conformal-meshes">
+<h3>Conformal meshes<a class="headerlink" href="#conformal-meshes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full second-order accuracy at interfaces</p></li>
+<li><p>No additional interpolation error</p></li>
+<li><p>Fastest solver — no cell-pair aggregation overhead</p></li>
+<li><p>Preferred for production CHT and internal flow</p></li>
+</ul>
+</section>
+<section id="non-conformal-meshes">
+<h3>Non-conformal meshes<a class="headerlink" href="#non-conformal-meshes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Small interpolation error at non-conformal faces (proportional to the size mismatch)</p></li>
+<li><p>The solver uses area-weighted averaging to transfer fluxes across mismatched faces</p></li>
+<li><p>Slightly more expensive per iteration</p></li>
+<li><p>Works well when size mismatch is moderate (&lt; 4:1)</p></li>
+</ul>
+<div class="warning admonition">
+<p class="admonition-title">Mesh quality and stability</p>
+<p>Solver instability in multi-region cases is more often caused by <strong>poor mesh quality near the interface</strong> (large cell size jumps, sliver cells at the boundary) than by the conformal/non-conformal classification itself. If you see residuals oscillating or pressure clipping in the logs, check the mesh quality report at the interface region before changing the mesh mode.</p>
+<p>Key things to check:</p>
+<ul class="simple">
+<li><p>Cell size ratio across the interface — aim for &lt; 4:1</p></li>
+<li><p>Skewness near the interface — target &lt; 0.85</p></li>
+<li><p>Non-orthogonality at interface faces — target &lt; 70°</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="scenarios-at-a-glance">
+<h2>Scenarios at a Glance<a class="headerlink" href="#scenarios-at-a-glance" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Scenario</p></th>
+<th class="head"><p>Recommended Setup</p></th>
+<th class="head"><p>Conformal?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Single-region external aero</p></td>
+<td><p>Default Cartesian block AMR mesh</p></td>
+<td><p>Conformal</p></td>
+</tr>
+<tr class="row-odd"><td><p>Internal pipe flow</p></td>
+<td><p>Default Cartesian block AMR mesh</p></td>
+<td><p>Conformal</p></td>
+</tr>
+<tr class="row-even"><td><p>CHT heat sink (same cell size at wall)</p></td>
+<td><p>Multi-body STEP, matched sizing</p></td>
+<td><p>Conformal</p></td>
+</tr>
+<tr class="row-odd"><td><p>CHT heat sink (different region sizes)</p></td>
+<td><p>Multi-body STEP, auto interface</p></td>
+<td><p>Non-conformal</p></td>
+</tr>
+<tr class="row-even"><td><p>Fan / pump (steady MRF)</p></td>
+<td><p>Rotating zone + frozen rotor interface</p></td>
+<td><p>Non-conformal</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fan / pump (transient sliding mesh)</p></td>
+<td><p>Sliding mesh interface</p></td>
+<td><p>Non-conformal</p></td>
+</tr>
+<tr class="row-even"><td><p>Porous media zone</p></td>
+<td><p>Auto-detected at zone boundary</p></td>
+<td><p>Non-conformal</p></td>
+</tr>
+<tr class="row-odd"><td><p>Periodic sector model</p></td>
+<td><p>Periodic interface</p></td>
+<td><p>Non-conformal</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./meshing"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="multi-region.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Multi-Region Meshing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="mesh-quality.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Mesh Quality</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-conformal-mesh">What Is a Conformal Mesh?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-non-conformal-mesh">What Is a Non-Conformal Mesh?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-solver-detects-mesh-type">How the Solver Detects Mesh Type</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-modes">Solver Modes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#which-meshes-are-conformal">Which Meshes Are Conformal?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-region-interfaces">Multi-Region Interfaces</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-interface">Conformal Interface</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-conformal-interface">Non-Conformal Interface</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-on-solver-accuracy-and-stability">Impact on Solver Accuracy and Stability</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conformal-meshes">Conformal meshes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-conformal-meshes">Non-conformal meshes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenarios-at-a-glance">Scenarios at a Glance</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -8,11 +8,11 @@ Projects are the top-level organizational unit in Gradient Dynamics Studio. Ever
 
 Meshing projects focus on generating high-quality computational meshes. Use these when you:
 
-- Need to export meshes for use in an external solver
-- Want fine-grained control over mesh topology and quality
-- Are building meshes for a team that uses different simulation tools
+- Want fine-grained control over mesh topology and quality before linking to a simulation
+- Need to review and approve mesh quality as a separate step from simulation
+- Are generating meshes to share across multiple CFD projects
 
-**Available workflow stages:** Geometry → Domain Setup → Mesh Settings → Surfaces → Regions → Quality → Export
+**Available workflow stages:** Geometry → Domain Setup → Mesh Settings → Surfaces → Regions → Quality
 
 ### CFD Projects
 
@@ -41,12 +41,6 @@ Use the filter buttons to show only **Meshing** or **CFD** projects.
 
 The number of projects you can create depends on your subscription tier:
 
-| Tier | Project Limit |
-|------|--------------|
-| Free | 3 projects |
-| Starter | Unlimited |
-| Pro | Unlimited |
-| Team | Unlimited |
-| Enterprise | Unlimited |
+All subscription tiers have **unlimited projects**.
 
 See [Subscription Tiers](/reference/subscription-tiers.md) for full tier details.

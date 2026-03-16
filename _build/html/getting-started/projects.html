@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting-started/projects';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Geometry" href="../meshing/geometry.html" />
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../meshing/geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../meshing/mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../meshing/export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -209,7 +210,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -402,11 +403,11 @@ document.write(`
 <h3>Meshing Projects<a class="headerlink" href="#meshing-projects" title="Link to this heading">#</a></h3>
 <p>Meshing projects focus on generating high-quality computational meshes. Use these when you:</p>
 <ul class="simple">
-<li><p>Need to export meshes for use in an external solver</p></li>
-<li><p>Want fine-grained control over mesh topology and quality</p></li>
-<li><p>Are building meshes for a team that uses different simulation tools</p></li>
+<li><p>Want fine-grained control over mesh topology and quality before linking to a simulation</p></li>
+<li><p>Need to review and approve mesh quality as a separate step from simulation</p></li>
+<li><p>Are generating meshes to share across multiple CFD projects</p></li>
 </ul>
-<p><strong>Available workflow stages:</strong> Geometry → Domain Setup → Mesh Settings → Surfaces → Regions → Quality → Export</p>
+<p><strong>Available workflow stages:</strong> Geometry → Domain Setup → Mesh Settings → Surfaces → Regions → Quality</p>
 </section>
 <section id="cfd-projects">
 <h3>CFD Projects<a class="headerlink" href="#cfd-projects" title="Link to this heading">#</a></h3>
@@ -436,31 +437,7 @@ document.write(`
 <section id="project-limits">
 <h2>Project Limits<a class="headerlink" href="#project-limits" title="Link to this heading">#</a></h2>
 <p>The number of projects you can create depends on your subscription tier:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Tier</p></th>
-<th class="head"><p>Project Limit</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Free</p></td>
-<td><p>3 projects</p></td>
-</tr>
-<tr class="row-odd"><td><p>Starter</p></td>
-<td><p>Unlimited</p></td>
-</tr>
-<tr class="row-even"><td><p>Pro</p></td>
-<td><p>Unlimited</p></td>
-</tr>
-<tr class="row-odd"><td><p>Team</p></td>
-<td><p>Unlimited</p></td>
-</tr>
-<tr class="row-even"><td><p>Enterprise</p></td>
-<td><p>Unlimited</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>All subscription tiers have <strong>unlimited projects</strong>.</p>
 <p>See <a class="reference internal" href="../reference/subscription-tiers.html"><span class="std std-doc">Subscription Tiers</span></a> for full tier details.</p>
 </section>
 </section>

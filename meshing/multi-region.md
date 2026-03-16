@@ -1,6 +1,6 @@
 # Multi-Region Meshing
 
-Multi-region meshing creates separate mesh zones for different physical domains within the same simulation. Each region is independently meshed and assigned a unique ID, then coupled at shared interfaces.
+Multi-region meshing creates separate mesh zones for different physical domains within the same simulation. Each region is independently meshed and coupled at shared interfaces.
 
 ## When to Use Multi-Region
 
@@ -15,16 +15,10 @@ Multi-region meshing creates separate mesh zones for different physical domains 
 
 When you set up a multi-region mesh, the mesher:
 
-1. **Meshes each region independently** using its own cell size and boundary layer settings
-2. **Assigns a unique region ID** to every region (integers starting from 0, in the order regions are defined)
-3. **Tags every cell** with its region ID — so the complete mesh knows which cells belong to which region
-4. **Detects or constructs interfaces** between touching regions
-5. **Exports with zone information** so your solver can apply different physics per region
-
-```{admonition} Region IDs
-:class: note
-Region IDs are assigned automatically in the order regions are defined — the first region gets ID 0, the second gets ID 1, and so on. You reference regions by **name** (not ID) when setting up interfaces and boundary conditions. The IDs appear in the exported mesh and are used by solvers to assign physics per zone.
-```
+1. **Meshes each region independently** using its own cell size and near-wall AMR settings
+2. **Tags every cell** with its region — so the solver knows which cells belong to which region
+3. **Detects or constructs interfaces** between touching regions
+4. **Assigns appropriate physics** to each region for simulation
 
 ## Creating Regions
 
@@ -55,21 +49,14 @@ Region IDs are assigned automatically in the order regions are defined — the f
 
 When you upload a multi-body STEP file, each solid body is automatically detected. You can then assign each body to a named region with its type and mesh settings. The bodies are listed in the feature tree — click each one to configure it.
 
-## Region IDs in the Exported Mesh
+## Region Overview
 
-Every cell in the exported mesh carries a region tag. In the output:
+After meshing, the **Regions** panel shows a summary of each region:
 
-- **OpenFOAM** — Each region exports as a separate `polyMesh` with a `cellZones` file
-- **ANSYS Fluent** — Zone types are set per region (Fluid = 1, Solid = 17)
-- **CGNS** — Separate zones per region with proper zone type labels
-- **VTU** — A `cell_region_ids` array tags every cell with its integer region ID
-
-Example region metadata in a 2-region CHT mesh:
-
-| Region Name | Region ID | Type | Cells |
-|-------------|-----------|------|-------|
-| `pipe_wall` | 0 | Solid | 8,965 |
-| `internal_flow` | 1 | Fluid | 3,624 |
+| Region Name | Type | Cells |
+|-------------|------|-------|
+| `pipe_wall` | Solid | 8,965 |
+| `internal_flow` | Fluid | 3,624 |
 
 ## Interfaces
 
@@ -110,7 +97,7 @@ Each region has independent mesh control:
 | Setting | Fluid Region | Solid Region |
 |---------|-------------|--------------|
 | **Cell size** | Smaller (resolve flow) | Larger (save cells) |
-| **Boundary layers** | Enabled | Disabled |
+| **Near-wall AMR** | Enabled | Disabled |
 | **Min cell size** | Flow-dependent | Less critical |
 
 ```{tip}
@@ -123,10 +110,10 @@ A conjugate heat transfer pipe — fluid flowing inside a solid pipe wall:
 
 **Regions:**
 
-| Name | Type | Cell Size | Boundary Layers |
-|------|------|-----------|-----------------|
+| Name | Type | Cell Size | Near-Wall AMR |
+|------|------|-----------|---------------|
 | `pipe_wall` | Solid | 1.5 mm | Disabled |
-| `internal_flow` | Fluid | 2.0 mm | Enabled, 5 layers, first height 0.1 mm |
+| `internal_flow` | Fluid | 2.0 mm | Enabled (medium) |
 
 **Interface:**
 
@@ -134,17 +121,6 @@ A conjugate heat transfer pipe — fluid flowing inside a solid pipe wall:
 |------|----------|----------|------|
 | `cht_interface` | `pipe_wall` | `internal_flow` | CHT |
 
-**Resulting region IDs in exported mesh:**
-- `pipe_wall` → Region ID 0
-- `internal_flow` → Region ID 1
-
-## Multi-Region Export
-
-When exporting a multi-region mesh:
-
-- Each region is exported as a separate **cell zone** with proper labeling and its region ID
-- Interface patches on both sides carry matching names (e.g., `pipe_wall_to_internal_flow`)
-- Format-specific zone types are applied automatically
-- OpenFOAM exports include `regionProperties` and per-region `constant/` directories
-
-See {doc}`export` for format-specific details.
+**Resulting regions in the mesh:**
+- `pipe_wall` → Solid zone
+- `internal_flow` → Fluid zone

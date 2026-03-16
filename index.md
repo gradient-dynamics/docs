@@ -7,12 +7,12 @@
 Gradient Dynamics Studio is currently in beta. Features and capabilities are actively being expanded.
 ```
 
-## What is Gradient Dynamics?
+## What is Gradient Dynamics Studio?
 
 Gradient Dynamics Studio is a browser-based computational fluid dynamics (CFD) platform that streamlines the entire simulation workflow:
 
 1. **Upload** your CAD geometry (STEP, IGES, STL, OBJ)
-2. **Mesh** with GPU-accelerated adaptive meshing and automatic boundary layer generation
+2. **Mesh** with GPU-native structured Cartesian cut-cell AMR
 3. **Simulate** using industry-standard RANS turbulence models on cloud GPUs
 4. **Visualize** results with interactive 3D post-processing — slices, streamlines, force calculations, and more
 
@@ -21,7 +21,7 @@ No software installation. No license management. Just open your browser and star
 ## Key Capabilities
 
 ### [Meshing](meshing/geometry.md)
-GPU-accelerated hex-dominant adaptive meshing with boundary layers, refinement zones, and multi-region support. Export to OpenFOAM, ANSYS Fluent, CGNS, and more.
+GPU-native structured Cartesian cut-cell meshing with block AMR, refinement zones, and multi-region support — purpose-built for fast GPU simulation.
 
 ### [Simulation](simulation/setup.md)
 Steady-state CFD with multiple simulation types and turbulence models. Cloud GPU execution with live residual monitoring and convergence tracking.

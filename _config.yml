@@ -14,12 +14,15 @@ html:
   home_page_in_navbar: true
   extra_css:
     - _static/custom.css
+  extra_js:
+    - _static/collapsible-nav.js
 
 sphinx:
   config:
     html_theme: sphinx_book_theme
+
     html_theme_options:
-      show_navbar_depth: 2
+      show_navbar_depth: 1
       show_toc_level: 2
       navigation_with_keys: true
     suppress_warnings: ["myst.header"]

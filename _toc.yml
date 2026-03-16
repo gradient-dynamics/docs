@@ -17,8 +17,8 @@ parts:
       - file: meshing/refinement-zones
       - file: meshing/surfaces
       - file: meshing/multi-region
+      - file: meshing/conformal-nonconformal
       - file: meshing/mesh-quality
-      - file: meshing/export
 
   - caption: Simulation
     chapters:
@@ -39,7 +39,7 @@ parts:
     chapters:
       - file: examples/index
       - file: examples/vehicle-aerodynamics
-      - file: examples/aircraft-wing
+      - file: examples/airfoil
       - file: examples/internal-pipe-flow
       - file: examples/electronics-cooling
       - file: examples/rotating-machinery

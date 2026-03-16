@@ -6,7 +6,7 @@ Gradient Dynamics Studio provides a complete CFD workflow in the browser, from C
 
 ### Projects
 
-Everything in Gradient Dynamics is organized into **projects**. There are two project types:
+Everything in Studio is organized into **projects**. There are two project types:
 
 - **Meshing Projects** — Generate high-quality meshes for use in external solvers or within the platform
 - **CFD Projects** — Complete end-to-end workflow: geometry → mesh → simulation → results
@@ -40,6 +40,24 @@ Compute usage is measured in **credits**:
 
 Your remaining credit balance is shown in the dashboard. See [Subscription Tiers](/reference/subscription-tiers.md) for details on plans and credit allocations.
 
+## Technology
+
+### Structured Cartesian Cut-Cell Meshing
+
+Gradient Dynamics uses a **structured Cartesian cut-cell** mesher with **block-based Adaptive Mesh Refinement (AMR)**. The domain is divided into a hierarchy of regular Cartesian blocks, with blocks near geometry surfaces refined to capture geometric detail through cut-cell representation.
+
+This architecture is purpose-built for GPU simulation: the structured, regular memory layout of Cartesian block meshes enables coalesced GPU memory access and fully parallel cell updates — delivering mesh generation and simulation performance that is not possible with unstructured mesh topologies.
+
+### GPU-Native Density-Based Solvers
+
+Simulations in Gradient Dynamics run on **density-based solvers** that solve the compressible Navier-Stokes equations using explicit or implicit time marching. These solvers are natively suited to GPU execution:
+
+- All solution variables update simultaneously in a single parallel sweep across all cells
+- No global pressure-velocity coupling iterations that would limit GPU parallelism
+- Low-Mach preconditioning ensures accuracy for subsonic flows without sacrificing performance
+
+Pressure-based (incompressible) solvers are also available for cases that specifically require them, but the density-based solver is recommended for optimal GPU performance.
+
 ## Workflow Overview
 
 ### Meshing Workflow
@@ -50,10 +68,10 @@ Upload CAD → Analyze Geometry → Configure Domain → Set Mesh Parameters →
 
 1. **Upload** a CAD file (STEP, IGES) or surface mesh (STL, OBJ)
 2. **Analyze** geometry for watertightness, manifold issues, and repair if needed
-3. **Configure** the domain type (external, internal, rotating, etc.) and domain box
-4. **Set** mesh parameters — cell size, boundary layers, refinement zones
+3. **Configure** the domain type (external, internal, rotating, etc.) and domain bounds
+4. **Set** mesh parameters — base cell size, AMR refinement levels, refinement zones
 5. **Generate** the mesh on cloud GPUs
-6. **Export** to your solver format of choice (OpenFOAM, Fluent, CGNS, etc.)
+6. **Proceed** directly to simulation, or inspect the mesh quality first
 
 ### CFD Workflow
 
@@ -62,7 +80,7 @@ Upload CAD → Mesh → Configure Simulation → Run → Post-Process
 ```
 
 1. **Upload** geometry and generate a mesh (or use a mesh from a Meshing project)
-2. **Configure** the simulation — turbulence model, boundary conditions, solver settings
+2. **Configure** the simulation — solver type, turbulence model, boundary conditions
 3. **Run** the simulation on cloud GPUs with live monitoring
 4. **Post-process** — visualize fields, extract forces, generate slice planes and streamlines
 

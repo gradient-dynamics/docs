@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,6 +59,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script src="_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Overview" href="getting-started/overview.html" />
@@ -184,12 +185,12 @@
 <li class="toctree-l1"><a class="reference internal" href="meshing/geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meshing/domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meshing/mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="meshing/boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshing/boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meshing/refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="meshing/surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshing/surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="meshing/mesh-quality.html">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="meshing/export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -375,7 +376,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-gradient-dynamics">What is Gradient Dynamics?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-gradient-dynamics-studio">What is Gradient Dynamics Studio?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-capabilities">Key Capabilities</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing"><span class="xref myst">Meshing</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation"><span class="xref myst">Simulation</span></a></li>
@@ -402,12 +403,12 @@ document.write(`
 <p class="admonition-title">Beta</p>
 <p>Gradient Dynamics Studio is currently in beta. Features and capabilities are actively being expanded.</p>
 </div>
-<section id="what-is-gradient-dynamics">
-<h2>What is Gradient Dynamics?<a class="headerlink" href="#what-is-gradient-dynamics" title="Link to this heading">#</a></h2>
+<section id="what-is-gradient-dynamics-studio">
+<h2>What is Gradient Dynamics Studio?<a class="headerlink" href="#what-is-gradient-dynamics-studio" title="Link to this heading">#</a></h2>
 <p>Gradient Dynamics Studio is a browser-based computational fluid dynamics (CFD) platform that streamlines the entire simulation workflow:</p>
 <ol class="arabic simple">
 <li><p><strong>Upload</strong> your CAD geometry (STEP, IGES, STL, OBJ)</p></li>
-<li><p><strong>Mesh</strong> with GPU-accelerated adaptive meshing and automatic boundary layer generation</p></li>
+<li><p><strong>Mesh</strong> with GPU-native structured Cartesian cut-cell AMR</p></li>
 <li><p><strong>Simulate</strong> using industry-standard RANS turbulence models on cloud GPUs</p></li>
 <li><p><strong>Visualize</strong> results with interactive 3D post-processing — slices, streamlines, force calculations, and more</p></li>
 </ol>
@@ -417,7 +418,7 @@ document.write(`
 <h2>Key Capabilities<a class="headerlink" href="#key-capabilities" title="Link to this heading">#</a></h2>
 <section id="meshing">
 <h3><a class="reference internal" href="meshing/geometry.html"><span class="std std-doc">Meshing</span></a><a class="headerlink" href="#meshing" title="Link to this heading">#</a></h3>
-<p>GPU-accelerated hex-dominant adaptive meshing with boundary layers, refinement zones, and multi-region support. Export to OpenFOAM, ANSYS Fluent, CGNS, and more.</p>
+<p>GPU-native structured Cartesian cut-cell meshing with block AMR, refinement zones, and multi-region support — purpose-built for fast GPU simulation.</p>
 </section>
 <section id="simulation">
 <h3><a class="reference internal" href="simulation/setup.html"><span class="std std-doc">Simulation</span></a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
@@ -512,7 +513,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-gradient-dynamics">What is Gradient Dynamics?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-gradient-dynamics-studio">What is Gradient Dynamics Studio?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-capabilities">Key Capabilities</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing"><span class="xref myst">Meshing</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation"><span class="xref myst">Simulation</span></a></li>

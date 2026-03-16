@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=593bd78b" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=56ffe152" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -59,10 +59,11 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'meshing/mesh-quality';</script>
+    <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Mesh Export" href="export.html" />
-    <link rel="prev" title="Multi-Region Meshing" href="multi-region.html" />
+    <link rel="next" title="Simulation Setup" href="../simulation/setup.html" />
+    <link rel="prev" title="Conformal vs Non-Conformal Meshes" href="conformal-nonconformal.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,12 +184,12 @@
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domain-setup.html">Domain Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mesh-settings.html">Mesh Settings</a></li>
-<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Boundary Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="boundary-layers.html">Near-Wall Resolution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="refinement-zones.html">Refinement Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfaces.html">Surfaces and Named Selections</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Mesh Quality</a></li>
-<li class="toctree-l1"><a class="reference internal" href="export.html">Mesh Export</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul class="nav bd-sidenav">
@@ -438,7 +439,7 @@ document.write(`
 </div>
 <div class="tip admonition">
 <p class="admonition-title">Target</p>
-<p>Maximum skewness should be below <strong>0.85</strong> throughout the mesh. The octree meshing approach naturally produces cells with good skewness.</p>
+<p>Maximum skewness should be below <strong>0.85</strong> throughout the mesh. Cartesian cells in the block AMR hierarchy have zero skewness by construction — poor skewness values only appear at cut-cells adjacent to geometry surfaces.</p>
 </div>
 </section>
 <section id="non-orthogonality">
@@ -477,7 +478,7 @@ document.write(`
 <p>The ratio of the longest cell dimension to the shortest.</p>
 <ul class="simple">
 <li><p><strong>Volume cells:</strong> Should be below 10 for the bulk mesh</p></li>
-<li><p><strong>Boundary layer cells:</strong> High aspect ratios (50–200) are expected and acceptable — BL prisms are intentionally thin</p></li>
+<li><p><strong>Near-wall cut-cells:</strong> High aspect ratios are expected and acceptable in cells with aggressive near-wall AMR refinement — this is by design</p></li>
 </ul>
 </section>
 <section id="cell-volume">
@@ -536,19 +537,19 @@ document.write(`
 </thead>
 <tbody>
 <tr class="row-even"><td><p>High skewness near geometry</p></td>
-<td><p>Increase surface refinement or reduce cell size</p></td>
+<td><p>Increase surface refinement AMR level</p></td>
 </tr>
 <tr class="row-odd"><td><p>High non-orthogonality at transitions</p></td>
-<td><p>Increase refinement levels for smoother size transitions</p></td>
+<td><p>Increase AMR levels for smoother size transitions between blocks</p></td>
 </tr>
-<tr class="row-even"><td><p>Poor quality at BL termination</p></td>
-<td><p>Add a refinement zone around the transition region</p></td>
+<tr class="row-even"><td><p>Very small cut-cell volume fraction</p></td>
+<td><p>Geometry has tiny slivers — simplify or repair the surface</p></td>
 </tr>
 <tr class="row-odd"><td><p>Negative volumes</p></td>
 <td><p>Check geometry for self-intersections and repair</p></td>
 </tr>
 <tr class="row-even"><td><p>Poor quality in narrow gaps</p></td>
-<td><p>Increase gap refinement or simplify geometry</p></td>
+<td><p>Increase gap refinement AMR level or simplify geometry</p></td>
 </tr>
 </tbody>
 </table>
@@ -558,9 +559,9 @@ document.write(`
 <h2>Quality vs. Cell Count Trade-off<a class="headerlink" href="#quality-vs-cell-count-trade-off" title="Link to this heading">#</a></h2>
 <p>Higher quality generally requires more cells:</p>
 <ul class="simple">
-<li><p><strong>More refinement levels</strong> → Smoother transitions → Better quality</p></li>
-<li><p><strong>Smaller cell size</strong> → More uniform sizing → Better quality</p></li>
-<li><p><strong>Lower BL growth rate</strong> → More gradual expansion → Better quality</p></li>
+<li><p><strong>More AMR levels</strong> → Smoother transitions → Better quality</p></li>
+<li><p><strong>Smaller base cell size</strong> → More uniform sizing → Better quality</p></li>
+<li><p><strong>Higher surface refinement</strong> → Better cut-cell quality near geometry</p></li>
 </ul>
 <p>Balance quality against your cell count budget and available compute credits.</p>
 <div class="admonition tip">
@@ -601,20 +602,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="multi-region.html"
+       href="conformal-nonconformal.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Multi-Region Meshing</p>
+        <p class="prev-next-title">Conformal vs Non-Conformal Meshes</p>
       </div>
     </a>
     <a class="right-next"
-       href="export.html"
+       href="../simulation/setup.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Mesh Export</p>
+        <p class="prev-next-title">Simulation Setup</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

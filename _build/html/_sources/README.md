@@ -1,69 +1,70 @@
 # Gradient Dynamics Documentation
 
-This directory contains the source for the Gradient Dynamics Studio documentation, built with [Jupyter Book](https://jupyterbook.org/).
+The official documentation for [Gradient Dynamics](https://gradientdynamics.com) — production multiphysics simulation in the browser.
 
-## Structure
+> **Note:** This documentation is currently in active development alongside the product. Some sections may be incomplete or subject to change.
 
-```
-docs/
-├── _config.yml                 # Jupyter Book config
-├── _toc.yml                    # Table of contents
-├── _static/                    # Static assets (CSS, images, logo)
-├── index.md                    # Landing page
-├── getting-started/            # Overview, quick start, projects
-├── meshing/                    # Geometry, domain, mesh settings, BL, refinement, export
-├── simulation/                 # Setup, turbulence models, BCs, solver, running, post-processing
-├── agent/                      # AI assistant usage guides
-├── examples/                   # Step-by-step walkthroughs (vehicle, wing, pipe, cooling, rotating)
-├── knowledge-base/             # Best practices, troubleshooting, FAQ, glossary
-└── reference/                  # Supported formats, subscription tiers, shortcuts
-```
+## What is Gradient Dynamics?
 
-## Prerequisites
+Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate meshes, run simulations, and visualize results — all from a single interface with GPU-native cloud compute. No software installation or license management required.
+
+## Documentation Contents
+
+| Section | Description |
+|---------|-------------|
+| [Getting Started](getting-started/overview.md) | Platform overview, quick start guide, and project types |
+| [Meshing](meshing/geometry.md) | Geometry preparation, domain setup, mesh settings, boundary layers, refinement zones, multi-region meshing, and export |
+| [Simulation](simulation/setup.md) | Turbulence models, boundary conditions, solver settings, running simulations, and post-processing |
+| [AI Assistant](agent/overview.md) | Using the built-in AI assistant for mesh and simulation setup |
+| [Examples](examples/index.md) | Step-by-step walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, electronics cooling, and rotating machinery |
+| [Knowledge Base](knowledge-base/best-practices.md) | Best practices, troubleshooting guide, FAQ, and glossary |
+| [Reference](reference/supported-formats.md) | Supported file formats, subscription tiers, and keyboard shortcuts |
+
+## Building the Docs Locally
+
+### Prerequisites
+
+Python 3.8+ and pip.
 
 ```bash
 pip install "jupyter-book<2"
 ```
 
-## Building
-
-Build the HTML documentation:
+### Build
 
 ```bash
+git clone https://github.com/gradient-dynamics/docs.git
 cd docs
 jupyter-book build .
 ```
 
-Then open the output in your browser:
+Open the output in your browser:
 
 ```bash
 open _build/html/index.html
 ```
 
-Or paste this into your browser bar:
+## Contributing
 
-```
-file:///Users/jamiesadler/Documents/gradient-dynamics/docs/_build/html/index.html
-```
+We welcome corrections, improvements, and new examples. Please open an issue or pull request.
 
-## Content Guidelines
+### Writing Guidelines
 
-- **User-facing only** — Document how to use the product, not internal implementation details
-- **No framework names** — Don't reference internal libraries, APIs, or tech stack
-- **Action-oriented** — Use clear, imperative instructions ("Click Upload", "Select External Flow")
-- **Tables for parameters** — Use tables for configuration options with descriptions and typical values
-- **Tips and warnings** — Use MyST admonitions (`{tip}`, `{warning}`, `{note}`) for callouts
-- **Cross-links** — Use standard markdown links with `.md` extensions
+- **User-facing** — Focus on how to use the product, not internal implementation details
+- **Action-oriented** — Use clear, imperative language ("Click Upload", "Select External Flow")
+- **Concrete** — Include parameter tables, typical values, and worked examples
+- **Callouts** — Use `{tip}`, `{warning}`, and `{note}` admonitions for important information
 
-## Adding a New Page
+### Adding a Page
 
-1. Create a `.md` file in the appropriate directory
-2. Add the file to `_toc.yml`
-3. Rebuild with `jupyter-book build .`
+1. Create a `.md` file in the appropriate section directory
+2. Add the file path to `_toc.yml`
+3. Rebuild and verify with `jupyter-book build .`
 
-## Adding an Example
+### Adding an Example
 
-1. Create a new `.md` file in `examples/`
-2. Follow the structure of existing examples (Objective → Steps → Results Analysis)
-3. Add the file to the Examples section in `_toc.yml`
-4. Add a link in `examples/index.md`
+Examples follow a consistent structure: **Objective → Step-by-step setup → Results analysis**. Add new `.md` files to `examples/`, register them in `_toc.yml`, and link them from `examples/index.md`.
+
+## Feedback
+
+Found an error or missing information? [Open an issue](https://github.com/gradient-dynamics/docs/issues) or reach out at [support@gradientdynamics.com](mailto:support@gradientdynamics.com).

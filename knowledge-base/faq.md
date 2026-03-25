@@ -12,11 +12,14 @@ No. Gradient Dynamics runs entirely in the browser. All mesh generation and simu
 
 ### What types of simulations can I run?
 
-Currently, Gradient Dynamics supports:
-- **Steady-state RANS** — The most common type of industrial CFD simulation
-- **LES and DES** — For transient, high-fidelity analysis (Pro tier and above)
+Gradient Dynamics supports a comprehensive range of simulation types:
 
-The platform handles incompressible flow simulations for external aerodynamics, internal flows, thermal analysis, and rotating machinery.
+- **Steady-state RANS** — The most common type of industrial CFD simulation (k-ω SST, k-ε, Spalart-Allmaras, RSM)
+- **URANS** — Time-accurate unsteady RANS for periodic or transient flows
+- **LES** — Large Eddy Simulation for high-fidelity turbulence resolution (Pro tier and above)
+- **DES / DDES / IDDES** — Hybrid RANS-LES methods for massively separated flows (Pro tier and above)
+
+The platform handles both **compressible** and **incompressible** flows using multiple solver formulations: density-based (explicit, recommended), pressure-based (implicit, segregated), coupled (implicit), FSAC (hybrid), and ACM (explicit incompressible). Applications include external aerodynamics, internal flows, thermal analysis, rotating machinery, and compressible high-Mach flows.
 
 ### Is my data secure?
 
@@ -98,11 +101,15 @@ STEP (.step, .stp), IGES (.iges, .igs), STL, and OBJ. STEP is recommended as it 
 2. Integrated quantities (drag, lift, pressure drop) should be stable
 3. The residual plot should show a clear downward trend, not oscillations
 
+### Which solver should I choose?
+
+For most applications, use the **density-based solver** — it is the fastest on GPU hardware and handles both compressible and low-speed flows through low-Mach preconditioning. Use the **pressure-based solver** (SIMPLE, PISO, PIMPLE) for strictly incompressible workflows, the **coupled solver** for strongly coupled physics, or **FSAC/ACM** for GPU-efficient incompressible explicit solvers. When in doubt, start with density-based.
+
 ### My simulation diverged. What went wrong?
 
 The most common causes:
 1. Poor mesh quality (check skewness and non-orthogonality)
-2. Too aggressive relaxation factors (reduce by 30%)
+2. Too aggressive CFL or relaxation factors (reduce CFL or relaxation by 30%)
 3. Incorrect boundary conditions (check all surfaces)
 4. Wrong geometry scale (verify dimensions are in meters)
 

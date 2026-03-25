@@ -24,11 +24,19 @@ A simulation configuration consists of five parts:
 
 ### 1. Select Solver Type
 
-Choose between **Density-Based** (recommended) and **Pressure-Based** solvers from the dropdown at the top of the Simulation tab.
+Choose the solver formulation from the dropdown at the top of the Simulation tab. The available solver types are:
 
-**Density-based** is the default and recommended choice for the vast majority of applications. It is optimized for the GPU-native Cartesian AMR mesh and delivers the best performance. See [Solver Settings](solver-settings.md) for a detailed comparison.
+| Solver | Description |
+|--------|-------------|
+| **Density-Based** (recommended) | Compressible, explicit — best GPU performance for all standard CFD |
+| **Pressure-Based** | Incompressible, implicit, segregated — SIMPLE, SIMPLEC, PISO, or PIMPLE algorithms |
+| **Coupled** | Incompressible, implicit, coupled — solves momentum and pressure simultaneously |
+| **FSAC** | Incompressible, hybrid explicit/implicit — fractional step with artificial compressibility |
+| **ACM** | Incompressible, explicit — artificial compressibility method for GPU-efficient incompressible flows |
 
-Use **Pressure-based** only if your application specifically requires an incompressible formulation.
+**Density-based** is the default and recommended choice for the vast majority of applications. It is optimized for the GPU-native Cartesian AMR mesh and delivers the best performance across both compressible and incompressible flow regimes (via low-Mach preconditioning). See [Solver Settings](solver-settings.md) for a detailed comparison of all solver types.
+
+Use the other solvers only if your application specifically requires an incompressible formulation or a particular coupling strategy.
 
 ### 2. Select Turbulence Model
 
@@ -50,8 +58,10 @@ You can override any auto-detected condition. See [Boundary Conditions](boundary
 
 For most cases, the defaults work well:
 
-- **Density-based:** Explicit Runge-Kutta, CFL 1.5, AUSM+ flux scheme, 2nd order spatial
-- **Pressure-based:** SIMPLE, pre-configured relaxation factors, AMG preconditioner
+- **Density-based:** SSP-RK3 explicit time marching, CFL 1.5 with auto-ramping, AUSM+ flux scheme, MUSCL reconstruction
+- **Pressure-based:** SIMPLE algorithm, model-appropriate relaxation factors, AMG preconditioner
+- **Coupled:** Block-coupled momentum-pressure system, AMG preconditioner
+- **FSAC / ACM:** Explicit time marching with artificial compressibility, CFL-controlled
 
 See [Solver Settings](solver-settings.md) for advanced tuning options.
 

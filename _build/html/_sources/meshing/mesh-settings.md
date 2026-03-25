@@ -4,27 +4,58 @@ Mesh settings control the resolution, quality, and structure of the generated me
 
 ## How the Mesher Works
 
-Gradient Dynamics uses a **structured Cartesian cut-cell** mesher with **block-based Adaptive Mesh Refinement (AMR)**. This approach is purpose-built for GPU-native simulation.
+Gradient Dynamics uses a **structured Cartesian cut-cell** mesher with **block-based Adaptive Mesh Refinement (AMR)**. This approach is purpose-built for GPU-native simulation and represents a fundamentally different paradigm from traditional unstructured mesh generation.
 
 ### Cartesian Block AMR
 
-The domain is divided into a regular grid of **blocks**, each containing a fixed array of Cartesian (hexahedral) cells. Where higher resolution is needed — near surfaces, in wakes, or in user-defined zones — blocks are recursively refined by splitting each block into eight sub-blocks at double the resolution. This produces a fully structured, hierarchical mesh.
+The domain is divided into a regular grid of **blocks**, each containing a fixed-size array of Cartesian (hexahedral) cells (typically 8×8×8 cells per block). Where higher resolution is needed — near surfaces, in wakes, or in user-defined zones — blocks are recursively refined by splitting each block into sub-blocks at double the resolution. This produces a fully structured, hierarchical mesh that can be stored and accessed sparsely — only blocks that contain fluid are allocated.
+
+**How block refinement works:**
+
+1. **Initial grid** — The domain is covered by a coarse uniform grid of blocks
+2. **Refinement criteria** — Blocks are tagged for refinement based on geometry proximity, user-defined zones, curvature, or solution gradients
+3. **Block splitting** — Tagged blocks are split into child blocks. For **isotropic refinement**, each block splits into 8 children (2×2×2), doubling resolution in all three directions. For **anisotropic refinement**, blocks can be split in selected directions only (e.g., 2×1×1 for wall-normal refinement), producing 2 or 4 children
+4. **2:1 balancing** — The mesh enforces a maximum 2:1 refinement ratio between neighboring blocks, ensuring smooth transitions and numerical stability
+5. **Sparse storage** — Only blocks classified as containing fluid or cut cells are retained; solid-interior blocks are discarded, keeping memory usage efficient
 
 ```{admonition} Why Cartesian Block AMR?
 :class: note
 
-Structured Cartesian meshes are the optimal topology for GPU-accelerated simulation. Their regular, predictable memory layout enables fully coalesced memory access patterns, branch-free compute kernels, and maximum utilization of GPU L1/L2 cache — resulting in significantly faster solves compared to unstructured mesh topologies.
+Structured Cartesian meshes are the optimal topology for GPU-accelerated simulation. Every cell within a block has the same size and shape, enabling:
+
+- **Coalesced memory access** — GPU threads access adjacent memory locations, maximizing bandwidth
+- **Branch-free compute kernels** — No cell-type branching within blocks; all cells follow the same computation path
+- **Cache efficiency** — Fixed block sizes fit naturally into GPU L1/L2 cache
+- **Predictable parallelism** — Each block is an independent unit of work, enabling straightforward GPU workload distribution
+
+The result is significantly faster solves compared to unstructured mesh topologies, with near-linear scaling across GPU cores.
 ```
 
 ### Cut-Cell Geometry Representation
 
-Where Cartesian blocks intersect a solid geometry surface, the cells are **cut** by the geometry boundary to form partial cells that conform to the surface. This means:
+Where Cartesian blocks intersect a solid geometry surface, the cells are **cut** by the geometry boundary to form partial cells that conform exactly to the surface shape. This is the key innovation that allows a structured Cartesian mesh to represent arbitrarily complex geometries.
 
-- No geometry approximation — surfaces are represented exactly at the finest AMR level
-- No prismatic boundary layer extrusion required
-- Near-wall resolution is achieved by AMR block refinement near surfaces (see [Near-Wall Resolution](boundary-layers.md))
+**How cut-cell generation works:**
 
-The result is a mesh that is structurally regular everywhere except at geometry boundaries, where cut-cells provide an accurate surface representation.
+1. **Signed Distance Field (SDF)** — A distance field is computed from the geometry surface. Each point in space has a signed distance: negative inside the solid, positive in the fluid, zero on the surface
+2. **Cell classification** — Every cell in geometry-adjacent blocks is classified as **fluid** (entirely outside the solid), **solid** (entirely inside), or **cut** (intersected by the surface)
+3. **Hex clipping** — Cut cells are clipped against the SDF isosurface using geometric intersection algorithms, producing polyhedral cells that conform exactly to the geometry boundary
+4. **Metric computation** — For each cut cell, the solver needs the **volume fraction** (ratio of fluid volume to full-cell volume), the **shifted centroid** (center of the fluid portion), and **face apertures** (the open area of each face)
+5. **Small-cell treatment** — Very small cut cells (volume fraction below a threshold) are automatically merged with neighboring cells to prevent numerical instability. This is handled transparently by the mesher
+
+**Key properties of cut-cell meshes:**
+
+- **Exact geometry representation** — The surface is captured at the resolution of the finest AMR level with no facet approximation
+- **No prismatic boundary layer extrusion** — Near-wall resolution is achieved through AMR block refinement near surfaces (see [Near-Wall Resolution](boundary-layers.md))
+- **Automatic and robust** — No manual surface meshing, layer insertion, or mesh topology decisions required; the mesher handles all geometry-mesh intersection automatically
+- **Solver-aware stabilization** — The solver applies specific treatments to cut cells (flux redistribution, cell merging) to maintain stability and accuracy at the geometry boundary
+
+The result is a mesh that is structurally regular everywhere except at geometry boundaries, where cut cells provide an accurate, automatically generated surface representation.
+
+```{admonition} Cut-Cell Quality
+:class: tip
+Because cut cells are the only non-Cartesian cells in the entire mesh, the vast majority of cells have perfect orthogonality, zero skewness, and uniform aspect ratio by construction. Mesh quality issues are confined to a thin layer of cut cells at the geometry surface, and the mesher handles these automatically through merging and metric correction.
+```
 
 ## Core Parameters
 

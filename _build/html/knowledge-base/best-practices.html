@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/best-practices';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -484,7 +485,7 @@ document.write(`
 <h2>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
 <section id="solver-type">
 <h3>Solver Type<a class="headerlink" href="#solver-type" title="Link to this heading">#</a></h3>
-<p>Use the <strong>density-based solver</strong> (the default) for all standard CFD applications. It runs significantly faster on GPU hardware than the pressure-based solver and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. Reserve the pressure-based solver only for cases that specifically require an incompressible formulation.</p>
+<p>Use the <strong>density-based solver</strong> (the default) for all standard CFD applications. It runs significantly faster on GPU hardware and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. If you specifically need an incompressible formulation, the platform provides multiple options: <strong>pressure-based</strong> (SIMPLE, SIMPLEC, PISO, PIMPLE) for traditional segregated approaches, <strong>coupled</strong> for strongly coupled physics, or <strong>FSAC/ACM</strong> for GPU-efficient incompressible explicit solvers. In most cases, the density-based solver remains the best starting point.</p>
 </section>
 <section id="turbulence-model-selection">
 <h3>Turbulence Model Selection<a class="headerlink" href="#turbulence-model-selection" title="Link to this heading">#</a></h3>
@@ -556,7 +557,11 @@ document.write(`
 </tr>
 <tr class="row-odd"><td><p>Using pressure-based solver for large meshes</p></td>
 <td><p>Slow GPU performance</p></td>
-<td><p>Switch to density-based solver</p></td>
+<td><p>Switch to density-based solver or FSAC/ACM</p></td>
+</tr>
+<tr class="row-even"><td><p>Segregated solver not converging</p></td>
+<td><p>Pressure-velocity coupling struggling</p></td>
+<td><p>Try the coupled solver or density-based</p></td>
 </tr>
 </tbody>
 </table>

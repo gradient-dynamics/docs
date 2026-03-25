@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'meshing/boundary-layers';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Refinement Zones" href="refinement-zones.html" />
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -427,31 +428,51 @@ document.write(`
 <tr class="row-odd"><th class="head"><p>Turbulence Model</p></th>
 <th class="head"><p>Target y+</p></th>
 <th class="head"><p>Near-Wall AMR</p></th>
+<th class="head"><p>Wall Treatment</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>k-ω SST</p></td>
 <td><p>~30 (wall function)</p></td>
 <td><p>Medium (default)</p></td>
+<td><p>Spalding or Reichardt</p></td>
 </tr>
 <tr class="row-odd"><td><p>k-ω SST</p></td>
 <td><p>~1 (resolved)</p></td>
 <td><p>Fine or Very Fine</p></td>
+<td><p>None (resolved)</p></td>
 </tr>
 <tr class="row-even"><td><p>k-ε</p></td>
 <td><p>30 – 300</p></td>
 <td><p>Medium</p></td>
+<td><p>Spalding or Reichardt</p></td>
 </tr>
 <tr class="row-odd"><td><p>Spalart-Allmaras</p></td>
 <td><p>~1 or ~30</p></td>
 <td><p>Medium to Fine</p></td>
+<td><p>Spalding or Linelets</p></td>
+</tr>
+<tr class="row-even"><td><p>RSM</p></td>
+<td><p>~30 or ~1</p></td>
+<td><p>Medium to Fine</p></td>
+<td><p>Spalding or Reichardt</p></td>
+</tr>
+<tr class="row-odd"><td><p>LES (any SGS model)</p></td>
+<td><p>~1</p></td>
+<td><p>Very Fine</p></td>
+<td><p>None (resolved)</p></td>
+</tr>
+<tr class="row-even"><td><p>DES / DDES</p></td>
+<td><p>~1 – 30</p></td>
+<td><p>Fine</p></td>
+<td><p>Spalding (RANS region)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>For most RANS simulations, the default <strong>Medium</strong> surface refinement with y+ ≈ 30 (wall function) gives good results. Use <strong>Fine</strong> or <strong>Very Fine</strong> only when wall-resolved treatment is needed (LES, detailed heat transfer, or sensitive separation prediction).</p>
+<p>For most RANS simulations, the default <strong>Medium</strong> surface refinement with y+ ≈ 30 and <strong>Spalding wall function</strong> gives good results. Use <strong>Fine</strong> or <strong>Very Fine</strong> only when wall-resolved treatment is needed (LES, detailed heat transfer, or sensitive separation prediction). The <strong>linelet</strong> wall treatment offers a middle ground — wall-resolved accuracy at wall-function mesh resolution — and is particularly effective on Cartesian cut-cell meshes. See <a class="reference internal" href="../simulation/solver-settings.html"><span class="std std-doc">Solver Settings</span></a> for details on wall treatment options.</p>
 </div>
 </section>
 </section>
@@ -466,7 +487,20 @@ document.write(`
 </section>
 <section id="anisotropic-near-wall-refinement">
 <h2>Anisotropic Near-Wall Refinement<a class="headerlink" href="#anisotropic-near-wall-refinement" title="Link to this heading">#</a></h2>
-<p>For high-Reynolds-number flows where extreme wall resolution would be costly in all directions, enable <strong>anisotropic near-wall refinement</strong>. This refines blocks in the wall-normal direction more aggressively than in the wall-parallel directions, reducing cell count while maintaining y+ targets.</p>
+<p>For high-Reynolds-number flows where extreme wall resolution would be costly in all directions, enable <strong>anisotropic near-wall refinement</strong>. Instead of splitting blocks into 8 equal children (2×2×2), anisotropic refinement can split in selected directions only — for example, 2×1×1 in the wall-normal direction. This produces cells that are fine in the wall-normal direction but coarser in the wall-parallel directions, dramatically reducing cell count while maintaining the y+ target at the wall.</p>
+<p><strong>How it works:</strong></p>
+<ul class="simple">
+<li><p>Blocks adjacent to geometry surfaces are tagged for directional refinement based on the local wall-normal direction</p></li>
+<li><p>The refinement direction is determined automatically from the geometry surface orientation</p></li>
+<li><p>2:1 balance is still enforced between neighboring blocks to ensure smooth transitions</p></li>
+<li><p>The solver handles the resulting anisotropic cells natively — no special treatment required</p></li>
+</ul>
+<p><strong>When to use anisotropic refinement:</strong></p>
+<ul class="simple">
+<li><p>High-Reynolds-number external aerodynamics where y+ ≈ 1 would otherwise produce excessive cell counts</p></li>
+<li><p>Cases where near-wall resolution is critical but far-field cell count must be controlled</p></li>
+<li><p>LES or DES simulations where wall-parallel resolution requirements are less stringent than wall-normal</p></li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Anisotropic near-wall refinement is available on Pro tier and above.</p>

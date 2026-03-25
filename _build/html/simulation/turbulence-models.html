@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/turbulence-models';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Boundary Conditions" href="boundary-conditions.html" />
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -375,17 +376,35 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-models">Available Models</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sst-recommended-default">k-ω SST (Recommended Default)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-k-epsilon">k-ε (k-Epsilon)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rans">RANS</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sst">k-ω SST</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k">k-ε</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spalart-allmaras">Spalart-Allmaras</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reynolds-stress-model-rsm">Reynolds Stress Model (RSM)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#les-large-eddy-simulation">LES (Large Eddy Simulation)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#des-detached-eddy-simulation">DES (Detached Eddy Simulation)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-comparison">Model Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-model">Choosing a Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#les">LES</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smagorinsky">Smagorinsky</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-smagorinsky">Dynamic Smagorinsky</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wale">WALE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vreman">Vreman</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#des">DES</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sa-des">SA-DES</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sst-des">SST-DES</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ddes">DDES</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iddes">IDDES</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#urans">URANS</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urans-k-sst">URANS k-ω SST</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urans-k">URANS k-ε</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urans-rsm">URANS RSM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-table">Comparison Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-simulation-type">Choosing a Simulation Type</a></li>
 </ul>
             </nav>
         </div>
@@ -399,26 +418,35 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="turbulence-models">
 <h1>Turbulence Models<a class="headerlink" href="#turbulence-models" title="Link to this heading">#</a></h1>
-<p>Gradient Dynamics supports a range of turbulence models for different flow regimes and accuracy requirements. This page helps you choose the right model for your application.</p>
-<section id="available-models">
-<h2>Available Models<a class="headerlink" href="#available-models" title="Link to this heading">#</a></h2>
-<section id="k-sst-recommended-default">
-<h3>k-ω SST (Recommended Default)<a class="headerlink" href="#k-sst-recommended-default" title="Link to this heading">#</a></h3>
-<p>The <strong>Shear Stress Transport</strong> model combines the best properties of k-ω (near walls) and k-ε (in the freestream). It is the most versatile RANS model and the recommended starting point for most applications.</p>
+<p>Gradient Dynamics groups turbulence modelling into four simulation types: <strong>RANS</strong>, <strong>LES</strong>, <strong>DES</strong>, and <strong>URANS</strong>. Select the simulation type first, then choose the specific model within it.</p>
+<section id="rans">
+<h2>RANS<a class="headerlink" href="#rans" title="Link to this heading">#</a></h2>
+<p>Reynolds-Averaged Navier-Stokes (RANS) models solve for a time-averaged flow field. All turbulent fluctuations are modelled rather than resolved, making RANS the fastest and most practical approach for the majority of engineering CFD.</p>
+<p><strong>When to use:</strong> Steady-state external aerodynamics, internal flows, rotating machinery, heat transfer — any application where time-averaged quantities (drag, lift, pressure drop, temperature) are the primary output.</p>
+<p><strong>Tier:</strong> Starter and above</p>
+<hr class="docutils" />
+<section id="k-sst">
+<h3>k-ω SST<a class="headerlink" href="#k-sst" title="Link to this heading">#</a></h3>
+<p>The <strong>Shear Stress Transport</strong> model combines k-ω near walls with k-ε in the freestream via a blending function. The most versatile RANS model and the recommended starting point for most applications.</p>
 <p><strong>Strengths:</strong></p>
 <ul class="simple">
 <li><p>Accurate prediction of flow separation under adverse pressure gradients</p></li>
-<li><p>Robust wall treatment (works with both y+ ≈ 1 and y+ ≈ 30)</p></li>
+<li><p>Robust wall treatment — works with both y+ ≈ 1 and y+ ≈ 30</p></li>
 <li><p>Good all-around performance for external and internal flows</p></li>
+<li><p>Multiple variants available for specific applications</p></li>
 </ul>
+<p><strong>Limitations:</strong></p>
+<ul class="simple">
+<li><p>Can overpredict turbulence in regions of strong streamline curvature</p></li>
+</ul>
+<p><strong>Variants:</strong> The standard SST-2003 formulation is the default. A vorticity-based production variant and rotation correction variant are available for flows with strong swirl or curved streamlines — these can be selected through the AI Assistant for advanced use cases.</p>
 <p><strong>Best for:</strong> Vehicle aerodynamics, wing analysis, duct flows, general-purpose CFD</p>
-<p><strong>Wall treatment:</strong> Supports both y+ ≈ 30 (wall function, medium near-wall AMR) and y+ ≈ 1 (wall-resolved, fine near-wall AMR)</p>
-<p><strong>Tier:</strong> Starter and above</p>
+<p><strong>Near-wall AMR:</strong> Medium (y+ ≈ 30) or Fine (y+ ≈ 1)</p>
 </section>
 <hr class="docutils" />
-<section id="k-k-epsilon">
-<h3>k-ε (k-Epsilon)<a class="headerlink" href="#k-k-epsilon" title="Link to this heading">#</a></h3>
-<p>A well-established two-equation model that solves for turbulent kinetic energy (k) and dissipation rate (ε).</p>
+<section id="k">
+<h3>k-ε<a class="headerlink" href="#k" title="Link to this heading">#</a></h3>
+<p>A two-equation model solving for turbulent kinetic energy (k) and dissipation rate (ε). The most numerically stable RANS model.</p>
 <p><strong>Strengths:</strong></p>
 <ul class="simple">
 <li><p>Very robust and stable convergence</p></li>
@@ -432,144 +460,362 @@ document.write(`
 <li><p>Less accurate for separated flows</p></li>
 </ul>
 <p><strong>Best for:</strong> Internal pipe flows, industrial duct systems, fully turbulent flows</p>
-<p><strong>Tier:</strong> Starter and above</p>
+<p><strong>Near-wall AMR:</strong> Medium (y+ ≈ 30–300)</p>
 </section>
 <hr class="docutils" />
 <section id="spalart-allmaras">
 <h3>Spalart-Allmaras<a class="headerlink" href="#spalart-allmaras" title="Link to this heading">#</a></h3>
-<p>A one-equation model that solves a single transport equation for turbulent viscosity. Computationally the lightest RANS model.</p>
+<p>A one-equation model solving a single transport equation for turbulent viscosity. The lightest RANS model computationally. Several variants are available to handle specific flow conditions.</p>
 <p><strong>Strengths:</strong></p>
 <ul class="simple">
-<li><p>Low computational cost (one equation vs. two)</p></li>
+<li><p>Lowest computational cost of all RANS models</p></li>
 <li><p>Good for attached boundary layers</p></li>
 <li><p>Stable and fast-converging</p></li>
-<li><p>Flexible y+ requirements</p></li>
+<li><p>Well-suited for compressible flows (integrated with the density-based solver)</p></li>
 </ul>
 <p><strong>Limitations:</strong></p>
 <ul class="simple">
 <li><p>Less accurate for separated flows</p></li>
-<li><p>Not ideal for complex 3D flow patterns</p></li>
 <li><p>Overpredicts turbulence in free shear layers</p></li>
+<li><p>Not well-suited for complex 3D flow patterns</p></li>
 </ul>
-<p><strong>Best for:</strong> Streamlined bodies, aerospace applications with attached flow, preliminary analysis</p>
-<p><strong>Tier:</strong> Starter and above</p>
-</section>
-<hr class="docutils" />
-<section id="reynolds-stress-model-rsm">
-<h3>Reynolds Stress Model (RSM)<a class="headerlink" href="#reynolds-stress-model-rsm" title="Link to this heading">#</a></h3>
-<p>A second-order closure that solves transport equations for all six Reynolds stress components. The most physically complete RANS model.</p>
-<p><strong>Strengths:</strong></p>
-<ul class="simple">
-<li><p>Captures anisotropic turbulence effects</p></li>
-<li><p>Better for swirling flows, strong streamline curvature</p></li>
-<li><p>Most accurate RANS model for complex 3D flows</p></li>
-</ul>
-<p><strong>Limitations:</strong></p>
-<ul class="simple">
-<li><p>Computationally expensive (7 extra equations)</p></li>
-<li><p>Can be less stable — needs careful relaxation</p></li>
-<li><p>Requires a good initial field (often started from k-ω SST)</p></li>
-</ul>
-<p><strong>Best for:</strong> Swirling flows, cyclones, rotating machinery, complex 3D separation</p>
-<p><strong>Tier:</strong> Starter and above</p>
-</section>
-<hr class="docutils" />
-<section id="les-large-eddy-simulation">
-<h3>LES (Large Eddy Simulation)<a class="headerlink" href="#les-large-eddy-simulation" title="Link to this heading">#</a></h3>
-<p>Resolves large-scale turbulent structures directly, modeling only the smallest scales. Provides time-accurate, transient results.</p>
-<p><strong>Strengths:</strong></p>
-<ul class="simple">
-<li><p>Captures unsteady flow features (vortex shedding, wake dynamics)</p></li>
-<li><p>More accurate than RANS for massively separated flows</p></li>
-<li><p>Provides detailed turbulence statistics</p></li>
-</ul>
-<p><strong>Limitations:</strong></p>
-<ul class="simple">
-<li><p>Requires very fine meshes (especially near walls)</p></li>
-<li><p>Transient — much longer simulation times</p></li>
-<li><p>Results need time-averaging for engineering quantities</p></li>
-</ul>
-<p><strong>Best for:</strong> Aeroacoustics, vortex dynamics, bluff body flows, academic research</p>
-<p><strong>Tier:</strong> Pro and above</p>
-</section>
-<hr class="docutils" />
-<section id="des-detached-eddy-simulation">
-<h3>DES (Detached Eddy Simulation)<a class="headerlink" href="#des-detached-eddy-simulation" title="Link to this heading">#</a></h3>
-<p>A hybrid approach: RANS near walls and LES in the bulk flow. Combines the efficiency of RANS in boundary layers with the accuracy of LES in separated regions.</p>
-<p><strong>Best for:</strong> Massive separation, buffet analysis, ground vehicle wakes</p>
-<p><strong>Tier:</strong> Pro and above</p>
-</section>
-</section>
-<section id="model-comparison">
-<h2>Model Comparison<a class="headerlink" href="#model-comparison" title="Link to this heading">#</a></h2>
+<p><strong>Variants:</strong></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Model</p></th>
-<th class="head"><p>Equations</p></th>
-<th class="head"><p>Cost</p></th>
-<th class="head"><p>Separation Accuracy</p></th>
-<th class="head"><p>Stability</p></th>
-<th class="head"><p>Target y+</p></th>
-<th class="head"><p>Near-Wall AMR</p></th>
+<tr class="row-odd"><th class="head"><p>Variant</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>k-ω SST</strong></p></td>
-<td><p>2</p></td>
-<td><p>Low</p></td>
-<td><p>Good</p></td>
-<td><p>High</p></td>
-<td><p>1 or 30</p></td>
-<td><p>Medium (30) / Fine (1)</p></td>
+<tr class="row-even"><td><p><strong>Standard</strong></p></td>
+<td><p>Classic SA formulation — recommended starting point</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>k-ε</strong></p></td>
-<td><p>2</p></td>
-<td><p>Low</p></td>
-<td><p>Fair</p></td>
-<td><p>Very High</p></td>
-<td><p>30–300</p></td>
-<td><p>Medium</p></td>
+<tr class="row-odd"><td><p><strong>SA-neg</strong></p></td>
+<td><p>Handles negative turbulence variable values gracefully — more robust for difficult initializations</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Spalart-Allmaras</strong></p></td>
-<td><p>1</p></td>
-<td><p>Very Low</p></td>
-<td><p>Fair</p></td>
-<td><p>High</p></td>
-<td><p>1 or 30</p></td>
-<td><p>Medium (30) / Fine (1)</p></td>
+<tr class="row-even"><td><p><strong>SA-noft2</strong></p></td>
+<td><p>Removes the ft2 laminar suppression term — simpler and often equivalent for fully turbulent flows</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>RSM</strong></p></td>
-<td><p>7</p></td>
-<td><p>High</p></td>
-<td><p>Very Good</p></td>
-<td><p>Medium</p></td>
-<td><p>1 or 30</p></td>
-<td><p>Medium (30) / Fine (1)</p></td>
+<tr class="row-odd"><td><p><strong>Compressibility correction</strong></p></td>
+<td><p>Accounts for compressibility effects on turbulence at high Mach numbers</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>LES</strong></p></td>
-<td><p>0 (resolved)</p></td>
-<td><p>Very High</p></td>
-<td><p>Excellent</p></td>
-<td><p>Medium</p></td>
-<td><p>~1</p></td>
-<td><p>Fine / Very Fine</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>DES</strong></p></td>
-<td><p>2 (hybrid)</p></td>
-<td><p>High</p></td>
-<td><p>Very Good</p></td>
-<td><p>Medium</p></td>
-<td><p>~1</p></td>
-<td><p>Fine</p></td>
+<tr class="row-even"><td><p><strong>Rotation correction</strong></p></td>
+<td><p>Improved accuracy in rotating or strongly curved flows</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The <strong>Near-Wall AMR</strong> column indicates the surface refinement setting to use in Mesh Settings to achieve the target y+. See <a class="reference internal" href="../meshing/boundary-layers.html"><span class="std std-doc">Near-Wall Resolution</span></a> for how to configure this.</p>
+<p>The default is the <strong>standard</strong> variant. Studio selects the appropriate variant automatically based on your solver and flow configuration, or you can select one explicitly through the AI Assistant.</p>
+<p><strong>Best for:</strong> Streamlined bodies, aerospace applications, compressible flows, preliminary analysis</p>
+<p><strong>Near-wall AMR:</strong> Medium (y+ ≈ 30) or Fine (y+ ≈ 1)</p>
 </section>
-<section id="choosing-a-model">
-<h2>Choosing a Model<a class="headerlink" href="#choosing-a-model" title="Link to this heading">#</a></h2>
-<p>When in doubt, <strong>start with k-ω SST</strong>. It provides the best balance of accuracy, robustness, and computational cost for the widest range of applications.</p>
+<hr class="docutils" />
+<section id="reynolds-stress-model-rsm">
+<h3>Reynolds Stress Model (RSM)<a class="headerlink" href="#reynolds-stress-model-rsm" title="Link to this heading">#</a></h3>
+<p>A second-order closure solving transport equations for all six Reynolds stress components plus a dissipation equation. The most physically complete RANS model available.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Captures anisotropic turbulence effects that eddy-viscosity models cannot</p></li>
+<li><p>Accurate for swirling flows, strong streamline curvature, and 3D separation</p></li>
+<li><p>Best RANS accuracy for complex flows with turbulence anisotropy</p></li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul class="simple">
+<li><p>Computationally expensive — 7 additional transport equations</p></li>
+<li><p>Can be less stable; typically initialized from a converged k-ω SST solution</p></li>
+<li><p>Requires more conservative relaxation/CFL tuning</p></li>
+</ul>
+<p><strong>Pressure-strain correlation models:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>LRR-IP</strong></p></td>
+<td><p>Launder-Reece-Rodi with isotropization of production — robust general-purpose default</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SSG</strong></p></td>
+<td><p>Speziale-Sarkar-Gatski — quadratic pressure-strain; better for complex 3D flows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The default is <strong>LRR-IP</strong>. Studio applies conservative relaxation factors automatically for RSM to ensure stable convergence.</p>
+<p><strong>Best for:</strong> Swirling flows, cyclones, rotating machinery, complex 3D separation, turbomachinery</p>
+<p><strong>Near-wall AMR:</strong> Medium (y+ ≈ 30) or Fine (y+ ≈ 1)</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="les">
+<h2>LES<a class="headerlink" href="#les" title="Link to this heading">#</a></h2>
+<p>Large Eddy Simulation directly resolves large-scale turbulent structures and only models the smallest (sub-grid) scales using a Sub-Grid Scale (SGS) model. It provides time-accurate, physically rich results but at significantly higher cost than RANS.</p>
+<p><strong>When to use:</strong> Aeroacoustics, vortex shedding, wake dynamics, bluff body flows, or any case where the time-resolved turbulence structure matters — not just the mean flow.</p>
+<p><strong>Requirements:</strong> Very fine mesh (Fine or Very Fine near-wall AMR), transient simulation with small time steps.</p>
+<p><strong>Tier:</strong> Pro and above</p>
+<hr class="docutils" />
+<section id="smagorinsky">
+<h3>Smagorinsky<a class="headerlink" href="#smagorinsky" title="Link to this heading">#</a></h3>
+<p>The classical SGS model. Applies a constant eddy-viscosity based on the local strain rate and a mixing-length coefficient (Smagorinsky constant Cs).</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Simple, robust, and computationally cheap</p></li>
+<li><p>Well-understood behaviour</p></li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul class="simple">
+<li><p>Overly dissipative in transitional or near-wall regions</p></li>
+<li><p>Cs must be tuned for different flow types</p></li>
+</ul>
+<p><strong>Best for:</strong> High-Reynolds fully turbulent flows, channel flows, jets</p>
+</section>
+<hr class="docutils" />
+<section id="dynamic-smagorinsky">
+<h3>Dynamic Smagorinsky<a class="headerlink" href="#dynamic-smagorinsky" title="Link to this heading">#</a></h3>
+<p>Extends the Smagorinsky model by computing the Cs coefficient dynamically from the resolved flow field using Germano’s identity — no manual constant tuning required.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Automatically adapts to local flow conditions</p></li>
+<li><p>More accurate in transitional and near-wall regions</p></li>
+<li><p>Better performance for complex geometries</p></li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul class="simple">
+<li><p>Slightly higher cost than static Smagorinsky</p></li>
+<li><p>Can occasionally produce negative eddy viscosity (clipped automatically)</p></li>
+</ul>
+<p><strong>Best for:</strong> General-purpose LES, complex geometries, transitional flows</p>
+</section>
+<hr class="docutils" />
+<section id="wale">
+<h3>WALE<a class="headerlink" href="#wale" title="Link to this heading">#</a></h3>
+<p>The <strong>Wall-Adapting Local Eddy-viscosity</strong> model uses a formulation based on the velocity gradient tensor that naturally goes to zero at solid walls — no damping function needed.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Correct near-wall scaling without explicit damping</p></li>
+<li><p>Well-suited for wall-bounded flows</p></li>
+<li><p>Good performance on coarser near-wall meshes than Dynamic Smagorinsky</p></li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul class="simple">
+<li><p>Slightly more expensive than static Smagorinsky</p></li>
+</ul>
+<p><strong>Best for:</strong> Wall-bounded LES, turbulent channel flows, complex internal geometries</p>
+</section>
+<hr class="docutils" />
+<section id="vreman">
+<h3>Vreman<a class="headerlink" href="#vreman" title="Link to this heading">#</a></h3>
+<p>An algebraic SGS model with similar near-wall behaviour to WALE but at lower computational cost.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Zero SGS viscosity in laminar and transitional regions (no manual switching)</p></li>
+<li><p>Lower cost than WALE and Dynamic Smagorinsky</p></li>
+<li><p>Robust on moderately coarse LES meshes</p></li>
+</ul>
+<p><strong>Best for:</strong> Transitional flows, cost-sensitive LES, engineering LES on moderate meshes</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="des">
+<h2>DES<a class="headerlink" href="#des" title="Link to this heading">#</a></h2>
+<p>Detached Eddy Simulation is a hybrid approach: RANS is used in attached boundary layers (where it is efficient and accurate), and LES is used in detached separated regions (where it is needed). This combines the wall-efficiency of RANS with the accuracy of LES in wakes and separated zones.</p>
+<p><strong>When to use:</strong> Flows with large separated regions where RANS is inaccurate but full LES is unaffordable — ground vehicle wakes, bluff bodies, buffet, stall.</p>
+<p><strong>Requirements:</strong> Fine near-wall AMR for the RANS region; the LES region is handled automatically by the DES switching function.</p>
+<p><strong>Tier:</strong> Pro and above</p>
+<hr class="docutils" />
+<section id="sa-des">
+<h3>SA-DES<a class="headerlink" href="#sa-des" title="Link to this heading">#</a></h3>
+<p>The original DES formulation, using <strong>Spalart-Allmaras</strong> as the RANS backbone. The DES limiter switches the model from RANS to LES mode based on the ratio of wall distance to local grid spacing.</p>
+<p><strong>Best for:</strong> External aerodynamics with significant separation, ground vehicles, bluff bodies</p>
+</section>
+<hr class="docutils" />
+<section id="sst-des">
+<h3>SST-DES<a class="headerlink" href="#sst-des" title="Link to this heading">#</a></h3>
+<p>DES formulation using <strong>k-ω SST</strong> as the RANS backbone. Offers the same RANS-to-LES switching but with SST’s superior wall-bounded flow prediction in the RANS region.</p>
+<p><strong>Best for:</strong> Cases where SST is preferred for the near-wall RANS treatment — vehicle aerodynamics, wing flows with trailing-edge separation</p>
+</section>
+<hr class="docutils" />
+<section id="ddes">
+<h3>DDES<a class="headerlink" href="#ddes" title="Link to this heading">#</a></h3>
+<p><strong>Delayed DES</strong> adds a shielding function to prevent the LES mode from activating prematurely inside attached boundary layers (a known issue with the original DES). Available with both SA and SST backbones. Recommended over standard DES for most applications.</p>
+<p><strong>Best for:</strong> All cases where DES would be used — DDES is the safer default</p>
+</section>
+<hr class="docutils" />
+<section id="iddes">
+<h3>IDDES<a class="headerlink" href="#iddes" title="Link to this heading">#</a></h3>
+<p><strong>Improved Delayed DES</strong> extends DDES with wall-modelled LES capability. When the mesh is fine enough near walls, IDDES can operate as a wall-modelled LES in the inner layer, providing higher accuracy than standard DDES in the near-wall region.</p>
+<p><strong>Best for:</strong> High-fidelity analysis of massively separated flows where near-wall LES accuracy is needed</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="urans">
+<h2>URANS<a class="headerlink" href="#urans" title="Link to this heading">#</a></h2>
+<p>Unsteady RANS solves the RANS equations as a time-accurate transient simulation. The same turbulence models as steady RANS are used, but the flow is allowed to evolve in time. This captures large-scale periodic unsteadiness without the cost of LES.</p>
+<p><strong>When to use:</strong> Periodic vortex shedding, pulsating flows, rotating machinery with transient effects, any flow where large-scale unsteadiness exists but full LES resolution is not required.</p>
+<p><strong>Note:</strong> URANS does not resolve turbulent fluctuations — it only captures deterministic, large-scale unsteadiness. Use LES or DES when turbulence structure itself matters.</p>
+<p><strong>Tier:</strong> Pro and above</p>
+<hr class="docutils" />
+<section id="urans-k-sst">
+<h3>URANS k-ω SST<a class="headerlink" href="#urans-k-sst" title="Link to this heading">#</a></h3>
+<p>Time-accurate integration of the k-ω SST equations. The most common URANS setup and the recommended starting point.</p>
+<p><strong>Best for:</strong> Vortex shedding behind bluff bodies, oscillating airfoil flows, transient wake interactions</p>
+</section>
+<hr class="docutils" />
+<section id="urans-k">
+<h3>URANS k-ε<a class="headerlink" href="#urans-k" title="Link to this heading">#</a></h3>
+<p>Time-accurate k-ε for flows where the high stability of k-ε is beneficial in a transient context.</p>
+<p><strong>Best for:</strong> Transient internal flows, pulsating pipe flows, HVAC transients</p>
+</section>
+<hr class="docutils" />
+<section id="urans-rsm">
+<h3>URANS RSM<a class="headerlink" href="#urans-rsm" title="Link to this heading">#</a></h3>
+<p>Time-accurate Reynolds Stress Model for transient flows with strong anisotropy or swirl.</p>
+<p><strong>Best for:</strong> Transient swirling flows, transient rotating machinery, precessing vortex cores</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="comparison-table">
+<h2>Comparison Table<a class="headerlink" href="#comparison-table" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Equations</p></th>
+<th class="head"><p>Relative Cost</p></th>
+<th class="head"><p>Separation Accuracy</p></th>
+<th class="head"><p>Steady/Transient</p></th>
+<th class="head"><p>Tier</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>k-ω SST</p></td>
+<td><p>RANS</p></td>
+<td><p>2</p></td>
+<td><p>Low</p></td>
+<td><p>Good</p></td>
+<td><p>Steady</p></td>
+<td><p>Starter+</p></td>
+</tr>
+<tr class="row-odd"><td><p>k-ε</p></td>
+<td><p>RANS</p></td>
+<td><p>2</p></td>
+<td><p>Low</p></td>
+<td><p>Fair</p></td>
+<td><p>Steady</p></td>
+<td><p>Starter+</p></td>
+</tr>
+<tr class="row-even"><td><p>Spalart-Allmaras</p></td>
+<td><p>RANS</p></td>
+<td><p>1</p></td>
+<td><p>Very Low</p></td>
+<td><p>Fair</p></td>
+<td><p>Steady</p></td>
+<td><p>Starter+</p></td>
+</tr>
+<tr class="row-odd"><td><p>RSM (LRR-IP / SSG)</p></td>
+<td><p>RANS</p></td>
+<td><p>7</p></td>
+<td><p>High</p></td>
+<td><p>Very Good</p></td>
+<td><p>Steady</p></td>
+<td><p>Starter+</p></td>
+</tr>
+<tr class="row-even"><td><p>Smagorinsky</p></td>
+<td><p>LES</p></td>
+<td><p>SGS</p></td>
+<td><p>Very High</p></td>
+<td><p>Excellent</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dynamic Smagorinsky</p></td>
+<td><p>LES</p></td>
+<td><p>SGS</p></td>
+<td><p>Very High</p></td>
+<td><p>Excellent</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-even"><td><p>WALE</p></td>
+<td><p>LES</p></td>
+<td><p>SGS</p></td>
+<td><p>Very High</p></td>
+<td><p>Excellent</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vreman</p></td>
+<td><p>LES</p></td>
+<td><p>SGS</p></td>
+<td><p>High</p></td>
+<td><p>Excellent</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-even"><td><p>SA-DES</p></td>
+<td><p>DES</p></td>
+<td><p>Hybrid</p></td>
+<td><p>High</p></td>
+<td><p>Very Good</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-odd"><td><p>SST-DES</p></td>
+<td><p>DES</p></td>
+<td><p>Hybrid</p></td>
+<td><p>High</p></td>
+<td><p>Very Good</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-even"><td><p>DDES</p></td>
+<td><p>DES</p></td>
+<td><p>Hybrid</p></td>
+<td><p>High</p></td>
+<td><p>Very Good</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-odd"><td><p>IDDES</p></td>
+<td><p>DES</p></td>
+<td><p>Hybrid</p></td>
+<td><p>Very High</p></td>
+<td><p>Excellent</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-even"><td><p>URANS k-ω SST</p></td>
+<td><p>URANS</p></td>
+<td><p>2</p></td>
+<td><p>Medium</p></td>
+<td><p>Good</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-odd"><td><p>URANS k-ε</p></td>
+<td><p>URANS</p></td>
+<td><p>2</p></td>
+<td><p>Medium</p></td>
+<td><p>Fair</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+<tr class="row-even"><td><p>URANS RSM</p></td>
+<td><p>URANS</p></td>
+<td><p>7</p></td>
+<td><p>Very High</p></td>
+<td><p>Very Good</p></td>
+<td><p>Transient</p></td>
+<td><p>Pro+</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="choosing-a-simulation-type">
+<h2>Choosing a Simulation Type<a class="headerlink" href="#choosing-a-simulation-type" title="Link to this heading">#</a></h2>
+<p>When in doubt, <strong>start with RANS k-ω SST</strong>. It covers the widest range of applications at the lowest cost and provides a good initial field for switching to higher-fidelity methods if needed.</p>
 </section>
 </section>
 
@@ -637,17 +883,35 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#available-models">Available Models</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sst-recommended-default">k-ω SST (Recommended Default)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-k-epsilon">k-ε (k-Epsilon)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rans">RANS</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-sst">k-ω SST</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k">k-ε</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spalart-allmaras">Spalart-Allmaras</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reynolds-stress-model-rsm">Reynolds Stress Model (RSM)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#les-large-eddy-simulation">LES (Large Eddy Simulation)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#des-detached-eddy-simulation">DES (Detached Eddy Simulation)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-comparison">Model Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-model">Choosing a Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#les">LES</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smagorinsky">Smagorinsky</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-smagorinsky">Dynamic Smagorinsky</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wale">WALE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vreman">Vreman</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#des">DES</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sa-des">SA-DES</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sst-des">SST-DES</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ddes">DDES</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iddes">IDDES</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#urans">URANS</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urans-k-sst">URANS k-ω SST</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urans-k">URANS k-ε</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urans-rsm">URANS RSM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-table">Comparison Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-simulation-type">Choosing a Simulation Type</a></li>
 </ul>
   </nav></div>
 

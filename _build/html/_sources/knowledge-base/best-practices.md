@@ -54,7 +54,7 @@ This "mesh independence study" ensures your results are not artifacts of the mes
 
 ### Solver Type
 
-Use the **density-based solver** (the default) for all standard CFD applications. It runs significantly faster on GPU hardware than the pressure-based solver and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. Reserve the pressure-based solver only for cases that specifically require an incompressible formulation.
+Use the **density-based solver** (the default) for all standard CFD applications. It runs significantly faster on GPU hardware and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. If you specifically need an incompressible formulation, the platform provides multiple options: **pressure-based** (SIMPLE, SIMPLEC, PISO, PIMPLE) for traditional segregated approaches, **coupled** for strongly coupled physics, or **FSAC/ACM** for GPU-efficient incompressible explicit solvers. In most cases, the density-based solver remains the best starting point.
 
 ### Turbulence Model Selection
 
@@ -83,7 +83,8 @@ Use the **density-based solver** (the default) for all standard CFD applications
 | CFL too high at startup | Immediate divergence | Enable CFL ramping; start at CFL 0.5 |
 | Coarse mesh near features of interest | Inaccurate local flow | Add refinement zones at correct AMR level |
 | Ignoring mesh quality warnings | Poor convergence or wrong results | Inspect flagged cut-cells before simulating |
-| Using pressure-based solver for large meshes | Slow GPU performance | Switch to density-based solver |
+| Using pressure-based solver for large meshes | Slow GPU performance | Switch to density-based solver or FSAC/ACM |
+| Segregated solver not converging | Pressure-velocity coupling struggling | Try the coupled solver or density-based |
 
 ## Post-Processing
 

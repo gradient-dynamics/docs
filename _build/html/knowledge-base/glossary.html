@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/glossary';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Supported Formats" href="../reference/supported-formats.html" />
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -417,11 +418,17 @@ document.write(`
 : A preconditioner that solves linear systems efficiently by using a hierarchy of coarser approximations. Default in Gradient Dynamics.</p>
 <p><strong>Angle of Attack (AoA)</strong>
 : The angle between the freestream velocity direction and the reference line of a body (e.g., a wing chord). Measured in degrees.</p>
+<p><strong>Artificial Compressibility Method (ACM)</strong>
+: A technique for solving incompressible flows using a compressible-like formulation by adding a pseudo-compressibility term to the continuity equation, enabling explicit time marching on GPU hardware.</p>
 <p><strong>Aspect Ratio</strong>
 : The ratio of a cell’s longest dimension to its shortest. Boundary layer cells have intentionally high aspect ratios; volume cells should have low aspect ratios.</p>
+<p><strong>AUSM+ (Advection Upstream Splitting Method)</strong>
+: A low-dissipation flux scheme that splits the inviscid flux into convective and pressure parts. Particularly accurate for low-Mach number flows.</p>
 </section>
 <section id="b">
 <h2>B<a class="headerlink" href="#b" title="Link to this heading">#</a></h2>
+<p><strong>Block (AMR)</strong>
+: A fixed-size array of Cartesian cells (typically 8×8×8) that forms the fundamental unit of the block-AMR mesh hierarchy. Blocks are refined by splitting into child blocks.</p>
 <p><strong>Boundary Condition</strong>
 : A mathematical specification of what happens at the edge of the computational domain (inlet velocity, outlet pressure, wall no-slip, etc.).</p>
 <p><strong>Boundary Layer</strong>
@@ -437,6 +444,10 @@ document.write(`
 : A dimensionless number representing aerodynamic drag force, normalized by dynamic pressure and reference area: Cd = Fd / (0.5 × ρ × V² × A).</p>
 <p><strong>Cell</strong>
 : The fundamental volume element of a computational mesh. The flow equations are solved for each cell.</p>
+<p><strong>Coupled Solver</strong>
+: A solver that solves the momentum and pressure equations simultaneously as a single block system, rather than sequentially. More robust for strongly coupled flows.</p>
+<p><strong>Cut Cell</strong>
+: A Cartesian hexahedral cell that has been clipped by a geometry surface to form a polyhedral cell conforming to the boundary. Cut cells carry volume fraction, shifted centroid, and aperture metadata.</p>
 <p><strong>CFD (Computational Fluid Dynamics)</strong>
 : The use of numerical methods to solve fluid flow equations on a computer.</p>
 <p><strong>CHT (Conjugate Heat Transfer)</strong>
@@ -459,6 +470,8 @@ document.write(`
 </section>
 <section id="f">
 <h2>F<a class="headerlink" href="#f" title="Link to this heading">#</a></h2>
+<p><strong>FSAC (Fractional Step Artificial Compressibility)</strong>
+: A hybrid explicit-implicit solver method that combines fractional step time advancement with an artificial compressibility formulation for pressure, bridging the gap between fully explicit and fully implicit approaches.</p>
 <p><strong>Face</strong>
 : A polygon shared between two mesh cells (internal face) or between a cell and the domain boundary (boundary face).</p>
 <p><strong>Far-field</strong>
@@ -477,6 +490,8 @@ document.write(`
 <h2>H<a class="headerlink" href="#h" title="Link to this heading">#</a></h2>
 <p><strong>Hexahedron (Hex)</strong>
 : A six-faced volume cell. Hexahedral meshes generally provide better numerical accuracy and convergence than tetrahedral meshes.</p>
+<p><strong>HLLC (Harten-Lax-van Leer-Contact)</strong>
+: A Riemann solver that captures contact discontinuities in addition to shocks. A robust general-purpose flux scheme for compressible flow.</p>
 </section>
 <section id="i">
 <h2>I<a class="headerlink" href="#i" title="Link to this heading">#</a></h2>
@@ -492,9 +507,13 @@ document.write(`
 <h2>L<a class="headerlink" href="#l" title="Link to this heading">#</a></h2>
 <p><strong>LES (Large Eddy Simulation)</strong>
 : A turbulence modeling approach that resolves large-scale eddies directly and models only the smallest scales. More accurate but much more expensive than RANS.</p>
+<p><strong>Linelet</strong>
+: A wall treatment technique that embeds a one-dimensional sub-grid within each near-wall cell, solving the boundary layer profile locally. Provides wall-resolved accuracy on coarser meshes.</p>
 </section>
 <section id="m">
 <h2>M<a class="headerlink" href="#m" title="Link to this heading">#</a></h2>
+<p><strong>MUSCL (Monotone Upstream-centered Scheme for Conservation Laws)</strong>
+: A higher-order spatial reconstruction method that interpolates cell-centered values to face centers for improved accuracy. Default reconstruction scheme in the density-based solver.</p>
 <p><strong>Manifold</strong>
 : A surface where every edge is shared by exactly two faces. Non-manifold surfaces have topology errors.</p>
 <p><strong>MRF (Multiple Reference Frame)</strong>
@@ -516,8 +535,10 @@ document.write(`
 <h2>P<a class="headerlink" href="#p" title="Link to this heading">#</a></h2>
 <p><strong>Patch</strong>
 : A named group of boundary faces. Used to apply boundary conditions (e.g., “inlet” patch, “car_body” patch).</p>
+<p><strong>PIMPLE</strong>
+: A hybrid pressure-velocity coupling algorithm combining SIMPLE outer iterations with PISO inner corrections. The most stable option for transient flows with large time steps.</p>
 <p><strong>PISO (Pressure-Implicit with Splitting of Operators)</strong>
-: A pressure-velocity coupling algorithm used primarily for transient simulations.</p>
+: A pressure-velocity coupling algorithm used primarily for transient simulations with small time steps.</p>
 <p><strong>Prism</strong>
 : A wedge-shaped cell typically used in boundary layers, with triangular faces on the wall and outer surfaces.</p>
 </section>
@@ -534,8 +555,14 @@ document.write(`
 </section>
 <section id="s">
 <h2>S<a class="headerlink" href="#s" title="Link to this heading">#</a></h2>
+<p><strong>Segregated Solver</strong>
+: A solver strategy that solves each governing equation (momentum, pressure, turbulence) sequentially and iterates to convergence. SIMPLE, PISO, and PIMPLE are segregated algorithms.</p>
+<p><strong>Signed Distance Field (SDF)</strong>
+: A scalar field where each point stores the signed distance to the nearest geometry surface — negative inside solids, positive in fluid. Used for cell classification and cut-cell generation.</p>
 <p><strong>SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)</strong>
 : The standard pressure-velocity coupling algorithm for steady-state CFD.</p>
+<p><strong>SIMPLEC (SIMPLE-Consistent)</strong>
+: An improved variant of SIMPLE that requires less under-relaxation and can converge faster for some problems.</p>
 <p><strong>Skewness</strong>
 : A mesh quality metric measuring how much a cell deviates from its ideal shape (0 = perfect, 1 = degenerate).</p>
 <p><strong>Slip Wall</strong>
@@ -550,11 +577,15 @@ document.write(`
 </section>
 <section id="v">
 <h2>V<a class="headerlink" href="#v" title="Link to this heading">#</a></h2>
+<p><strong>Volume Fraction</strong>
+: For cut cells, the ratio of the fluid portion of the cell to the full Cartesian cell volume. A volume fraction of 1.0 means the cell is entirely fluid; values near 0 indicate a thin sliver that is typically merged with a neighbor.</p>
 <p><strong>VTU (VTK Unstructured)</strong>
 : A file format for unstructured meshes and field data, used by ParaView and other visualization tools.</p>
 </section>
 <section id="w">
 <h2>W<a class="headerlink" href="#w" title="Link to this heading">#</a></h2>
+<p><strong>WENO (Weighted Essentially Non-Oscillatory)</strong>
+: A high-order spatial reconstruction scheme that maintains accuracy near discontinuities without introducing spurious oscillations. Available in 3rd and 5th order variants.</p>
 <p><strong>Watertight</strong>
 : A surface mesh that is completely closed with no gaps or holes. Required for volume mesh generation.</p>
 </section>

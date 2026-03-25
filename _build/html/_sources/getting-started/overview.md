@@ -44,19 +44,21 @@ Your remaining credit balance is shown in the dashboard. See [Subscription Tiers
 
 ### Structured Cartesian Cut-Cell Meshing
 
-Gradient Dynamics uses a **structured Cartesian cut-cell** mesher with **block-based Adaptive Mesh Refinement (AMR)**. The domain is divided into a hierarchy of regular Cartesian blocks, with blocks near geometry surfaces refined to capture geometric detail through cut-cell representation.
+Gradient Dynamics uses a **structured Cartesian cut-cell** mesher with **block-based Adaptive Mesh Refinement (AMR)**. The domain is divided into a sparse hierarchy of regular Cartesian blocks, with blocks near geometry surfaces refined to capture geometric detail through cut-cell representation. Cut cells are formed by clipping Cartesian hexahedral cells against the exact geometry surface, producing polyhedral boundary cells that conform precisely to the shape — no surface approximation or manual mesh topology decisions required.
 
-This architecture is purpose-built for GPU simulation: the structured, regular memory layout of Cartesian block meshes enables coalesced GPU memory access and fully parallel cell updates — delivering mesh generation and simulation performance that is not possible with unstructured mesh topologies.
+This architecture is purpose-built for GPU simulation: the structured, regular memory layout of Cartesian block meshes enables coalesced GPU memory access and fully parallel cell updates — delivering mesh generation and simulation performance that is not possible with unstructured mesh topologies. See [Mesh Settings](/meshing/mesh-settings.md) for a detailed explanation of how block AMR and cut-cell generation work.
 
-### GPU-Native Density-Based Solvers
+### GPU-Native Solver Suite
 
-Simulations in Gradient Dynamics run on **density-based solvers** that solve the compressible Navier-Stokes equations using explicit or implicit time marching. These solvers are natively suited to GPU execution:
+Gradient Dynamics provides a comprehensive suite of CFD solvers, all designed for GPU-native execution:
 
-- All solution variables update simultaneously in a single parallel sweep across all cells
-- No global pressure-velocity coupling iterations that would limit GPU parallelism
-- Low-Mach preconditioning ensures accuracy for subsonic flows without sacrificing performance
+- **Density-based solver** (recommended) — Solves the compressible Navier-Stokes equations using explicit time marching (SSP-RK3). All solution variables update simultaneously in a single parallel sweep. Low-Mach preconditioning ensures accuracy for subsonic flows. Supports both compressible and incompressible flow regimes
+- **Pressure-based solver** — Segregated incompressible formulation with SIMPLE, SIMPLEC, PISO, and PIMPLE coupling algorithms
+- **Coupled solver** — Block-coupled implicit incompressible formulation that solves momentum and pressure simultaneously
+- **FSAC solver** — Hybrid explicit/implicit approach using fractional step artificial compressibility
+- **ACM solver** — Artificial Compressibility Method for explicit time marching of incompressible flows
 
-Pressure-based (incompressible) solvers are also available for cases that specifically require them, but the density-based solver is recommended for optimal GPU performance.
+The density-based solver is recommended for optimal GPU performance across the widest range of applications. See [Solver Settings](/simulation/solver-settings.md) for a detailed comparison of all solver types.
 
 ## Workflow Overview
 

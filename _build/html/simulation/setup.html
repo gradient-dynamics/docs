@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/setup';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Turbulence Models" href="turbulence-models.html" />
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -425,9 +426,34 @@ document.write(`
 <h2>Step-by-Step Configuration<a class="headerlink" href="#step-by-step-configuration" title="Link to this heading">#</a></h2>
 <section id="select-solver-type">
 <h3>1. Select Solver Type<a class="headerlink" href="#select-solver-type" title="Link to this heading">#</a></h3>
-<p>Choose between <strong>Density-Based</strong> (recommended) and <strong>Pressure-Based</strong> solvers from the dropdown at the top of the Simulation tab.</p>
-<p><strong>Density-based</strong> is the default and recommended choice for the vast majority of applications. It is optimized for the GPU-native Cartesian AMR mesh and delivers the best performance. See <a class="reference internal" href="solver-settings.html"><span class="std std-doc">Solver Settings</span></a> for a detailed comparison.</p>
-<p>Use <strong>Pressure-based</strong> only if your application specifically requires an incompressible formulation.</p>
+<p>Choose the solver formulation from the dropdown at the top of the Simulation tab. The available solver types are:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Solver</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Density-Based</strong> (recommended)</p></td>
+<td><p>Compressible, explicit — best GPU performance for all standard CFD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pressure-Based</strong></p></td>
+<td><p>Incompressible, implicit, segregated — SIMPLE, SIMPLEC, PISO, or PIMPLE algorithms</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Coupled</strong></p></td>
+<td><p>Incompressible, implicit, coupled — solves momentum and pressure simultaneously</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FSAC</strong></p></td>
+<td><p>Incompressible, hybrid explicit/implicit — fractional step with artificial compressibility</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ACM</strong></p></td>
+<td><p>Incompressible, explicit — artificial compressibility method for GPU-efficient incompressible flows</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Density-based</strong> is the default and recommended choice for the vast majority of applications. It is optimized for the GPU-native Cartesian AMR mesh and delivers the best performance across both compressible and incompressible flow regimes (via low-Mach preconditioning). See <a class="reference internal" href="solver-settings.html"><span class="std std-doc">Solver Settings</span></a> for a detailed comparison of all solver types.</p>
+<p>Use the other solvers only if your application specifically requires an incompressible formulation or a particular coupling strategy.</p>
 </section>
 <section id="select-turbulence-model">
 <h3>2. Select Turbulence Model<a class="headerlink" href="#select-turbulence-model" title="Link to this heading">#</a></h3>
@@ -448,8 +474,10 @@ document.write(`
 <h3>4. Configure Solver Settings<a class="headerlink" href="#configure-solver-settings" title="Link to this heading">#</a></h3>
 <p>For most cases, the defaults work well:</p>
 <ul class="simple">
-<li><p><strong>Density-based:</strong> Explicit Runge-Kutta, CFL 1.5, AUSM+ flux scheme, 2nd order spatial</p></li>
-<li><p><strong>Pressure-based:</strong> SIMPLE, pre-configured relaxation factors, AMG preconditioner</p></li>
+<li><p><strong>Density-based:</strong> SSP-RK3 explicit time marching, CFL 1.5 with auto-ramping, AUSM+ flux scheme, MUSCL reconstruction</p></li>
+<li><p><strong>Pressure-based:</strong> SIMPLE algorithm, model-appropriate relaxation factors, AMG preconditioner</p></li>
+<li><p><strong>Coupled:</strong> Block-coupled momentum-pressure system, AMG preconditioner</p></li>
+<li><p><strong>FSAC / ACM:</strong> Explicit time marching with artificial compressibility, CFL-controlled</p></li>
 </ul>
 <p>See <a class="reference internal" href="solver-settings.html"><span class="std std-doc">Solver Settings</span></a> for advanced tuning options.</p>
 </section>

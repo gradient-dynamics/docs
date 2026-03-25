@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'simulation/solver-settings';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Running Simulations" href="running.html" />
@@ -210,7 +211,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/aircraft-wing.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
@@ -375,22 +376,29 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-types">Solver Types</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#density-based-recommended">Density-Based (Recommended)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#time-marching-schemes">Time-Marching Schemes</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cfl-number">CFL Number</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flux-scheme">Flux Scheme</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-order">Spatial Order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-classification">Solver Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#density-based-solver-recommended">Density-Based Solver (Recommended)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-marching-schemes">Time-Marching Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cfl-number">CFL Number</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flux-schemes">Flux Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction-and-spatial-order">Reconstruction and Spatial Order</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#slope-limiters">Slope Limiters</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-based">Pressure-Based</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-velocity-coupling">Pressure-Velocity Coupling</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-factors">Relaxation Factors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wall-treatment">Wall Treatment</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-based-solver">Pressure-Based Solver</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-velocity-coupling-algorithms">Pressure-Velocity Coupling Algorithms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-factors">Relaxation Factors</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solver">Linear Solver</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coupled-solver">Coupled Solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fsac-fractional-step-artificial-compressibility">FSAC (Fractional Step Artificial Compressibility)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acm-artificial-compressibility-method">ACM (Artificial Compressibility Method)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-summary">Solver Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solvers-and-preconditioners">Linear Solvers and Preconditioners</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-solvers">Iterative Solvers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preconditioners">Preconditioners</a></li>
 </ul>
 </li>
@@ -419,19 +427,46 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="solver-settings">
 <h1>Solver Settings<a class="headerlink" href="#solver-settings" title="Link to this heading">#</a></h1>
-<p>Gradient Dynamics offers two classes of CFD solver: <strong>density-based</strong> and <strong>pressure-based</strong>. For most applications, the density-based solver is recommended — it is purpose-built for GPU-native execution and delivers the best performance on cloud hardware.</p>
-<section id="solver-types">
-<h2>Solver Types<a class="headerlink" href="#solver-types" title="Link to this heading">#</a></h2>
-<section id="density-based-recommended">
-<h3>Density-Based (Recommended)<a class="headerlink" href="#density-based-recommended" title="Link to this heading">#</a></h3>
+<p>Gradient Dynamics provides a comprehensive suite of CFD solvers covering compressible and incompressible flows, explicit and implicit time integration, and both segregated and coupled solution strategies. All solvers are purpose-built for GPU-native execution on structured Cartesian block-AMR meshes.</p>
+<section id="solver-classification">
+<h2>Solver Classification<a class="headerlink" href="#solver-classification" title="Link to this heading">#</a></h2>
+<p>Solvers in Gradient Dynamics are categorized along three independent axes:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Axis</p></th>
+<th class="head"><p>Options</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Flow regime</strong></p></td>
+<td><p>Compressible, Incompressible</p></td>
+<td><p>Whether density variations are significant</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Time integration</strong></p></td>
+<td><p>Explicit, Implicit, Hybrid</p></td>
+<td><p>How the solution advances in time</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Coupling strategy</strong></p></td>
+<td><p>Coupled, Segregated</p></td>
+<td><p>Whether equations are solved together or sequentially</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The combination you choose determines the solver algorithm. Studio exposes the most commonly used combinations; the AI Assistant can recommend the best match for your application.</p>
+</section>
+<hr class="docutils" />
+<section id="density-based-solver-recommended">
+<h2>Density-Based Solver (Recommended)<a class="headerlink" href="#density-based-solver-recommended" title="Link to this heading">#</a></h2>
 <p>The density-based solver solves the fully coupled compressible Navier-Stokes equations — continuity, momentum, and energy — as a unified system. Density, momentum, and total energy are the primary solution variables; pressure is derived from the equation of state.</p>
+<p>This is the <strong>recommended solver</strong> for the vast majority of applications. It is natively designed for GPU hardware and delivers the best performance.</p>
 <p><strong>Why it performs better on GPUs:</strong></p>
-<p>The density-based formulation is naturally suited to GPU architecture because:</p>
 <ul class="simple">
 <li><p>All governing equations are updated simultaneously in a single sweep, enabling fully parallel execution across all mesh cells</p></li>
 <li><p>Explicit time-marching schemes (Runge-Kutta) have no global coupling — each cell update depends only on its neighbors, matching the GPU’s massively parallel execution model</p></li>
 <li><p>The structured Cartesian block mesh provides regular, coalesced memory access patterns that maximize GPU memory bandwidth utilization</p></li>
-<li><p>No iterative pressure-velocity coupling loops (as in SIMPLE/PISO) means minimal divergence of parallel execution threads</p></li>
+<li><p>No iterative pressure-velocity coupling loops means minimal divergence of parallel execution threads</p></li>
 </ul>
 <p>The result is near-linear strong scaling across GPU cores and predictable, fast runtimes even on large meshes.</p>
 <p><strong>When to use density-based:</strong></p>
@@ -447,30 +482,38 @@ document.write(`
 <p>The density-based solver includes low-Mach preconditioning, which maintains accuracy and conditioning for nearly-incompressible flows (M &lt; 0.1). You do not need to switch to a pressure-based solver for low-speed flows.</p>
 </div>
 <section id="time-marching-schemes">
-<h4>Time-Marching Schemes<a class="headerlink" href="#time-marching-schemes" title="Link to this heading">#</a></h4>
+<h3>Time-Marching Schemes<a class="headerlink" href="#time-marching-schemes" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Scheme</p></th>
+<th class="head"><p>Type</p></th>
 <th class="head"><p>Description</p></th>
 <th class="head"><p>Best For</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Explicit (Runge-Kutta)</strong></p></td>
-<td><p>Multi-stage explicit time stepping; maximum GPU parallelism</p></td>
-<td><p>Steady RANS, LES, high-accuracy transient</p></td>
+<tr class="row-even"><td><p><strong>SSP-RK3</strong></p></td>
+<td><p>Explicit</p></td>
+<td><p>Strong stability preserving 3rd-order Runge-Kutta; maximum GPU parallelism</p></td>
+<td><p>Steady RANS, LES, high-accuracy transient (default)</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Implicit</strong></p></td>
+<tr class="row-odd"><td><p><strong>Explicit Euler</strong></p></td>
+<td><p>Explicit</p></td>
+<td><p>First-order explicit; simplest and most robust</p></td>
+<td><p>Initial startup, debugging</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Implicit Euler</strong></p></td>
+<td><p>Implicit</p></td>
 <td><p>Larger stable time steps; better for stiff problems</p></td>
 <td><p>Difficult geometries, strongly coupled physics</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The default is <strong>explicit Runge-Kutta</strong> for steady and transient RANS, and <strong>explicit</strong> for LES. Switch to implicit only if the explicit scheme has convergence difficulties.</p>
+<p>The default is <strong>SSP-RK3</strong> (explicit) for steady and transient RANS, and for LES. Switch to implicit only if the explicit scheme has convergence difficulties or if very large time steps are required.</p>
 </section>
 <section id="cfl-number">
-<h4>CFL Number<a class="headerlink" href="#cfl-number" title="Link to this heading">#</a></h4>
+<h3>CFL Number<a class="headerlink" href="#cfl-number" title="Link to this heading">#</a></h3>
 <p>The <strong>CFL number</strong> (Courant-Friedrichs-Lewy) controls the time step size for explicit schemes.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -491,10 +534,11 @@ document.write(`
 </tbody>
 </table>
 </div>
-<p>The solver computes a local time step at each cell based on the CFL criterion. CFL ramping is applied automatically: the solver starts at a low CFL and ramps up as the solution stabilizes.</p>
+<p>The solver computes a local time step at each cell based on the CFL criterion. <strong>CFL ramping</strong> is applied automatically: the solver starts at a low CFL (typically 0.1) and ramps up to the target over the first 50–200 iterations as the solution stabilizes.</p>
 </section>
-<section id="flux-scheme">
-<h4>Flux Scheme<a class="headerlink" href="#flux-scheme" title="Link to this heading">#</a></h4>
+<section id="flux-schemes">
+<h3>Flux Schemes<a class="headerlink" href="#flux-schemes" title="Link to this heading">#</a></h3>
+<p>The flux scheme determines how flow quantities are evaluated at cell faces — a critical choice for accuracy and stability.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Scheme</p></th>
@@ -503,50 +547,138 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Roe</strong></p></td>
-<td><p>Approximate Riemann solver; captures shocks well</p></td>
-<td><p>Transonic and supersonic flows</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>AUSM+</strong></p></td>
-<td><p>Low-dissipation; better for low-Mach accuracy</p></td>
+<tr class="row-even"><td><p><strong>AUSM+</strong></p></td>
+<td><p>Low-dissipation Mach-number splitting; accurate at low Mach</p></td>
 <td><p>Subsonic aerodynamics (default)</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>AUSM+UP</strong></p></td>
+<td><p>Enhanced AUSM+ with pressure-based dissipation for all-speed flows</p></td>
+<td><p>Mixed low/high Mach flows</p></td>
+</tr>
 <tr class="row-even"><td><p><strong>HLLC</strong></p></td>
-<td><p>Robust; good all-around performance</p></td>
-<td><p>General purpose</p></td>
+<td><p>Harten-Lax-van Leer with contact restoration; robust shock capturing</p></td>
+<td><p>General purpose, transonic flows</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Roe</strong></p></td>
+<td><p>Linearized approximate Riemann solver; sharp shock resolution</p></td>
+<td><p>Transonic and supersonic flows</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Rusanov</strong></p></td>
+<td><p>Most dissipative but most robust; Lax-Friedrichs type</p></td>
+<td><p>Startup, very difficult flows</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SLAU2</strong></p></td>
+<td><p>Simple Low-dissipation AUSM; excellent for low-Mach accuracy</p></td>
+<td><p>Low-speed external aerodynamics</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-<section id="spatial-order">
-<h4>Spatial Order<a class="headerlink" href="#spatial-order" title="Link to this heading">#</a></h4>
+<section id="reconstruction-and-spatial-order">
+<h3>Reconstruction and Spatial Order<a class="headerlink" href="#reconstruction-and-spatial-order" title="Link to this heading">#</a></h3>
+<p>Higher-order spatial reconstruction improves accuracy by reconstructing the solution at cell faces from neighboring cell values.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Order</p></th>
+<tr class="row-odd"><th class="head"><p>Scheme</p></th>
+<th class="head"><p>Order</p></th>
 <th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>1st order</strong></p></td>
-<td><p>Robust, fast — good for startup iterations</p></td>
+<td><p>1</p></td>
+<td><p>No reconstruction — robust, dissipative; good for startup</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>2nd order</strong></p></td>
-<td><p>Default for production runs — accurate, bounded</p></td>
+<tr class="row-odd"><td><p><strong>MUSCL</strong></p></td>
+<td><p>2nd</p></td>
+<td><p>Monotone Upstream-centered Scheme for Conservation Laws — accurate, bounded (default)</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>3rd order MUSCL</strong></p></td>
-<td><p>High-accuracy for LES and detailed analysis</p></td>
+<tr class="row-even"><td><p><strong>WENO3</strong></p></td>
+<td><p>3rd</p></td>
+<td><p>Weighted Essentially Non-Oscillatory — high-accuracy, shock-safe</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>WENO5</strong></p></td>
+<td><p>5th</p></td>
+<td><p>Fifth-order WENO — maximum accuracy for LES and detailed analysis</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The solver automatically transitions from 1st to 2nd order after the solution has stabilized (order ramping).</p>
+<p>The solver can automatically transition from 1st to 2nd order after the solution has stabilized (order ramping).</p>
+<section id="slope-limiters">
+<h4>Slope Limiters<a class="headerlink" href="#slope-limiters" title="Link to this heading">#</a></h4>
+<p>Limiters prevent unphysical oscillations near shocks and steep gradients when using higher-order reconstruction.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Limiter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Van Leer</strong></p></td>
+<td><p>Good balance of accuracy and robustness (default)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Minmod</strong></p></td>
+<td><p>Most dissipative — safest for difficult flows</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Superbee</strong></p></td>
+<td><p>Least dissipative — sharpest gradients, higher oscillation risk</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Van Albada</strong></p></td>
+<td><p>Smooth limiter — good for smooth subsonic flows</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Venkatakrishnan</strong></p></td>
+<td><p>Standard for unstructured CFD; converges well</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Barth-Jespersen</strong></p></td>
+<td><p>Strictly enforces monotonicity — most robust for shocks</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="wall-treatment">
+<h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading">#</a></h3>
+<p>The density-based solver supports several wall treatment approaches for resolving or modelling the near-wall boundary layer on Cartesian cut-cell meshes.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Wall Treatment</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Best For</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>None</strong></p></td>
+<td><p>Wall-resolved — no modelling; relies on fine near-wall AMR</p></td>
+<td><p>LES, y+ ≈ 1 simulations</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Spalding</strong></p></td>
+<td><p>Continuous wall function valid across the full y+ range</p></td>
+<td><p>General-purpose RANS (default)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Reichardt</strong></p></td>
+<td><p>Similar to Spalding; slightly different blending profile</p></td>
+<td><p>Alternative for RANS</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Linelets</strong></p></td>
+<td><p>Embedded 1D wall-normal profiles within each near-wall cell</p></td>
+<td><p>High-accuracy wall treatment on coarser meshes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Linelets</p>
+<p>The linelet wall treatment embeds a one-dimensional sub-grid within each near-wall cell, solving the boundary layer profile locally without requiring the global mesh to resolve it. This gives wall-resolved accuracy at wall-function mesh resolution — particularly effective on Cartesian cut-cell meshes where traditional boundary layer extrusion is not used.</p>
+</div>
 </section>
 </section>
 <hr class="docutils" />
-<section id="pressure-based">
-<h3>Pressure-Based<a class="headerlink" href="#pressure-based" title="Link to this heading">#</a></h3>
-<p>The pressure-based solver uses a segregated pressure-velocity coupling approach (SIMPLE or PIMPLE algorithms) and solves the incompressible Navier-Stokes equations. This solver is available for cases where an incompressible formulation is strictly required.</p>
+<section id="pressure-based-solver">
+<h2>Pressure-Based Solver<a class="headerlink" href="#pressure-based-solver" title="Link to this heading">#</a></h2>
+<p>The pressure-based solver uses a <strong>segregated</strong> approach, solving the momentum and pressure equations sequentially through a pressure-velocity coupling algorithm. It solves the incompressible Navier-Stokes equations and is available for cases where an incompressible formulation is specifically required.</p>
 <div class="warning admonition">
 <p class="admonition-title">Performance Note</p>
 <p>The pressure-based solver requires iterative pressure Poisson solves that involve global communication across the mesh, limiting GPU parallelism. For most applications, the density-based solver with low-Mach preconditioning delivers equivalent accuracy with significantly better GPU performance. The pressure-based solver is provided for compatibility but is not recommended as the primary solver.</p>
@@ -554,64 +686,94 @@ document.write(`
 <p><strong>When to use pressure-based:</strong></p>
 <ul class="simple">
 <li><p>Strictly incompressible flows where density variation is physically meaningless</p></li>
-<li><p>Compatibility with specific post-processing or validation workflows</p></li>
+<li><p>Compatibility with specific validation workflows that require a pressure-based formulation</p></li>
 </ul>
-<section id="pressure-velocity-coupling">
-<h4>Pressure-Velocity Coupling<a class="headerlink" href="#pressure-velocity-coupling" title="Link to this heading">#</a></h4>
+<section id="pressure-velocity-coupling-algorithms">
+<h3>Pressure-Velocity Coupling Algorithms<a class="headerlink" href="#pressure-velocity-coupling-algorithms" title="Link to this heading">#</a></h3>
+<p>The pressure-velocity coupling algorithm determines how the segregated momentum and pressure equations interact.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Type</p></th>
 <th class="head"><p>Description</p></th>
 <th class="head"><p>Best For</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>SIMPLE</strong></p></td>
-<td><p>Semi-Implicit Method for Pressure-Linked Equations</p></td>
-<td><p>Steady-state RANS</p></td>
+<td><p>Segregated, Implicit</p></td>
+<td><p>Semi-Implicit Method for Pressure-Linked Equations; solves momentum then corrects pressure</p></td>
+<td><p>Steady-state RANS (default)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SIMPLEC</strong></p></td>
+<td><p>Segregated, Implicit</p></td>
+<td><p>SIMPLE-Consistent; improved pressure correction with less under-relaxation needed</p></td>
+<td><p>Faster steady-state convergence</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>PISO</strong></p></td>
+<td><p>Segregated, Implicit</p></td>
+<td><p>Pressure-Implicit with Splitting of Operators; multiple pressure corrections per step</p></td>
+<td><p>Transient flows, small time steps</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>PIMPLE</strong></p></td>
-<td><p>Hybrid SIMPLE/PISO</p></td>
-<td><p>Transient with large time steps</p></td>
+<td><p>Segregated, Implicit</p></td>
+<td><p>Hybrid SIMPLE + PISO; outer SIMPLE loops with inner PISO corrections</p></td>
+<td><p>Transient with large time steps; most stable</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For steady RANS, use <strong>SIMPLE</strong> or <strong>SIMPLEC</strong>. For transient simulations (URANS, LES, DES), use <strong>PISO</strong> or <strong>PIMPLE</strong>. PIMPLE is the most stable option for complex transient flows.</p>
+</div>
 </section>
 <section id="relaxation-factors">
-<h4>Relaxation Factors<a class="headerlink" href="#relaxation-factors" title="Link to this heading">#</a></h4>
-<p>Under-relaxation factors control how aggressively the solution is updated each iteration. Lower values are more stable but converge slower.</p>
+<h3>Relaxation Factors<a class="headerlink" href="#relaxation-factors" title="Link to this heading">#</a></h3>
+<p>Under-relaxation factors control how aggressively the solution is updated each iteration. Lower values are more stable but converge slower. The solver automatically applies model-appropriate defaults.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>k-ω SST</p></th>
 <th class="head"><p>k-ε</p></th>
 <th class="head"><p>Spalart-Allmaras</p></th>
+<th class="head"><p>RSM</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Velocity (U)</strong></p></td>
-<td><p>0.5</p></td>
-<td><p>0.6</p></td>
-<td><p>0.6</p></td>
+<td><p>0.3</p></td>
+<td><p>0.3</p></td>
+<td><p>0.4</p></td>
+<td><p>0.2</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Pressure (p)</strong></p></td>
-<td><p>0.2</p></td>
-<td><p>0.3</p></td>
-<td><p>0.3</p></td>
+<td><p>0.1</p></td>
+<td><p>0.1</p></td>
+<td><p>0.15</p></td>
+<td><p>0.08</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>k</strong></p></td>
-<td><p>0.4</p></td>
-<td><p>0.4</p></td>
+<td><p>0.3</p></td>
+<td><p>0.3</p></td>
 <td><p>—</p></td>
+<td><p>0.3</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>ω / ε</strong></p></td>
-<td><p>0.4</p></td>
+<td><p>0.3</p></td>
+<td><p>0.3</p></td>
+<td><p>—</p></td>
+<td><p>0.3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>ν̃ (SA variable)</strong></p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
 <td><p>0.4</p></td>
 <td><p>—</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Turbulent viscosity</strong></p></td>
-<td><p>0.05</p></td>
+<tr class="row-odd"><td><p><strong>Turbulent viscosity</strong></p></td>
+<td><p>0.1</p></td>
+<td><p>0.1</p></td>
 <td><p>0.1</p></td>
 <td><p>0.1</p></td>
 </tr>
@@ -620,11 +782,161 @@ document.write(`
 </div>
 </section>
 </section>
+<hr class="docutils" />
+<section id="coupled-solver">
+<h2>Coupled Solver<a class="headerlink" href="#coupled-solver" title="Link to this heading">#</a></h2>
+<p>The coupled solver solves the momentum and pressure equations simultaneously as a single block system, rather than sequentially as in the segregated approach. This eliminates the need for pressure-velocity coupling iterations and can converge significantly faster for strongly coupled flows.</p>
+<p><strong>When to use coupled:</strong></p>
+<ul class="simple">
+<li><p>Flows where pressure and velocity are tightly coupled (high-speed internal flows, strong buoyancy)</p></li>
+<li><p>Cases where the segregated approach requires excessive iterations to converge</p></li>
+<li><p>Complex multi-physics simulations</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Coupled vs Segregated</p>
+<p>The <strong>segregated</strong> approach (SIMPLE, PISO, etc.) solves each equation in sequence and iterates to convergence. The <strong>coupled</strong> approach solves momentum and pressure together in a single matrix system. Coupled is more robust for difficult flows but uses more memory per iteration. For most standard simulations, the density-based solver remains the recommended first choice.</p>
+</div>
 </section>
 <hr class="docutils" />
-<section id="linear-solver">
-<h2>Linear Solver<a class="headerlink" href="#linear-solver" title="Link to this heading">#</a></h2>
-<p>Both solver types use iterative linear solvers for implicit systems.</p>
+<section id="fsac-fractional-step-artificial-compressibility">
+<h2>FSAC (Fractional Step Artificial Compressibility)<a class="headerlink" href="#fsac-fractional-step-artificial-compressibility" title="Link to this heading">#</a></h2>
+<p>The <strong>FSAC</strong> method is a hybrid explicit-implicit approach that combines the efficiency of explicit time marching with an artificial compressibility formulation for pressure. It bridges the gap between fully explicit density-based solvers and fully implicit pressure-based methods.</p>
+<p><strong>How it works:</strong></p>
+<ol class="arabic simple">
+<li><p>The momentum equations are advanced explicitly using a fractional step approach</p></li>
+<li><p>An artificial compressibility term is added to the continuity equation, allowing pressure waves to propagate at a finite (artificial) speed</p></li>
+<li><p>The pressure field is updated without requiring a global Poisson solve</p></li>
+</ol>
+<p><strong>When to use FSAC:</strong></p>
+<ul class="simple">
+<li><p>Incompressible flows where you want the GPU performance benefits of an explicit approach</p></li>
+<li><p>Cases where the density-based solver’s compressible formulation is unnecessary but the pressure-based solver is too slow</p></li>
+<li><p>Transitional flows between low-speed and moderate-speed regimes</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="acm-artificial-compressibility-method">
+<h2>ACM (Artificial Compressibility Method)<a class="headerlink" href="#acm-artificial-compressibility-method" title="Link to this heading">#</a></h2>
+<p>The <strong>ACM</strong> is a technique for solving incompressible flow equations using a compressible-like formulation. By adding an artificial time derivative to the continuity equation (the “pseudo-compressibility” term), the system becomes hyperbolic and can be marched in time using explicit methods — without the global pressure coupling that makes traditional incompressible solvers slow on GPUs.</p>
+<p><strong>When to use ACM:</strong></p>
+<ul class="simple">
+<li><p>Steady incompressible flows where you want explicit time-marching efficiency</p></li>
+<li><p>As an alternative to the pressure-based solver for truly incompressible problems</p></li>
+<li><p>When GPU throughput is more important than time-accuracy of the pressure field</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">ACM vs Low-Mach Preconditioning</p>
+<p>Both ACM and low-Mach preconditioning address the challenge of solving low-speed flows on GPU hardware. Low-Mach preconditioning (available in the density-based solver) modifies the compressible equations to remain well-conditioned at low Mach numbers. ACM instead adds a fictitious compressibility to the incompressible equations. In practice, the density-based solver with low-Mach preconditioning is recommended for most users — ACM is available for advanced use cases.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="solver-summary">
+<h2>Solver Summary<a class="headerlink" href="#solver-summary" title="Link to this heading">#</a></h2>
+<div class="note admonition">
+<p class="admonition-title">Compressible vs Incompressible</p>
+<p>The <strong>density-based solver</strong> is the only solver that directly solves the compressible Navier-Stokes equations, but it also handles low-speed (incompressible) flows accurately through low-Mach preconditioning. This makes it the recommended default for <strong>both</strong> compressible and incompressible applications. The other solvers listed below are dedicated incompressible formulations, available as alternatives when an incompressible-only approach is preferred or required.</p>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Solver</p></th>
+<th class="head"><p>Flow Regime</p></th>
+<th class="head"><p>Time Integration</p></th>
+<th class="head"><p>Coupling</p></th>
+<th class="head"><p>GPU Performance</p></th>
+<th class="head"><p>Recommended Use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Density-based</strong></p></td>
+<td><p>Compressible &amp; incompressible (all Mach, with low-Mach preconditioning)</p></td>
+<td><p>Explicit (SSP-RK3) or Implicit</p></td>
+<td><p>Coupled</p></td>
+<td><p>Excellent</p></td>
+<td><p>Default for all standard CFD — subsonic through supersonic</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pressure-based (SIMPLE)</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Implicit</p></td>
+<td><p>Segregated</p></td>
+<td><p>Moderate</p></td>
+<td><p>Steady incompressible RANS</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Pressure-based (SIMPLEC)</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Implicit</p></td>
+<td><p>Segregated</p></td>
+<td><p>Moderate</p></td>
+<td><p>Faster steady convergence</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Pressure-based (PISO)</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Implicit</p></td>
+<td><p>Segregated</p></td>
+<td><p>Moderate</p></td>
+<td><p>Transient incompressible</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Pressure-based (PIMPLE)</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Implicit</p></td>
+<td><p>Segregated</p></td>
+<td><p>Moderate</p></td>
+<td><p>Robust transient flows</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Coupled</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Implicit</p></td>
+<td><p>Coupled</p></td>
+<td><p>Moderate–Good</p></td>
+<td><p>Strongly coupled physics</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FSAC</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Hybrid (Explicit/Implicit)</p></td>
+<td><p>Hybrid</p></td>
+<td><p>Good</p></td>
+<td><p>GPU-efficient incompressible</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ACM</strong></p></td>
+<td><p>Incompressible only</p></td>
+<td><p>Explicit</p></td>
+<td><p>Coupled</p></td>
+<td><p>Good</p></td>
+<td><p>Explicit incompressible marching</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="linear-solvers-and-preconditioners">
+<h2>Linear Solvers and Preconditioners<a class="headerlink" href="#linear-solvers-and-preconditioners" title="Link to this heading">#</a></h2>
+<p>For implicit systems (pressure equation in segregated solvers, block system in coupled solver), iterative linear solvers are used with preconditioning to accelerate convergence.</p>
+<section id="iterative-solvers">
+<h3>Iterative Solvers<a class="headerlink" href="#iterative-solvers" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Solver</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Best For</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>PCG</strong></p></td>
+<td><p>Preconditioned Conjugate Gradient</p></td>
+<td><p>Symmetric positive-definite systems (pressure)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>BiCGStab</strong></p></td>
+<td><p>BiConjugate Gradient Stabilized</p></td>
+<td><p>Non-symmetric systems (momentum, turbulence)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>GMRES</strong></p></td>
+<td><p>Generalized Minimal Residual</p></td>
+<td><p>General purpose; robust for difficult systems</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="preconditioners">
 <h3>Preconditioners<a class="headerlink" href="#preconditioners" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -636,16 +948,24 @@ document.write(`
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>AMG</strong></p></td>
-<td><p>Algebraic Multigrid (default)</p></td>
-<td><p>Best for large meshes</p></td>
+<td><p>Algebraic Multigrid — builds a coarser hierarchy to accelerate convergence</p></td>
+<td><p>Best for large meshes (default)</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Chebyshev</strong></p></td>
-<td><p>Polynomial smoothing</p></td>
-<td><p>Good with AMG as smoother</p></td>
+<td><p>Polynomial preconditioner — anisotropic-mesh friendly</p></td>
+<td><p>Good balance of quality and GPU efficiency</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>SGS</strong></p></td>
+<td><p>Symmetric Gauss-Seidel — red-black coloring for GPU parallelism</p></td>
+<td><p>Strong smoothing; moderate GPU cost</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Block-Jacobi</strong></p></td>
+<td><p>Damped block-diagonal scaling</p></td>
+<td><p>Stronger than Jacobi; good GPU parallelism</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Jacobi</strong></p></td>
-<td><p>Diagonal scaling</p></td>
-<td><p>Fast per iteration; good on GPU</p></td>
+<td><p>Simple diagonal scaling</p></td>
+<td><p>Cheapest per iteration; good on GPU</p></td>
 </tr>
 </tbody>
 </table>
@@ -743,7 +1063,7 @@ document.write(`
 <tbody>
 <tr class="row-even"><td><p>Immediate divergence (density-based)</p></td>
 <td><p>CFL too high</p></td>
-<td><p>Reduce target CFL; enable CFL ramping</p></td>
+<td><p>Reduce target CFL; extend CFL ramp</p></td>
 </tr>
 <tr class="row-odd"><td><p>Immediate divergence (pressure-based)</p></td>
 <td><p>Relaxation too aggressive</p></td>
@@ -764,6 +1084,14 @@ document.write(`
 <tr class="row-odd"><td><p>Force coefficients not plateauing</p></td>
 <td><p>Flow not yet periodic</p></td>
 <td><p>Extend iteration count; check domain size</p></td>
+</tr>
+<tr class="row-even"><td><p>Pressure-based not converging</p></td>
+<td><p>Segregated coupling struggling</p></td>
+<td><p>Try coupled solver or switch to density-based</p></td>
+</tr>
+<tr class="row-odd"><td><p>Checkerboard pressure pattern</p></td>
+<td><p>Inadequate pressure-velocity coupling</p></td>
+<td><p>Use Rhie-Chow stabilization; try PIMPLE</p></td>
 </tr>
 </tbody>
 </table>
@@ -835,22 +1163,29 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-types">Solver Types</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#density-based-recommended">Density-Based (Recommended)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#time-marching-schemes">Time-Marching Schemes</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cfl-number">CFL Number</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flux-scheme">Flux Scheme</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-order">Spatial Order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-classification">Solver Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#density-based-solver-recommended">Density-Based Solver (Recommended)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-marching-schemes">Time-Marching Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cfl-number">CFL Number</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flux-schemes">Flux Schemes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction-and-spatial-order">Reconstruction and Spatial Order</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#slope-limiters">Slope Limiters</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-based">Pressure-Based</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-velocity-coupling">Pressure-Velocity Coupling</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-factors">Relaxation Factors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wall-treatment">Wall Treatment</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-based-solver">Pressure-Based Solver</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pressure-velocity-coupling-algorithms">Pressure-Velocity Coupling Algorithms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-factors">Relaxation Factors</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solver">Linear Solver</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coupled-solver">Coupled Solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fsac-fractional-step-artificial-compressibility">FSAC (Fractional Step Artificial Compressibility)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acm-artificial-compressibility-method">ACM (Artificial Compressibility Method)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-summary">Solver Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solvers-and-preconditioners">Linear Solvers and Preconditioners</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iterative-solvers">Iterative Solvers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preconditioners">Preconditioners</a></li>
 </ul>
 </li>

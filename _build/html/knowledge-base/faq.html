@@ -60,6 +60,7 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/faq';</script>
     <script src="../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Glossary" href="glossary.html" />
@@ -399,6 +400,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#which-turbulence-model-should-i-use">Which turbulence model should I use?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-i-know-if-my-simulation-has-converged">How do I know if my simulation has converged?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#which-solver-should-i-choose">Which solver should I choose?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#my-simulation-diverged-what-went-wrong">My simulation diverged. What went wrong?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-iterations-do-i-need">How many iterations do I need?</a></li>
 </ul>
@@ -440,12 +442,14 @@ document.write(`
 </section>
 <section id="what-types-of-simulations-can-i-run">
 <h3>What types of simulations can I run?<a class="headerlink" href="#what-types-of-simulations-can-i-run" title="Link to this heading">#</a></h3>
-<p>Currently, Gradient Dynamics supports:</p>
+<p>Gradient Dynamics supports a comprehensive range of simulation types:</p>
 <ul class="simple">
-<li><p><strong>Steady-state RANS</strong> — The most common type of industrial CFD simulation</p></li>
-<li><p><strong>LES and DES</strong> — For transient, high-fidelity analysis (Pro tier and above)</p></li>
+<li><p><strong>Steady-state RANS</strong> — The most common type of industrial CFD simulation (k-ω SST, k-ε, Spalart-Allmaras, RSM)</p></li>
+<li><p><strong>URANS</strong> — Time-accurate unsteady RANS for periodic or transient flows</p></li>
+<li><p><strong>LES</strong> — Large Eddy Simulation for high-fidelity turbulence resolution (Pro tier and above)</p></li>
+<li><p><strong>DES / DDES / IDDES</strong> — Hybrid RANS-LES methods for massively separated flows (Pro tier and above)</p></li>
 </ul>
-<p>The platform handles incompressible flow simulations for external aerodynamics, internal flows, thermal analysis, and rotating machinery.</p>
+<p>The platform handles both <strong>compressible</strong> and <strong>incompressible</strong> flows using multiple solver formulations: density-based (explicit, recommended), pressure-based (implicit, segregated), coupled (implicit), FSAC (hybrid), and ACM (explicit incompressible). Applications include external aerodynamics, internal flows, thermal analysis, rotating machinery, and compressible high-Mach flows.</p>
 </section>
 <section id="is-my-data-secure">
 <h3>Is my data secure?<a class="headerlink" href="#is-my-data-secure" title="Link to this heading">#</a></h3>
@@ -539,12 +543,16 @@ document.write(`
 <li><p>The residual plot should show a clear downward trend, not oscillations</p></li>
 </ol>
 </section>
+<section id="which-solver-should-i-choose">
+<h3>Which solver should I choose?<a class="headerlink" href="#which-solver-should-i-choose" title="Link to this heading">#</a></h3>
+<p>For most applications, use the <strong>density-based solver</strong> — it is the fastest on GPU hardware and handles both compressible and low-speed flows through low-Mach preconditioning. Use the <strong>pressure-based solver</strong> (SIMPLE, PISO, PIMPLE) for strictly incompressible workflows, the <strong>coupled solver</strong> for strongly coupled physics, or <strong>FSAC/ACM</strong> for GPU-efficient incompressible explicit solvers. When in doubt, start with density-based.</p>
+</section>
 <section id="my-simulation-diverged-what-went-wrong">
 <h3>My simulation diverged. What went wrong?<a class="headerlink" href="#my-simulation-diverged-what-went-wrong" title="Link to this heading">#</a></h3>
 <p>The most common causes:</p>
 <ol class="arabic simple">
 <li><p>Poor mesh quality (check skewness and non-orthogonality)</p></li>
-<li><p>Too aggressive relaxation factors (reduce by 30%)</p></li>
+<li><p>Too aggressive CFL or relaxation factors (reduce CFL or relaxation by 30%)</p></li>
 <li><p>Incorrect boundary conditions (check all surfaces)</p></li>
 <li><p>Wrong geometry scale (verify dimensions are in meters)</p></li>
 </ol>
@@ -697,6 +705,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">Simulation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#which-turbulence-model-should-i-use">Which turbulence model should I use?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-i-know-if-my-simulation-has-converged">How do I know if my simulation has converged?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#which-solver-should-i-choose">Which solver should I choose?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#my-simulation-diverged-what-went-wrong">My simulation diverged. What went wrong?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-iterations-do-i-need">How many iterations do I need?</a></li>
 </ul>

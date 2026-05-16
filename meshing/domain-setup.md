@@ -26,14 +26,7 @@ Studio generates a Cartesian bounding box (wind tunnel) around your geometry wit
 For vehicle aerodynamics, use a ground plane and ensure the bottom padding is 0 so the car sits on the ground. For aircraft, increase the bottom padding to avoid ground interference.
 ```
 
-**How it works in the backend:**
-
-When you select External Flow, the mesher:
-1. Constructs the Cartesian domain bounding box from the padding parameters
-2. Loads the uploaded geometry as a closed surface
-3. Runs a fluid/solid classification step — the geometry surface defines the interior (solid) region, and the volume between the geometry and the domain box is the fluid region
-4. Applies the block AMR hierarchy to the fluid region, refining near the geometry surface using cut-cells
-5. Named selections for domain boundary faces (inlet, outlet, top, sides) are assigned automatically based on their position relative to the flow direction
+When you select External Flow, Studio creates the surrounding flow domain, assigns standard domain boundary names, and prepares the mesh controls for the volume outside the geometry.
 
 ### Internal Flow
 
@@ -45,14 +38,7 @@ The domain is defined by the interior volume of your geometry. Studio automatica
 - Detects inlet and outlet faces (the open ends of the geometry)
 - Sizes the mesh based on the smallest internal dimension
 
-**How it works in the backend:**
-
-When you select Internal Flow:
-1. The mesher computes the enclosed interior volume of the uploaded geometry
-2. Inlet and outlet surfaces are identified as open faces (holes in the surface) or by named selections you assign in the Surfaces tab
-3. The Cartesian block AMR grid is constructed to fill the interior volume
-4. Cut-cells are formed where the Cartesian grid intersects the interior walls
-5. Interior wall surfaces automatically become wall-type boundary patches
+When you select Internal Flow, Studio identifies the intended fluid volume, assigns inlet and outlet surfaces where possible, and prepares interior walls as boundary patches.
 
 ```{note}
 For internal flow geometries, **the geometry must be watertight** except at the intended inlet and outlet openings. Any gap in the surface other than at inlets/outlets will allow fluid to escape the domain and cause the mesher to fail to identify the correct interior.
@@ -70,9 +56,7 @@ This domain type creates:
 
 Configure the rotation axis, speed (RPM), and zone dimensions in the Setup tab.
 
-**How it works in the backend:**
-
-The rotating zone is meshed as a cylindrical sub-domain, and the AMR block hierarchy is constructed independently within each zone. At the rotating/stationary interface, a non-conformal interface is created — values are interpolated across the zone boundary using an area-weighted flux exchange. This approach is used for steady-state simulations (frozen-rotor). For transient sliding mesh, the interface is updated each time step.
+Studio uses the rotating zone definition to prepare the mesh regions and interface settings needed by the selected rotating-machinery workflow.
 
 ### Conjugate Heat Transfer (CHT)
 
@@ -150,7 +134,7 @@ You can view and rename all named selections in the **Surfaces** tab. See [Surfa
 
 ## Meshing Time
 
-Once you click **Generate Mesh**, the job is dispatched to cloud GPUs. Typical generation times:
+Once you click **Generate Mesh**, the job is submitted for cloud execution. Typical generation times:
 
 | Mesh Size | Typical Time |
 |-----------|-------------|
@@ -161,13 +145,13 @@ Once you click **Generate Mesh**, the job is dispatched to cloud GPUs. Typical g
 
 These are approximate. Actual time depends on:
 
-- **Geometry complexity** — More surface features and curvature require more cut-cell processing
-- **AMR depth** — More refinement levels increase both cell count and the number of block classification operations
-- **Number of refinement zones** — Each zone adds an additional refinement pass
-- **Domain size** — Larger domains with more coarse-level blocks take longer to initialize
+- **Geometry complexity** — More surface features and curvature require more mesh work.
+- **Refinement depth** — More refinement increases cell count and generation time.
+- **Number of refinement zones** — Each zone adds local resolution requirements.
+- **Domain size** — Larger domains require more cells at the same resolution.
 
 ```{tip}
-For a rough estimate: expect **1–10 million cells per minute** of meshing time, with complex high-AMR meshes at the lower end and simple geometries at the upper end.
+Use coarse meshes for setup checks, then refine once the domain, surfaces, and boundary conditions are correct.
 ```
 
 You can monitor meshing progress and intermediate cell counts in the **Logs** panel.

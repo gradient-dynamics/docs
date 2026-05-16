@@ -13,12 +13,12 @@ Multi-region meshing creates separate mesh zones for different physical domains 
 
 ## How It Works
 
-When you set up a multi-region mesh, the mesher:
+When you set up a multi-region mesh, Studio:
 
-1. **Meshes each region independently** using its own cell size and near-wall AMR settings
-2. **Tags every cell** with its region — so the solver knows which cells belong to which region
-3. **Detects or constructs interfaces** between touching regions
-4. **Assigns appropriate physics** to each region for simulation
+1. **Uses region-specific mesh settings** for fluids, solids, porous zones, and rotating zones.
+2. **Preserves region identity** through meshing and simulation setup.
+3. **Detects or defines interfaces** between touching regions.
+4. **Assigns appropriate physics** to each region for simulation.
 
 ## Creating Regions
 
@@ -97,7 +97,7 @@ Each region has independent mesh control:
 | Setting | Fluid Region | Solid Region |
 |---------|-------------|--------------|
 | **Cell size** | Smaller (resolve flow) | Larger (save cells) |
-| **Near-wall AMR** | Enabled | Disabled |
+| **Near-wall resolution** | Enabled where needed | Usually disabled |
 | **Min cell size** | Flow-dependent | Less critical |
 
 ```{tip}
@@ -110,7 +110,7 @@ A conjugate heat transfer pipe — fluid flowing inside a solid pipe wall:
 
 **Regions:**
 
-| Name | Type | Cell Size | Near-Wall AMR |
+| Name | Type | Cell Size | Near-Wall Resolution |
 |------|------|-----------|---------------|
 | `pipe_wall` | Solid | 1.5 mm | Disabled |
 | `internal_flow` | Fluid | 2.0 mm | Enabled (medium) |

@@ -10,7 +10,7 @@ Gradient Dynamics Studio offers tiered subscriptions to match different usage le
 | **Projects** | Unlimited | Unlimited | Unlimited | Unlimited |
 | **Max mesh cells** | 50M | 100M | 500M | Unlimited |
 | **Storage** | 50 GB | 200 GB | 500 GB | Custom |
-| **Near-wall AMR** | Yes | Yes | Yes | Yes |
+| **Near-wall controls** | Yes | Yes | Yes | Yes |
 | **CHT support** | No | Yes | Yes | Yes |
 | **MRF (rotating)** | No | Yes | Yes | Yes |
 | **CFD simulation** | Yes | Yes | Yes | Yes |
@@ -56,7 +56,7 @@ For individual engineers and small projects:
 - Unlimited projects
 - 50M cell limit
 - RANS simulation with all standard models
-- Near-wall AMR support
+- Near-wall resolution controls
 
 ## Pro Tier
 

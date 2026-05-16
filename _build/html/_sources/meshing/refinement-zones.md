@@ -11,14 +11,14 @@ The base mesh resolution applies uniformly across the domain, but many flow feat
 - **Gap between components** — Needs fine cells to resolve flow through narrow passages
 - **Jet or exhaust plume** — Needs fine cells along the jet path
 
-Refinement zones concentrate AMR block refinement where it matters most, keeping the total cell count manageable.
+Refinement zones concentrate mesh resolution where it matters most, keeping the total cell count manageable.
 
-## How Zones Work with Block AMR
+## How Zones Work
 
-Refinement zones specify a **target AMR level** within a defined region. All AMR blocks that fall within the zone are refined to at least this level, regardless of their proximity to a geometry surface. This integrates seamlessly with the block AMR hierarchy — there is no separate treatment for zone boundaries.
+Refinement zones specify a target resolution within a defined region. Cells inside the zone are generated at the requested local resolution, regardless of their distance from the main geometry.
 
 ```{tip}
-Zone refinement and surface refinement combine automatically. Blocks inside a zone near a geometry surface will be refined to the maximum of the zone level and the surface refinement level.
+Zone refinement and surface refinement combine automatically. Regions near both a surface and a refinement zone use the finer applicable setting.
 ```
 
 ## Zone Shapes
@@ -57,26 +57,26 @@ A spherical region defined by center and radius.
 3. Position and size the zone using either:
    - **3D viewer** — Drag the zone handles to position and resize
    - **Numerical input** — Enter exact coordinates and dimensions in the panel
-4. Set the **refinement level** — this sets the minimum AMR level within the zone
+4. Set the **refinement level** — this sets the minimum local resolution within the zone
 
 ## Setting the Refinement Level
 
-Each zone specifies a minimum AMR level for blocks within it. The level should be:
+Each zone specifies a minimum local resolution. The level should be:
 
-- **Higher** than the coarse background AMR level (otherwise the zone has no effect)
+- **Higher** than the coarse background level (otherwise the zone has no effect)
 - **Proportional** to the feature size you want to capture
-- **Not excessively higher** than the surrounding level — the AMR block hierarchy transitions smoothly between levels, but very large jumps increase cell count significantly
+- **Not excessively higher** than the surrounding level, because very large jumps increase cell count significantly
 
 ```{admonition} Sizing Guideline
 :class: tip
-Each AMR level doubles resolution in each dimension, so 2 extra levels = 4× finer cells. For wake capture, 1–2 additional AMR levels beyond the background is usually sufficient. For tight gaps or critical geometry features, 2–3 additional levels may be needed.
+For wake capture, 1-2 additional refinement levels beyond the background is usually sufficient. For tight gaps or critical geometry features, 2-3 additional levels may be needed.
 ```
 
 ## Common Refinement Strategies
 
 ### Vehicle Aerodynamics
 
-| Zone | Shape | Position | Additional AMR Levels |
+| Zone | Shape | Position | Additional Refinement |
 |------|-------|----------|-----------------------|
 | **Wake zone** | Box | Behind vehicle, 2–3× car length | +1–2 |
 | **Underbody zone** | Box | Under vehicle, ground to floor | +1 |
@@ -85,7 +85,7 @@ Each AMR level doubles resolution in each dimension, so 2 extra levels = 4× fin
 
 ### Airfoil / Wing
 
-| Zone | Shape | Position | Additional AMR Levels |
+| Zone | Shape | Position | Additional Refinement |
 |------|-------|----------|-----------------------|
 | **Leading edge** | Box | Extends upstream of LE | +2 |
 | **Trailing edge** | Box | Behind TE, 1–2× chord | +2 |
@@ -93,7 +93,7 @@ Each AMR level doubles resolution in each dimension, so 2 extra levels = 4× fin
 
 ### Internal Flow
 
-| Zone | Shape | Position | Additional AMR Levels |
+| Zone | Shape | Position | Additional Refinement |
 |------|-------|----------|-----------------------|
 | **Bend region** | Box/Cylinder | Around pipe bends | +1–2 |
 | **Constriction** | Cylinder | At flow restrictions | +2 |
@@ -105,4 +105,4 @@ Each AMR level doubles resolution in each dimension, so 2 extra levels = 4× fin
 - **Delete** — Remove zones you no longer need
 - **Toggle visibility** — Show/hide zones in the 3D viewer for clarity
 
-Multiple refinement zones can overlap. Where zones overlap, the **highest** AMR level (finest resolution) takes precedence.
+Multiple refinement zones can overlap. Where zones overlap, the finest requested resolution takes precedence.

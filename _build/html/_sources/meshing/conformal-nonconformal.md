@@ -1,162 +1,66 @@
 # Conformal vs Non-Conformal Meshes
 
-Understanding the difference between conformal and non-conformal mesh connectivity is important for multi-region setups, rotating machinery, and getting the most out of the solver. This page explains what each means, how the solver detects and handles them, and when each is appropriate.
+Conformal and non-conformal describe how cells connect across region interfaces. This matters for multi-region simulations, conjugate heat transfer, rotating machinery, and imported meshes.
 
-## What Is a Conformal Mesh?
+## Conformal Meshes
 
-A **conformal mesh** has exactly one shared face between every pair of adjacent cells. All cell faces line up perfectly across region boundaries — each face on one side has a matching face on the other side with 1:1 correspondence.
+A **conformal mesh** has matching faces across an interface. Cells on one side line up with cells on the other side.
 
-```
-Conformal interface:
+**Use when:**
 
-  Region A  |  Region B
-  __________|__________
-  |    |    ||    |    |
-  |    |    ||    |    |
-  |____|____||____|____|
-              ↑
-         Faces match 1:1
-```
+- You need the most direct region-to-region transfer.
+- Fluid and solid regions share clean, matching CAD interfaces.
+- A verification or validation workflow requires matched interfaces.
 
-**Properties:**
-- Faces on both sides of a boundary are identical in size and position
-- No interpolation needed at the interface — values transfer directly
-- Most numerically accurate at interfaces
-- Easier to achieve on simple geometries with matched CAD faces
+**Benefits:**
 
-## What Is a Non-Conformal Mesh?
+- Strong interface accuracy.
+- Straightforward quality checks.
+- Often preferred for final conjugate heat transfer studies when the geometry supports it.
 
-A **non-conformal mesh** has mismatched faces across a boundary. One cell may share parts of its face with multiple cells on the other side — this is common with block AMR meshes at refinement level boundaries, hanging nodes, and size transitions.
+## Non-Conformal Meshes
 
-```
-Non-conformal interface:
+A **non-conformal mesh** has mismatched faces across an interface. This is common when two regions use different local resolutions, when imported meshes do not align exactly, or when rotating and stationary regions meet.
 
-  Region A (coarse)  |  Region B (fine)
-  ___________________|_________________
-  |                  ||    |    |    |
-  |                  ||    |    |    |
-  |__________________||____|____|____|
-                       ↑
-         One large face ↔ multiple small faces
-         Requires interpolation
-```
+**Use when:**
 
-**Properties:**
-- Cells of different sizes meet at a boundary — one large face corresponds to multiple small faces
-- Values are interpolated across mismatched faces (area-weighted averaging)
-- Slightly less accurate at the interface than conformal
-- Essential for block AMR meshes and multi-region setups with different cell sizes
+- Different regions need different mesh sizes.
+- Geometry is complex or imported from separate sources.
+- Rotating machinery or sliding interfaces are part of the workflow.
+- The case requires unstructured or mixed-topology flexibility.
 
-## How the Solver Detects Mesh Type
+**Trade-offs:**
 
-When a simulation is submitted, the solver automatically analyses the mesh connectivity and classifies it:
+- More flexible setup.
+- More care needed around interface quality.
+- Interface size jumps should be kept moderate.
 
-**Detection logic:**
-- Counts the number of unique cell-pair connections vs. the total number of internal faces
-- If more than ~1% of faces share a cell pair that already has another face (duplicate pairs), the mesh is classified as **non-conformal / polyhedral**
-- Otherwise it is classified as **conformal**
+## Studio Behaviour
 
-This detection is entirely automatic — you don't need to specify the mesh type manually. The solver uses this classification to choose the appropriate numerical treatment.
+Studio detects the interface type during setup and prepares the appropriate simulation settings. For most users, automatic handling is recommended. Manual overrides should be used only when you have a specific validation requirement or have been advised by support.
 
-```{admonition} What you'll see in the logs
-:class: note
-After the solver initialises, the logs will report either:
+## Multi-Region Guidance
 
-`Polyhedral mesh mode ENABLED` — non-conformal mode active
+For conjugate heat transfer and other coupled cases:
 
-If no such message appears, the solver is running in standard conformal mode.
-```
-
-## Solver Modes
-
-| Mode | When Active | Treatment |
-|------|------------|-----------|
-| **Conformal (auto)** | Mesh detected as conformal (duplicate_ratio ≈ 0) | Standard finite volume — direct face flux computation, no interpolation overhead |
-| **Non-conformal / Polyhedral (auto)** | Mesh detected as non-conformal | Cell-pair aggregation — multiple faces between the same cell pair are grouped and fluxes are summed |
-| **Conformal (forced)** | `mesh_mode: conformal` in settings | Forces conformal path regardless of mesh |
-| **Polyhedral (forced)** | `mesh_mode: polyhedral` in settings | Forces polyhedral path regardless of mesh |
-
-For most users, **auto mode is correct** and no manual override is needed.
-
-## Which Meshes Are Conformal?
-
-| Mesh Type | Typical Classification | Notes |
-|-----------|----------------------|-------|
-| Cartesian cut-cell block AMR (single region) | **Conformal** | Standard Gradient Dynamics mesh with no multi-region boundaries |
-| Block AMR with matched multi-region interfaces | **Conformal** | Regions share exact face geometry at their boundary |
-| Block AMR with refinement level transitions | **Non-conformal** | Different AMR levels create hanging nodes at block boundaries |
-| Multi-region with different cell sizes | **Non-conformal** | Mismatched faces at the region interface |
-| Rotating MRF zone | **Non-conformal** | Rotating/stationary interface cannot be conformal |
-| Sliding mesh (transient rotating) | **Non-conformal** | Interface slides — faces never align exactly |
-
-## Multi-Region Interfaces
-
-When you set up a multi-region mesh (CHT, rotating machinery, porous zones), the interface between regions can be either conformal or non-conformal depending on how the geometry is set up and how the mesh sizes compare.
-
-### Conformal Interface
-
-Achieved when:
-- The two regions share an exactly matching face topology (imported as touching bodies in a single STEP file)
-- Both regions use the same or very similar cell sizes at the interface
-- The **Conformal** option is selected in the Interface settings
-
-**Advantages:**
-- Most accurate thermal or flow coupling
-- No interpolation error at the interface
-- Better convergence for CHT problems
-
-### Non-Conformal Interface
-
-Occurs when:
-- The two regions have significantly different cell sizes (e.g., coarse solid + fine fluid)
-- Geometry was imported as separate files with slight positional mismatches
-- Different mesh topologies on each side
-
-**Advantages:**
-- More flexible — doesn't require matched geometry
-- Allows very different resolutions on each side
-- Necessary for rotating zones (MRF, sliding mesh)
+- Use a single clean CAD assembly where possible.
+- Keep cell sizes similar across important interfaces.
+- Avoid tiny gaps, overlaps, and sliver regions at shared faces.
+- Review interface quality before running the simulation.
+- Keep the same interface strategy across design comparisons.
 
 ```{admonition} CHT recommendation
 :class: tip
-For conjugate heat transfer, use **conformal interfaces** where possible. Import your geometry as a single multi-body STEP file with touching faces, and set both regions to similar cell sizes at the wall. This gives the most accurate heat flux prediction at the fluid-solid boundary.
-```
-
-## Impact on Solver Accuracy and Stability
-
-### Conformal meshes
-
-- Full second-order accuracy at interfaces
-- No additional interpolation error
-- Fastest solver — no cell-pair aggregation overhead
-- Preferred for production CHT and internal flow
-
-### Non-conformal meshes
-
-- Small interpolation error at non-conformal faces (proportional to the size mismatch)
-- The solver uses area-weighted averaging to transfer fluxes across mismatched faces
-- Slightly more expensive per iteration
-- Works well when size mismatch is moderate (< 4:1)
-
-```{admonition} Mesh quality and stability
-:class: warning
-Solver instability in multi-region cases is more often caused by **poor mesh quality near the interface** (large cell size jumps, sliver cells at the boundary) than by the conformal/non-conformal classification itself. If you see residuals oscillating or pressure clipping in the logs, check the mesh quality report at the interface region before changing the mesh mode.
-
-Key things to check:
-- Cell size ratio across the interface — aim for < 4:1
-- Skewness near the interface — target < 0.85
-- Non-orthogonality at interface faces — target < 70°
+For final heat-transfer studies, use conformal interfaces where practical and verify that temperature and heat-flux monitors are stable.
 ```
 
 ## Scenarios at a Glance
 
-| Scenario | Recommended Setup | Conformal? |
-|----------|------------------|------------|
-| Single-region external aero | Default Cartesian block AMR mesh | Conformal |
-| Internal pipe flow | Default Cartesian block AMR mesh | Conformal |
-| CHT heat sink (same cell size at wall) | Multi-body STEP, matched sizing | Conformal |
-| CHT heat sink (different region sizes) | Multi-body STEP, auto interface | Non-conformal |
-| Fan / pump (steady MRF) | Rotating zone + frozen rotor interface | Non-conformal |
-| Fan / pump (transient sliding mesh) | Sliding mesh interface | Non-conformal |
-| Porous media zone | Auto-detected at zone boundary | Non-conformal |
-| Periodic sector model | Periodic interface | Non-conformal |
+| Scenario | Typical Setup | Interface Type |
+|----------|---------------|----------------|
+| Single-region external aerodynamics | One fluid region | Conformal |
+| Internal pipe flow | One connected fluid region | Conformal |
+| CHT with matched fluid-solid faces | Multi-body CAD with aligned interfaces | Conformal |
+| CHT with different region sizes | Region-specific mesh sizes | Non-conformal |
+| Fan or pump steady analysis | Rotating and stationary zones | Non-conformal |
+| Imported mesh workflow | Depends on imported connectivity | Conformal or non-conformal |

@@ -8,7 +8,7 @@ Gradient Dynamics Studio is a browser-based CFD (Computational Fluid Dynamics) p
 
 ### Do I need to install anything?
 
-No. Gradient Dynamics runs entirely in the browser. All mesh generation and simulation runs execute on cloud GPUs. You just need a modern web browser (Chrome, Firefox, Edge, or Safari).
+No. Gradient Dynamics runs entirely in the browser. Mesh generation and simulation runs execute in the cloud. You just need a modern web browser (Chrome, Firefox, Edge, or Safari).
 
 ### What types of simulations can I run?
 
@@ -19,7 +19,7 @@ Gradient Dynamics supports a comprehensive range of simulation types:
 - **LES** — Large Eddy Simulation for high-fidelity turbulence resolution (Pro tier and above)
 - **DES / DDES / IDDES** — Hybrid RANS-LES methods for massively separated flows (Pro tier and above)
 
-The platform handles both **compressible** and **incompressible** flows using multiple solver formulations: density-based (explicit, recommended), pressure-based (implicit, segregated), coupled (implicit), FSAC (hybrid), and ACM (explicit incompressible). Applications include external aerodynamics, internal flows, thermal analysis, rotating machinery, and compressible high-Mach flows.
+The platform handles compressible flow, incompressible flow, thermal analysis, rotating machinery, and coupled multiphysics workflows.
 
 ### Is my data secure?
 
@@ -67,6 +67,10 @@ Start with the geometry's characteristic length divided by 50–100. For example
 
 Then refine until your results don't change significantly between meshes (mesh independence).
 
+### What mesh types are available?
+
+Studio supports **structured** and **unstructured** meshing. Structured meshing is the recommended starting point for most Studio workflows. Unstructured meshing is available for complex topology, interoperability, and imported-mesh workflows.
+
 ### What is y+ and why does it matter?
 
 y+ is a dimensionless distance that describes the first cell height relative to the boundary layer thickness. It must match your turbulence model's requirements:
@@ -103,13 +107,13 @@ STEP (.step, .stp), IGES (.iges, .igs), STL, and OBJ. STEP is recommended as it 
 
 ### Which solver should I choose?
 
-For most applications, use the **density-based solver** — it is the fastest on GPU hardware and handles both compressible and low-speed flows through low-Mach preconditioning. Use the **pressure-based solver** (SIMPLE, PISO, PIMPLE) for strictly incompressible workflows, the **coupled solver** for strongly coupled physics, or **FSAC/ACM** for GPU-efficient incompressible explicit solvers. When in doubt, start with density-based.
+For most applications, start with **Automatic** solver selection. Choose a specific solver family when your physics, validation target, or workflow requires it.
 
 ### My simulation diverged. What went wrong?
 
 The most common causes:
 1. Poor mesh quality (check skewness and non-orthogonality)
-2. Too aggressive CFL or relaxation factors (reduce CFL or relaxation by 30%)
+2. Too aggressive startup or stability settings
 3. Incorrect boundary conditions (check all surfaces)
 4. Wrong geometry scale (verify dimensions are in meters)
 

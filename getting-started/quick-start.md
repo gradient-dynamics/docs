@@ -58,13 +58,14 @@ Navigate to the **Mesh Settings** tab:
 
 | Parameter | Description | Typical Range |
 |-----------|-------------|---------------|
-| **Base cell size** | Coarsest cell size in the block grid | 0.01 – 1.0 m |
-| **Max AMR levels** | Maximum refinement depth | 3 – 6 |
-| **Surface refinement** | AMR levels near geometry surfaces | Medium – Fine |
+| **Mesh type** | Structured or unstructured | Structured for most first runs |
+| **Base cell size** | Starting mesh resolution | 0.01 – 1.0 m |
+| **Refinement levels** | Maximum local refinement depth | 3 – 6 |
+| **Surface refinement** | Resolution near geometry surfaces | Medium – Fine |
 
 ### Near-Wall Resolution
 
-For wall-bounded flows, set the **Near-Wall AMR level** in the Surface Refinement section. Use the **y+ calculator** to verify the resulting wall cell size for your flow speed.
+For wall-bounded flows, set the near-wall resolution in the Surface Refinement section. Use the **y+ calculator** to verify the resulting wall cell size for your flow speed.
 
 ```{tip}
 For standard RANS with k-ω SST, Medium near-wall refinement targeting y+ ≈ 30 is a good starting point.
@@ -91,11 +92,11 @@ In the **Surfaces** tab, assign names to boundary patches:
 ## Step 9: Generate the Mesh
 
 1. Click **Generate Mesh**
-2. The job is submitted to cloud GPUs
+2. The job is submitted for cloud execution
 3. Monitor progress in the **Logs** panel
 4. Once complete, the mesh appears in the 3D viewer
 
-Review mesh quality in the **Mesh Quality** tab — check cut-cell volume fractions and non-orthogonality.
+Review mesh quality in the **Mesh Quality** tab. Check highlighted quality metrics before continuing to simulation.
 
 ## Step 10: Simulate
 
@@ -115,7 +116,7 @@ With the mesh ready, create a **CFD project** to run a simulation directly in St
 
 In the **Simulation** tab:
 
-1. **Solver type** — Select **Density-based** (default, recommended)
+1. **Solver family** — Select **Automatic** unless you have a specific requirement
 2. **Turbulence model** — Select k-ω SST (recommended for most external flows)
 3. **Boundary conditions** — Studio auto-detects boundaries from your named surfaces:
    - Set inlet velocity (e.g., 30 m/s)
@@ -146,7 +147,7 @@ At any point, open the **AI Assistant** panel and ask questions in natural langu
 
 > "Set up an external aerodynamics mesh for this car geometry"
 
-> "What near-wall AMR settings should I use for highway speed?"
+> "What near-wall settings should I use for highway speed?"
 
 > "Run a simulation at 60 mph with k-omega SST"
 

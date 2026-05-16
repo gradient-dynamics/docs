@@ -8,24 +8,18 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : A mesh that varies cell size across the domain, using smaller cells where detail is needed and larger cells elsewhere.
 
 **AMG (Algebraic Multigrid)**
-: A preconditioner that solves linear systems efficiently by using a hierarchy of coarser approximations. Default in Gradient Dynamics.
+: A common technique for accelerating linear solves in CFD and multiphysics workflows.
 
 **Angle of Attack (AoA)**
 : The angle between the freestream velocity direction and the reference line of a body (e.g., a wing chord). Measured in degrees.
-
-**Artificial Compressibility Method (ACM)**
-: A technique for solving incompressible flows using a compressible-like formulation by adding a pseudo-compressibility term to the continuity equation, enabling explicit time marching on GPU hardware.
 
 **Aspect Ratio**
 : The ratio of a cell's longest dimension to its shortest. Boundary layer cells have intentionally high aspect ratios; volume cells should have low aspect ratios.
 
 **AUSM+ (Advection Upstream Splitting Method)**
-: A low-dissipation flux scheme that splits the inviscid flux into convective and pressure parts. Particularly accurate for low-Mach number flows.
+: A numerical flux family used in compressible CFD.
 
 ## B
-
-**Block (AMR)**
-: A fixed-size array of Cartesian cells (typically 8×8×8) that forms the fundamental unit of the block-AMR mesh hierarchy. Blocks are refined by splitting into child blocks.
 
 **Boundary Condition**
 : A mathematical specification of what happens at the edge of the computational domain (inlet velocity, outlet pressure, wall no-slip, etc.).
@@ -48,10 +42,7 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : The fundamental volume element of a computational mesh. The flow equations are solved for each cell.
 
 **Coupled Solver**
-: A solver that solves the momentum and pressure equations simultaneously as a single block system, rather than sequentially. More robust for strongly coupled flows.
-
-**Cut Cell**
-: A Cartesian hexahedral cell that has been clipped by a geometry surface to form a polyhedral cell conforming to the boundary. Cut cells carry volume fraction, shifted centroid, and aperture metadata.
+: A solver family used when multiple physical fields or regions interact strongly.
 
 **CFD (Computational Fluid Dynamics)**
 : The use of numerical methods to solve fluid flow equations on a computer.
@@ -81,9 +72,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 
 ## F
 
-**FSAC (Fractional Step Artificial Compressibility)**
-: A hybrid explicit-implicit solver method that combines fractional step time advancement with an artificial compressibility formulation for pressure, bridging the gap between fully explicit and fully implicit approaches.
-
 **Face**
 : A polygon shared between two mesh cells (internal face) or between a cell and the domain boundary (boundary face).
 
@@ -107,7 +95,7 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : A six-faced volume cell. Hexahedral meshes generally provide better numerical accuracy and convergence than tetrahedral meshes.
 
 **HLLC (Harten-Lax-van Leer-Contact)**
-: A Riemann solver that captures contact discontinuities in addition to shocks. A robust general-purpose flux scheme for compressible flow.
+: A numerical flux family used in compressible CFD.
 
 ## I
 
@@ -124,13 +112,10 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **LES (Large Eddy Simulation)**
 : A turbulence modeling approach that resolves large-scale eddies directly and models only the smallest scales. More accurate but much more expensive than RANS.
 
-**Linelet**
-: A wall treatment technique that embeds a one-dimensional sub-grid within each near-wall cell, solving the boundary layer profile locally. Provides wall-resolved accuracy on coarser meshes.
-
 ## M
 
 **MUSCL (Monotone Upstream-centered Scheme for Conservation Laws)**
-: A higher-order spatial reconstruction method that interpolates cell-centered values to face centers for improved accuracy. Default reconstruction scheme in the density-based solver.
+: A higher-order spatial reconstruction method used in CFD.
 
 **Manifold**
 : A surface where every edge is shared by exactly two faces. Non-manifold surfaces have topology errors.
@@ -182,10 +167,7 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 ## S
 
 **Segregated Solver**
-: A solver strategy that solves each governing equation (momentum, pressure, turbulence) sequentially and iterates to convergence. SIMPLE, PISO, and PIMPLE are segregated algorithms.
-
-**Signed Distance Field (SDF)**
-: A scalar field where each point stores the signed distance to the nearest geometry surface — negative inside solids, positive in fluid. Used for cell classification and cut-cell generation.
+: A solver strategy that solves related equations in sequence and iterates to convergence.
 
 **SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)**
 : The standard pressure-velocity coupling algorithm for steady-state CFD.
@@ -208,9 +190,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : The ratio of velocity fluctuations to the mean velocity, expressed as a percentage. Defines the level of incoming turbulence.
 
 ## V
-
-**Volume Fraction**
-: For cut cells, the ratio of the fluid portion of the cell to the full Cartesian cell volume. A volume fraction of 1.0 means the cell is entirely fluid; values near 0 indicate a thin sliver that is typically merged with a neighbor.
 
 **VTU (VTK Unstructured)**
 : A file format for unstructured meshes and field data, used by ParaView and other visualization tools.

@@ -29,7 +29,7 @@ The **Shear Stress Transport** model combines k-ω near walls with k-ε in the f
 
 **Best for:** Vehicle aerodynamics, wing analysis, duct flows, general-purpose CFD
 
-**Near-wall AMR:** Medium (y+ ≈ 30) or Fine (y+ ≈ 1)
+**Near-wall resolution:** Medium (y+ ≈ 30) or Fine (y+ ≈ 1)
 
 ---
 
@@ -49,7 +49,7 @@ A two-equation model solving for turbulent kinetic energy (k) and dissipation ra
 
 **Best for:** Internal pipe flows, industrial duct systems, fully turbulent flows
 
-**Near-wall AMR:** Medium (y+ ≈ 30–300)
+**Near-wall resolution:** Medium (y+ ≈ 30-300)
 
 ---
 
@@ -61,7 +61,7 @@ A one-equation model solving a single transport equation for turbulent viscosity
 - Lowest computational cost of all RANS models
 - Good for attached boundary layers
 - Stable and fast-converging
-- Well-suited for compressible flows (integrated with the density-based solver)
+- Well-suited for compressible flows
 
 **Limitations:**
 - Less accurate for separated flows
@@ -82,7 +82,7 @@ The default is the **standard** variant. Studio selects the appropriate variant 
 
 **Best for:** Streamlined bodies, aerospace applications, compressible flows, preliminary analysis
 
-**Near-wall AMR:** Medium (y+ ≈ 30) or Fine (y+ ≈ 1)
+**Near-wall resolution:** Medium (y+ ≈ 30) or Fine (y+ ≈ 1)
 
 ---
 
@@ -98,7 +98,7 @@ A second-order closure solving transport equations for all six Reynolds stress c
 **Limitations:**
 - Computationally expensive — 7 additional transport equations
 - Can be less stable; typically initialized from a converged k-ω SST solution
-- Requires more conservative relaxation/CFL tuning
+- Requires more conservative solver tuning
 
 **Pressure-strain correlation models:**
 
@@ -111,7 +111,7 @@ The default is **LRR-IP**. Studio applies conservative relaxation factors automa
 
 **Best for:** Swirling flows, cyclones, rotating machinery, complex 3D separation, turbomachinery
 
-**Near-wall AMR:** Medium (y+ ≈ 30) or Fine (y+ ≈ 1)
+**Near-wall resolution:** Medium (y+ ≈ 30) or Fine (y+ ≈ 1)
 
 ---
 
@@ -121,7 +121,7 @@ Large Eddy Simulation directly resolves large-scale turbulent structures and onl
 
 **When to use:** Aeroacoustics, vortex shedding, wake dynamics, bluff body flows, or any case where the time-resolved turbulence structure matters — not just the mean flow.
 
-**Requirements:** Very fine mesh (Fine or Very Fine near-wall AMR), transient simulation with small time steps.
+**Requirements:** Very fine near-wall mesh, transient simulation with small time steps.
 
 **Tier:** Pro and above
 
@@ -195,7 +195,7 @@ Detached Eddy Simulation is a hybrid approach: RANS is used in attached boundary
 
 **When to use:** Flows with large separated regions where RANS is inaccurate but full LES is unaffordable — ground vehicle wakes, bluff bodies, buffet, stall.
 
-**Requirements:** Fine near-wall AMR for the RANS region; the LES region is handled automatically by the DES switching function.
+**Requirements:** Fine near-wall resolution for the RANS region; the LES region is handled automatically by the DES switching function.
 
 **Tier:** Pro and above
 
@@ -291,20 +291,14 @@ Time-accurate Reynolds Stress Model for transient flows with strong anisotropy o
 
 ## Choosing a Simulation Type
 
-```{mermaid}
-flowchart TD
-    A[Start] --> B{Need time-accurate results?}
-    B -->|No| C[RANS]
-    B -->|Yes| D{Is turbulence structure important?}
-    D -->|No| E[URANS]
-    D -->|Yes| F{Can you afford full LES cost?}
-    F -->|Yes| G[LES]
-    F -->|No| H[DES / DDES]
-    C --> I{Strong swirl or rotation?}
-    I -->|Yes| J[RSM]
-    I -->|No| K{Quick estimate?}
-    K -->|Yes| L[Spalart-Allmaras]
-    K -->|No| M[k-ω SST]
-```
+Use this selection path:
+
+1. If you do not need time-accurate results, start with RANS.
+2. If you need time-accurate results but not detailed turbulence structures, use URANS.
+3. If detailed turbulence structures matter and the budget allows it, use LES.
+4. If detailed separated-flow behaviour matters but full LES is too expensive, use DES or DDES.
+5. For strong swirl or rotation in RANS, consider RSM.
+6. For quick preliminary studies, consider Spalart-Allmaras.
+7. For most general studies, start with k-ω SST.
 
 When in doubt, **start with RANS k-ω SST**. It covers the widest range of applications at the lowest cost and provides a good initial field for switching to higher-fidelity methods if needed.

@@ -4,7 +4,7 @@ Surfaces (also called **named selections** or **boundary patches**) are named re
 
 ## What Are Named Selections?
 
-When the mesher generates a mesh, every face on the domain boundary is assigned to a named selection. These names carry through to the simulation setup — boundary conditions (inlet velocity, outlet pressure, wall type) are applied to named selections by name. The solver never sees raw face indices; it sees patch names.
+When the mesher generates a mesh, every face on the domain boundary is assigned to a named selection. These names carry through to the simulation setup: boundary conditions such as inlet velocity, outlet pressure, and wall type are applied to named selections by name.
 
 Named selections are created from three sources:
 
@@ -92,16 +92,9 @@ Use lowercase names that describe the physical role:
 Studio's AI Assistant and boundary condition auto-detection use surface names to assign BCs automatically. Using standard names like `inlet`, `outlet`, and `wall` enables full automation of the simulation setup step.
 ```
 
-## How Named Selections Are Processed
+## How Named Selections Are Used
 
-When you click **Generate Mesh**, the following happens on the backend:
-
-1. The domain geometry and all named selection assignments are serialized and sent to the cloud GPU job
-2. During meshing, the block AMR grid is classified — each block is tagged as fluid, solid, or cut-cell
-3. All boundary faces of the fluid region are assigned to their named selections based on the geometry input
-4. CAD face names from STEP files are matched to faces in the cut-cell mesh using spatial proximity and normal direction
-5. Domain boundary faces (inlet, outlet, sides) are assigned automatically based on their position
-6. The final named selection map is stored with the mesh and used directly in the simulation setup
+When you click **Generate Mesh**, Studio carries your named selections into the generated mesh and simulation setup. Domain boundary faces are named from their position and role, CAD face names are preserved where available, and user-created selections remain available for boundary conditions.
 
 After meshing, you can view the named selection assignments in the 3D viewer and make any corrections before running a simulation.
 
@@ -118,7 +111,7 @@ Override the global cell size for specific surfaces. Useful for:
 
 ### Feature Angle
 
-Controls how the mesher handles sharp edges. Faces meeting at angles greater than the feature angle threshold are treated as separate geometric features and receive refined AMR at the edge.
+Controls how the mesher handles sharp edges. Faces meeting at angles greater than the feature angle threshold are treated as separate geometric features and receive additional resolution near the edge.
 
 - **Low angle (15–30°)** — Captures more edges, finer mesh along features
 - **High angle (45–60°)** — Only captures sharp edges, fewer refinement cells

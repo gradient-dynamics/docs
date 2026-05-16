@@ -7,7 +7,7 @@ Step-by-step walkthroughs for common CFD applications using Gradient Dynamics St
 ### [Vehicle Aerodynamics](vehicle-aerodynamics.md)
 Simulate airflow around a car at highway speed. Calculate drag and lift coefficients, visualize pressure distribution and wake structure.
 
-### [Aircraft Wing](aircraft-wing.md)
+### [Aircraft Wing](airfoil.md)
 Analyze an aircraft wing section. Compute lift and drag, visualize pressure coefficient on upper and lower surfaces, examine tip vortex structure.
 
 ## Internal Flow
@@ -28,7 +28,7 @@ Simulate a rotating fan or pump impeller using the Multiple Reference Frame (MRF
 | I want to... | Start with |
 |--------------|-----------|
 | Analyze drag on a vehicle | [Vehicle Aerodynamics](vehicle-aerodynamics.md) |
-| Study wing performance | [Aircraft Wing](aircraft-wing.md) |
+| Study wing performance | [Aircraft Wing](airfoil.md) |
 | Calculate pipe pressure drop | [Pipe Flow](internal-pipe-flow.md) |
 | Evaluate cooling design | [Electronics Cooling](electronics-cooling.md) |
 | Simulate a fan or pump | [Fan/Pump](rotating-machinery.md) |

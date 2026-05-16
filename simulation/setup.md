@@ -14,29 +14,27 @@ Before setting up a simulation, you need a mesh. You can:
 
 A simulation configuration consists of five parts:
 
-1. **Solver type** — Density-based (recommended) or pressure-based
+1. **Solver family** — Automatic, compressible, incompressible, coupled, or transient
 2. **Turbulence model** — The physics model for turbulent flow
 3. **Boundary conditions** — What happens at each surface (inlets, outlets, walls)
-4. **Solver settings** — Numerical algorithm and convergence parameters
+4. **Solver settings** — Accuracy, robustness, and convergence parameters
 5. **Run parameters** — Maximum iterations, convergence criteria
 
 ## Step-by-Step Configuration
 
-### 1. Select Solver Type
+### 1. Select Solver Family
 
-Choose the solver formulation from the dropdown at the top of the Simulation tab. The available solver types are:
+Choose the solver family from the dropdown at the top of the Simulation tab. The available options are:
 
-| Solver | Description |
-|--------|-------------|
-| **Density-Based** (recommended) | Compressible, explicit — best GPU performance for all standard CFD |
-| **Pressure-Based** | Incompressible, implicit, segregated — SIMPLE, SIMPLEC, PISO, or PIMPLE algorithms |
-| **Coupled** | Incompressible, implicit, coupled — solves momentum and pressure simultaneously |
-| **FSAC** | Incompressible, hybrid explicit/implicit — fractional step with artificial compressibility |
-| **ACM** | Incompressible, explicit — artificial compressibility method for GPU-efficient incompressible flows |
+| Solver Family | Description |
+|---------------|-------------|
+| **Automatic** (recommended) | Studio selects stable defaults from the project physics, mesh, and boundary conditions. |
+| **Compressible Flow** | Use for high-speed flows, pressure waves, or density changes. |
+| **Incompressible Flow** | Use for low-speed liquid or gas flows where density variation is not important. |
+| **Coupled Multiphysics** | Use when flow, heat transfer, and multiple regions interact strongly. |
+| **Transient Flow** | Use for time-varying wakes, rotating machinery, startup/shutdown, or unsteady thermal response. |
 
-**Density-based** is the default and recommended choice for the vast majority of applications. It is optimized for the GPU-native Cartesian AMR mesh and delivers the best performance across both compressible and incompressible flow regimes (via low-Mach preconditioning). See [Solver Settings](solver-settings.md) for a detailed comparison of all solver types.
-
-Use the other solvers only if your application specifically requires an incompressible formulation or a particular coupling strategy.
+**Automatic** is the best starting point for most projects. Use a specific solver family when your validation target, physics, or project requirements call for it. See [Solver Settings](solver-settings.md) for guidance.
 
 ### 2. Select Turbulence Model
 
@@ -58,10 +56,10 @@ You can override any auto-detected condition. See [Boundary Conditions](boundary
 
 For most cases, the defaults work well:
 
-- **Density-based:** SSP-RK3 explicit time marching, CFL 1.5 with auto-ramping, AUSM+ flux scheme, MUSCL reconstruction
-- **Pressure-based:** SIMPLE algorithm, model-appropriate relaxation factors, AMG preconditioner
-- **Coupled:** Block-coupled momentum-pressure system, AMG preconditioner
-- **FSAC / ACM:** Explicit time marching with artificial compressibility, CFL-controlled
+- **Accuracy:** Standard
+- **Robustness:** Automatic
+- **Convergence target:** Application-appropriate residual target
+- **Run monitors:** Forces, pressure drop, heat flux, temperatures, or other engineering quantities
 
 See [Solver Settings](solver-settings.md) for advanced tuning options.
 
@@ -70,7 +68,7 @@ See [Solver Settings](solver-settings.md) for advanced tuning options.
 | Parameter | Description | Typical Value |
 |-----------|-------------|---------------|
 | **Max iterations** | Maximum solver iterations | 500 – 2000 |
-| **Convergence criterion** | Residual threshold for completion | 1e-5 (density) / 1e-4 (pressure) |
+| **Convergence criterion** | Residual threshold for completion | 1e-4 – 1e-6 |
 
 ```{tip}
 Start with 500 iterations. If residuals haven't converged, you can extend the run. Most RANS simulations converge within 300–1000 iterations.
@@ -90,10 +88,10 @@ The estimate is shown when you click **Run Simulation**, before confirming.
 
 For the fastest setup, use the AI Assistant:
 
-> "Set up a density-based simulation at 30 m/s with k-omega SST"
+> "Set up an external aerodynamics simulation at 30 m/s with k-omega SST"
 
 The assistant will:
-1. Select the density-based solver
+1. Select an appropriate solver family
 2. Select k-ω SST turbulence model
 3. Set inlet velocity to 30 m/s
 4. Configure outlet as pressure outlet (0 Pa)

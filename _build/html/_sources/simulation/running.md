@@ -5,7 +5,7 @@ Once your simulation is configured, this page covers how to launch, monitor, and
 ## Launching a Simulation
 
 1. Review your configuration in the **Simulation** tab:
-   - Solver type selected (density-based recommended)
+   - Solver family selected
    - Turbulence model selected
    - Boundary conditions assigned to all surfaces
    - Solver settings configured
@@ -16,7 +16,7 @@ Once your simulation is configured, this page covers how to launch, monitor, and
    - Selected turbulence model
 4. Click **Confirm** to submit the job
 
-The simulation is queued and dispatched to cloud GPUs.
+The simulation is queued and dispatched for cloud execution.
 
 ## Job Status
 
@@ -36,25 +36,14 @@ The current status is displayed in the workspace header with color coding.
 
 ### Residual Plot
 
-While the simulation runs, the **convergence plot** updates in real time. The residuals shown depend on your solver type:
-
-**Density-based solver (default):**
-- **Density residual** — Primary convergence indicator for the coupled system
-- **Momentum residuals** (ρu, ρv, ρw) — Momentum equation errors
-- **Energy residual** — Energy equation error
-- **Turbulence residuals** (k, ω or ε) — Turbulence model errors
-
-**Pressure-based solver:**
-- **Continuity residual** — Mass conservation error
-- **Velocity residuals** (Ux, Uy, Uz) — Momentum equation errors
-- **Turbulence residuals** (k, ω or ε) — Turbulence model errors
+While the simulation runs, the **convergence plot** updates in real time. The residuals shown depend on the selected physics and solver family. Common residuals include mass, momentum, energy, and turbulence quantities.
 
 All residuals are plotted on a **logarithmic scale** vs. iteration number.
 
 **What to look for:**
 - Residuals should **decrease monotonically** (trending downward)
 - A converged solution shows residuals reaching a **plateau** at a low level
-- Oscillating residuals indicate the solution is struggling — consider adjusting CFL (density-based) or relaxation factors (pressure-based)
+- Oscillating residuals indicate the solution is struggling. Consider using more conservative solver settings or reviewing mesh quality and boundary conditions.
 
 ### Convergence Indicators
 
@@ -62,12 +51,12 @@ All residuals are plotted on a **logarithmic scale** vs. iteration number.
 |---------------|---------|
 | > 1e-2 | Not converged — solution is changing significantly |
 | 1e-2 to 1e-4 | Partially converged — trends are established |
-| < 1e-5 | Well converged — engineering quantities are stable (density-based target) |
-| < 1e-4 | Well converged — suitable for pressure-based solver |
+| < 1e-5 | Well converged for many engineering workflows |
+| < 1e-4 | Often acceptable when monitor quantities are stable |
 | < 1e-6 | Tightly converged — research-grade accuracy |
 
 ```{tip}
-For engineering applications, convergence to 1e-5 (density residual) is usually sufficient. Force and moment coefficients typically stabilize well before residuals reach their final level — always verify that Cd, Cl, and pressure drop have plateaued.
+For engineering applications, residual targets should be checked alongside monitor quantities. Force, moment, pressure-drop, and heat-transfer values should plateau before you treat the run as final.
 ```
 
 ## Logs
@@ -75,7 +64,7 @@ For engineering applications, convergence to 1e-5 (density residual) is usually 
 The **Logs** panel shows real-time solver output:
 
 - Iteration count and residual values
-- Solver diagnostics (limiter activity, CFL numbers)
+- Solver diagnostics and stability indicators
 - Error messages if something goes wrong
 - Execution timing
 
@@ -105,7 +94,7 @@ If a simulation fails, check:
 
 | Error | Cause | Fix |
 |-------|-------|-----|
-| Floating point exception | Solution diverged | Reduce CFL (density-based) or relaxation factors (pressure-based) |
+| Floating point exception | Solution diverged | Use more conservative settings and review mesh quality |
 | Negative cell volume | Mesh error | Regenerate mesh, check geometry |
 | Matrix singularity | Isolated cells or patches | Check mesh connectivity |
 | Credit limit reached | Insufficient credits | Upgrade tier or wait for monthly reset |

@@ -10,7 +10,7 @@ Guidelines for getting accurate, reliable results from Gradient Dynamics Studio.
 - **Use STEP format** for CAD files — it preserves topology that helps meshing and surface identification
 - **Simplify complex assemblies** — remove small features (screws, bolts, labels) that don't affect flow
 - **Close gaps and holes** — the geometry must be watertight for volume meshing
-- **Remove internal surfaces** — overlapping or duplicate faces cause cut-cell meshing errors
+- **Remove internal surfaces** — overlapping or duplicate faces can cause meshing errors
 
 ### Geometry Scale
 
@@ -22,25 +22,25 @@ Guidelines for getting accurate, reliable results from Gradient Dynamics Studio.
 
 ### Start Coarse, Then Refine
 
-1. **Coarse mesh first** — Run a quick mesh (lower AMR levels) to verify the setup
-2. **Check quality** — Review cut-cell volume fractions and any flagged problem cells
-3. **Refine** — Increase AMR levels and regenerate
+1. **Coarse mesh first** — Run a quick mesh to verify the setup
+2. **Check quality** — Review flagged quality metrics and problem regions
+3. **Refine** — Increase local or surface resolution and regenerate
 4. **Compare** — Check that key quantities (Cd, pressure drop) change by < 5% between meshes
 
 This "mesh independence study" ensures your results are not artifacts of the mesh resolution.
 
 ### Near-Wall Resolution
 
-- **Use the y+ calculator** to determine the appropriate near-wall AMR level for your flow speed and turbulence model
+- **Use the y+ calculator** to determine the appropriate near-wall resolution for your flow speed and turbulence model
 - **y+ ≈ 30** (wall-function RANS, medium surface refinement) works well for most external aerodynamics
 - **y+ ≈ 1** (wall-resolved, fine or very fine surface refinement) is needed for LES, detailed heat transfer, or sensitive separation
-- Do not over-refine walls unnecessarily — each additional near-wall AMR level multiplies local cell count significantly
+- Do not over-refine walls unnecessarily; near-wall resolution can add cells quickly
 
 ### Refinement Zones
 
 - **Focus refinement where it matters** — wakes, separation zones, stagnation regions
 - **Don't over-refine far-field regions** — cells far from the geometry contribute little to accuracy
-- **Avoid extreme level jumps** — 2–3 AMR level difference between adjacent regions is the practical limit
+- **Avoid extreme level jumps** — 2-3 refinement levels between adjacent regions is a practical limit
 - **Cover the full wake** — for bluff bodies, the wake zone should extend at least 3× body length downstream
 
 ### Domain Sizing
@@ -52,9 +52,9 @@ This "mesh independence study" ensures your results are not artifacts of the mes
 
 ## Simulation
 
-### Solver Type
+### Solver Family
 
-Use the **density-based solver** (the default) for all standard CFD applications. It runs significantly faster on GPU hardware and produces equivalent accuracy for incompressible flows via low-Mach preconditioning. If you specifically need an incompressible formulation, the platform provides multiple options: **pressure-based** (SIMPLE, SIMPLEC, PISO, PIMPLE) for traditional segregated approaches, **coupled** for strongly coupled physics, or **FSAC/ACM** for GPU-efficient incompressible explicit solvers. In most cases, the density-based solver remains the best starting point.
+Use **Automatic** solver selection for first runs. Choose a specific solver family only when your physics, validation target, or workflow requires it.
 
 ### Turbulence Model Selection
 
@@ -68,11 +68,11 @@ Use the **density-based solver** (the default) for all standard CFD applications
 
 ### Convergence
 
-- **Monitor residuals** — density residual should decrease monotonically to at least 1e-5
+- **Monitor residuals** — residuals should decrease and then stabilize at an acceptable level
 - **Check integrated quantities** — Cd, Cl, pressure drop should plateau before you declare convergence
 - **Residuals alone are not sufficient** — a simulation can have low residuals but wrong results if the setup is incorrect
 - **Run enough iterations** — 500 minimum for RANS, 1000+ for complex geometries
-- **Use CFL ramping** for difficult starting conditions — let the solver build up gradually
+- **Use conservative startup settings** for difficult initial conditions
 
 ### Common Pitfalls
 
@@ -80,11 +80,10 @@ Use the **density-based solver** (the default) for all standard CFD applications
 |---------|-------------|-----------|
 | Forgetting moving ground for vehicle aero | Unrealistic ground boundary layer | Set ground as moving wall at freestream speed |
 | Wrong turbulence intensity at inlet | Incorrect turbulence levels in domain | Use 1% for external, 5% for internal |
-| CFL too high at startup | Immediate divergence | Enable CFL ramping; start at CFL 0.5 |
-| Coarse mesh near features of interest | Inaccurate local flow | Add refinement zones at correct AMR level |
-| Ignoring mesh quality warnings | Poor convergence or wrong results | Inspect flagged cut-cells before simulating |
-| Using pressure-based solver for large meshes | Slow GPU performance | Switch to density-based solver or FSAC/ACM |
-| Segregated solver not converging | Pressure-velocity coupling struggling | Try the coupled solver or density-based |
+| Startup controls too aggressive | Immediate divergence | Start conservatively and ramp settings after the flow stabilizes |
+| Coarse mesh near features of interest | Inaccurate local flow | Add refinement zones at the right resolution |
+| Ignoring mesh quality warnings | Poor convergence or wrong results | Inspect flagged regions before simulating |
+| Solver family mismatched to physics | Slow or unstable convergence | Use Automatic first, then select a specific family only when needed |
 
 ## Post-Processing
 
@@ -108,7 +107,7 @@ Use the **density-based solver** (the default) for all standard CFD applications
 
 The AI Assistant saves time by:
 - Automating geometry analysis and repair recommendations
-- Suggesting appropriate mesh settings and AMR levels for your application
+- Suggesting appropriate mesh settings and refinement levels for your application
 - Auto-detecting boundary conditions from surface names
 - Interpreting quality reports and results
 

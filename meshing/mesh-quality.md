@@ -17,7 +17,7 @@ Measures how much a cell deviates from its ideal shape (e.g., a perfect hexahedr
 
 ```{admonition} Target
 :class: tip
-Maximum skewness should be below **0.85** throughout the mesh. Cartesian cells in the block AMR hierarchy have zero skewness by construction — poor skewness values only appear at cut-cells adjacent to geometry surfaces.
+Maximum skewness should be below **0.85** throughout the mesh. Review highlighted regions before running a simulation.
 ```
 
 ### Non-Orthogonality
@@ -35,8 +35,8 @@ The angle between the face normal vector and the vector connecting adjacent cell
 
 The ratio of the longest cell dimension to the shortest.
 
-- **Volume cells:** Should be below 10 for the bulk mesh
-- **Near-wall cut-cells:** High aspect ratios are expected and acceptable in cells with aggressive near-wall AMR refinement — this is by design
+- **Volume cells:** Should generally remain low in the bulk mesh.
+- **Near-wall cells:** High aspect ratios can be acceptable when they are intentional and aligned with the wall-resolution strategy.
 
 ### Cell Volume
 
@@ -74,19 +74,19 @@ If quality is not satisfactory:
 
 | Issue | Solution |
 |-------|----------|
-| High skewness near geometry | Increase surface refinement AMR level |
-| High non-orthogonality at transitions | Increase AMR levels for smoother size transitions between blocks |
-| Very small cut-cell volume fraction | Geometry has tiny slivers — simplify or repair the surface |
+| High skewness near geometry | Increase local or surface resolution. |
+| High non-orthogonality at transitions | Smooth the size transition or reduce abrupt refinement jumps. |
+| Very small cells | Simplify or repair tiny geometry features and slivers. |
 | Negative volumes | Check geometry for self-intersections and repair |
-| Poor quality in narrow gaps | Increase gap refinement AMR level or simplify geometry |
+| Poor quality in narrow gaps | Increase local gap resolution or simplify geometry |
 
 ## Quality vs. Cell Count Trade-off
 
 Higher quality generally requires more cells:
 
-- **More AMR levels** → Smoother transitions → Better quality
-- **Smaller base cell size** → More uniform sizing → Better quality
-- **Higher surface refinement** → Better cut-cell quality near geometry
+- **More local refinement** -> Better resolution where it matters.
+- **Smaller base cell size** -> More uniform sizing.
+- **Higher surface resolution** -> Better geometry capture near important features.
 
 Balance quality against your cell count budget and available compute credits.
 

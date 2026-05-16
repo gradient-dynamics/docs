@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Gradient Dynamics Documentation
 
 The official documentation for [Gradient Dynamics](https://gradientdynamics.com) — production multiphysics simulation in the browser.
@@ -6,18 +10,18 @@ The official documentation for [Gradient Dynamics](https://gradientdynamics.com)
 
 ## What is Gradient Dynamics?
 
-Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate meshes, run simulations, and visualize results — all from a single interface with GPU-native cloud compute. No software installation or license management required.
+Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate structured or unstructured meshes, run simulations, and visualize results from a single interface. No software installation or license management required.
 
 ## Documentation Contents
 
 | Section | Description |
 |---------|-------------|
 | [Getting Started](getting-started/overview.md) | Platform overview, quick start guide, and project types |
-| [Meshing](meshing/geometry.md) | Geometry preparation, domain setup, mesh settings, boundary layers, refinement zones, multi-region meshing, and export |
-| [Simulation](simulation/setup.md) | Turbulence models, boundary conditions, solver settings, running simulations, and post-processing |
-| [AI Assistant](agent/overview.md) | Using the built-in AI assistant for mesh and simulation setup |
-| [Examples](examples/index.md) | Step-by-step walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, electronics cooling, and rotating machinery |
-| [Knowledge Base](knowledge-base/best-practices.md) | Best practices, troubleshooting guide, FAQ, and glossary |
+| [Studio](studio/overview.md) | GUI workspace for setup, meshing, simulation, monitoring, and post-processing |
+| [Meshing](meshing/index.md) | Geometry preparation, structured and unstructured meshing, quality review, and export |
+| [Simulation](simulation/index.md) | Turbulence models, boundary conditions, solver settings, running simulations, and post-processing |
+| [Examples](examples/index.md) | Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, electronics cooling, and rotating machinery |
+| [Knowledge Base](knowledge-base/best-practices.md) | Best practices, troubleshooting, verification studies, FAQ, and glossary |
 | [Reference](reference/supported-formats.md) | Supported file formats, subscription tiers, and keyboard shortcuts |
 
 ## Building the Docs Locally

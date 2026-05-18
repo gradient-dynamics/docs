@@ -8,15 +8,15 @@ Gradient Dynamics supports two meshing types:
 
 | Mesh Type | Best For | Notes |
 |-----------|----------|-------|
-| **Structured** | Fast setup, repeatable workflows, external and internal flow, thermal studies, and common multiphysics projects. | Recommended starting point for most Studio users. |
-| **Unstructured** | Complex topology, interoperability, imported-mesh workflows, and cases that require flexible element layouts. | Use when the project requirements call for an unstructured mesh. |
+| **Unstructured** | Production CFD, complex topology, boundary-layer workflows, interoperability, imported-mesh workflows, and cases that require flexible element layouts. | Recommended starting point for most Studio users. |
+| **Structured** | Fast setup, repeatable workflows, geometry screening, parametric studies, and cases where a structured approach fits the solver and validation target. | Use when automation, repeatability, or structured-mesh requirements are the priority. |
 
 ## Meshing Workflow
 
 1. Upload geometry in a supported CAD or surface format.
 2. Check geometry health and repair issues that would prevent volume meshing.
 3. Define the domain, named surfaces, and regions.
-4. Choose structured or unstructured meshing.
+4. Choose unstructured or structured meshing.
 5. Set resolution, boundary-layer, and local refinement controls.
 6. Generate the mesh and review quality before simulation.
 

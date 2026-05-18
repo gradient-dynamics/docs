@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -387,6 +391,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-controls">Convergence Controls</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solver-controls">Linear Solver Controls</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#turbulence-and-wall-treatment">Turbulence and Wall Treatment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiphysics-settings">Multiphysics Settings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-defaults">Practical Defaults</a></li>
@@ -434,6 +439,7 @@ document.write(`
 </table>
 </div>
 <p>If you are unsure, start with <strong>Automatic</strong> and refine only after reviewing convergence and result sensitivity.</p>
+<p>For a method-level explanation of the solver families, including flux reconstruction, pressure-based coupling, and gradient schemes, see <a class="reference internal" href="solver-technology.html"><span class="std std-doc">Solver Technology</span></a>.</p>
 </section>
 <section id="accuracy-and-robustness">
 <h2>Accuracy and Robustness<a class="headerlink" href="#accuracy-and-robustness" title="Link to this heading">#</a></h2>
@@ -459,6 +465,7 @@ document.write(`
 </tbody>
 </table>
 </div>
+<p>Higher-order settings work by reconstructing face values from surrounding cells. This improves smooth gradients, wakes, shear layers, and pressure fields when the mesh supports it. Near shocks, separation, sharp thermal fronts, or poor-quality cells, bounded or limited reconstruction may deliberately add diffusion to prevent non-physical oscillations.</p>
 </section>
 <section id="time-behaviour">
 <h3>Time Behaviour<a class="headerlink" href="#time-behaviour" title="Link to this heading">#</a></h3>
@@ -506,6 +513,36 @@ document.write(`
 </div>
 <p>Residuals alone are not always enough. For final studies, also check that the engineering quantities of interest have stabilized.</p>
 </section>
+</section>
+<section id="linear-solver-controls">
+<h2>Linear Solver Controls<a class="headerlink" href="#linear-solver-controls" title="Link to this heading">#</a></h2>
+<p>Implicit and pressure-based workflows solve sparse linear systems inside each nonlinear CFD iteration. Studio defaults are chosen for stable general use, but advanced runs may expose solver and preconditioner choices.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Control</p></th>
+<th class="head"><p>What it means</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>PCG</strong></p></td>
+<td><p>Preconditioned conjugate-gradient solve. Best suited to symmetric positive-definite systems such as many pressure or diffusion solves.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>BiCGStab-type solver</strong></p></td>
+<td><p>Krylov solve for nonsymmetric systems, often used for convection-diffusion, momentum, turbulence, and coupled transport equations.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>GAMG / AMG</strong></p></td>
+<td><p>Algebraic multigrid. Builds coarse correction levels from the system itself to accelerate pressure and elliptic solves.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Chebyshev smoother</strong></p></td>
+<td><p>Polynomial smoothing method used to damp selected error modes, often inside a multigrid or preconditioning workflow.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Preconditioner</strong></p></td>
+<td><p>A cheaper approximate solve that makes the main iterative method converge in fewer iterations.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Use Automatic settings unless the residual history clearly points to a linear-solver bottleneck. If pressure or continuity residuals stall on a large mesh, a multigrid-style pressure solve can help. If a transport equation is slow or noisy, a more suitable Krylov solver or smoother may improve robustness. These changes should be evaluated with residuals, monitor quantities, and mesh quality together.</p>
 </section>
 <section id="turbulence-and-wall-treatment">
 <h2>Turbulence and Wall Treatment<a class="headerlink" href="#turbulence-and-wall-treatment" title="Link to this heading">#</a></h2>
@@ -618,6 +655,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-controls">Convergence Controls</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-solver-controls">Linear Solver Controls</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#turbulence-and-wall-treatment">Turbulence and Wall Treatment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiphysics-settings">Multiphysics Settings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-defaults">Practical Defaults</a></li>

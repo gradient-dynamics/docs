@@ -25,12 +25,12 @@ Studio supports two meshing types:
 
 | Mesh Type | Use When |
 |-----------|----------|
-| **Structured** | You want an automated, robust mesh workflow with predictable controls for common CFD and multiphysics cases. |
-| **Unstructured** | You need flexibility for complex geometry, interoperability, or imported-mesh workflows. |
+| **Unstructured** | You want the recommended starting point for production CFD, boundary-layer workflows, complex geometry, interoperability, or imported meshes. |
+| **Structured** | You want an automated, repeatable mesh workflow where a structured approach fits the solver and validation target. |
 
 ### Simulation
 
-Configure physics, materials, boundary conditions, turbulence models, run controls, and convergence targets. Studio keeps the solver setup user-facing so you can focus on engineering intent rather than implementation details.
+Configure physics, materials, boundary conditions, turbulence models, run controls, and convergence targets. Studio keeps the solver setup user-facing so you can focus on engineering intent.
 
 ### Results
 

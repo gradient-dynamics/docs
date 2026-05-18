@@ -69,7 +69,7 @@ Then refine until your results don't change significantly between meshes (mesh i
 
 ### What mesh types are available?
 
-Studio supports **structured** and **unstructured** meshing. Structured meshing is the recommended starting point for most Studio workflows. Unstructured meshing is available for complex topology, interoperability, and imported-mesh workflows.
+Studio supports **unstructured** and **structured** meshing. Unstructured meshing is the recommended starting point for most Studio workflows, especially production CFD, boundary-layer workflows, interoperability, and imported meshes. Structured meshing is available for automated, repeatable workflows where a structured approach fits the case.
 
 ### What is y+ and why does it matter?
 

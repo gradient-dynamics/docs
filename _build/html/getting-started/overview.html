@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Quick Start" href="quick-start.html" />
-    <link rel="prev" title="Introduction" href="../index.html" />
+    <link rel="prev" title="Introduction" href="../introduction.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -462,16 +466,16 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Structured</strong></p></td>
-<td><p>Automated, repeatable CFD and multiphysics workflows with predictable setup controls.</p></td>
+<tr class="row-even"><td><p><strong>Unstructured</strong></p></td>
+<td><p>Production CFD, complex topology, boundary-layer workflows, imported mesh workflows, interoperability, and cases needing flexible element layouts.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Unstructured</strong></p></td>
-<td><p>Complex topology, imported mesh workflows, interoperability, and cases needing flexible element layouts.</p></td>
+<tr class="row-odd"><td><p><strong>Structured</strong></p></td>
+<td><p>Automated, repeatable workflows, geometry screening, parametric studies, and cases where a structured approach fits the solver and validation target.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Start with the structured workflow unless your geometry, downstream workflow, or validation requirement specifically calls for an unstructured mesh.</p>
+<p>Start with the unstructured workflow unless your geometry, downstream workflow, or validation requirement specifically calls for a structured mesh.</p>
 </section>
 <section id="simulation-capabilities">
 <h2>Simulation Capabilities<a class="headerlink" href="#simulation-capabilities" title="Link to this heading">#</a></h2>
@@ -524,8 +528,8 @@ document.write(`
 <tr class="row-odd"><td><p>Pipe and duct flows</p></td>
 <td><p>Pressure drop, flow distribution, HVAC design.</p></td>
 </tr>
-<tr class="row-even"><td><p>Electronics cooling</p></td>
-<td><p>Thermal management, fan flow, heat sink evaluation.</p></td>
+<tr class="row-even"><td><p>Thermal management</p></td>
+<td><p>Fan flow, heat sinks, cold plates, and thermal performance.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Rotating machinery</p></td>
 <td><p>Fans, pumps, compressors, turbines, propellers.</p></td>
@@ -578,7 +582,7 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="../introduction.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">

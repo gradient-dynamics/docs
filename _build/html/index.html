@@ -63,7 +63,7 @@
     <link rel="icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Overview" href="getting-started/overview.html" />
+    <link rel="next" title="Introduction" href="introduction.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -175,7 +175,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started/quick-start.html">Quick Start</a></li>
@@ -198,6 +202,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -215,7 +220,6 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -381,6 +385,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-support">What We Support</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-gradient-dynamics-studio">What is Gradient Dynamics Studio?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-capabilities">Key Capabilities</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#studio"><span class="xref myst">Studio</span></a></li>
@@ -403,19 +408,55 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h1>
-<p>Gradient Dynamics provides browser-based tools for multiphysics simulation. Use Gradient Dynamics Studio to prepare geometry, create meshes, configure simulations, monitor runs, and inspect results from a single workspace.</p>
+<p>Gradient Dynamics builds simulation technology for engineering teams that need fast, practical CFD and multiphysics workflows without managing local solver and meshing infrastructure. Our platform combines meshing, solver setup, cloud execution, monitoring, and post-processing in a single browser-based environment.</p>
+<p>Studio is the main GUI interface to this technology. It lets you move from geometry to mesh, simulation, and results review in one workspace, while still exposing the engineering controls needed for production work.</p>
 <div class="warning admonition">
 <p class="admonition-title">Beta</p>
 <p>Gradient Dynamics Studio is currently in beta. Features and capabilities are actively being expanded.</p>
 </div>
+<section id="what-we-support">
+<h2>What We Support<a class="headerlink" href="#what-we-support" title="Link to this heading">#</a></h2>
+<p>Gradient Dynamics supports a broad set of simulation and meshing workflows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Area</p></th>
+<th class="head"><p>Highlights</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Mesh support</strong></p></td>
+<td><p>Structured and unstructured mesh workflows, with unstructured meshing recommended as the starting point for most production CFD cases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Solver support</strong></p></td>
+<td><p>Solver workflows for structured and unstructured meshes, including pressure-based low-speed CFD, explicit compressible flow, steady simulation, and transient simulation.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Flow physics</strong></p></td>
+<td><p>External aerodynamics, internal flows, rotating machinery, thermal analysis, and conjugate heat transfer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Turbulence modelling</strong></p></td>
+<td><p>RANS, URANS, LES, and hybrid RANS-LES workflows for different accuracy and cost targets.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Geometry handling</strong></p></td>
+<td><p>CAD and surface geometry import, geometry checks, named surfaces, region setup, and repair-oriented workflows.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Mesh quality</strong></p></td>
+<td><p>Quality review, local refinement, near-wall controls, multi-region interfaces, and export workflows.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Results</strong></p></td>
+<td><p>Browser-based post-processing for fields, slices, streamlines, probes, forces, moments, heat-transfer metrics, and convergence history.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="what-is-gradient-dynamics-studio">
 <h2>What is Gradient Dynamics Studio?<a class="headerlink" href="#what-is-gradient-dynamics-studio" title="Link to this heading">#</a></h2>
-<p>Studio is the GUI interface to Gradient Dynamics simulation technology. It is designed for engineering teams that need a guided workflow from model preparation through post-processing without managing local solver installations.</p>
+<p>Studio is designed for engineering teams that need a guided workflow from model preparation through post-processing without managing local installations.</p>
 <p>The typical workflow is:</p>
 <ol class="arabic simple">
 <li><p><strong>Upload</strong> CAD or surface geometry.</p></li>
 <li><p><strong>Prepare</strong> the simulation domain and boundary surfaces.</p></li>
-<li><p><strong>Mesh</strong> using either structured or unstructured meshing.</p></li>
+<li><p><strong>Mesh</strong> using unstructured or structured meshing.</p></li>
 <li><p><strong>Simulate</strong> fluid, thermal, rotating machinery, or coupled multiphysics cases.</p></li>
 <li><p><strong>Review</strong> convergence, fields, forces, heat transfer, and derived quantities in the browser.</p></li>
 </ol>
@@ -428,11 +469,11 @@ document.write(`
 </section>
 <section id="meshing">
 <h3><a class="reference internal" href="meshing/index.html"><span class="std std-doc">Meshing</span></a><a class="headerlink" href="#meshing" title="Link to this heading">#</a></h3>
-<p>Two meshing routes are available: <strong>structured</strong> meshes for automated simulation workflows and <strong>unstructured</strong> meshes for complex geometry, interoperability, and imported-mesh workflows.</p>
+<p>Two meshing routes are available: <strong>unstructured</strong> meshes for the recommended production CFD starting point and <strong>structured</strong> meshes for automated, repeatable workflows where that approach fits the case.</p>
 </section>
 <section id="simulation">
 <h3><a class="reference internal" href="simulation/index.html"><span class="std std-doc">Simulation</span></a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
-<p>Multiphysics solver workflows for external aerodynamics, internal flows, thermal analysis, rotating machinery, and conjugate heat transfer.</p>
+<p>Multiphysics solver workflows for external aerodynamics, internal flows, thermal analysis, rotating machinery, conjugate heat transfer, explicit compressible flow, and pressure-based low-speed CFD.</p>
 </section>
 <section id="post-processing">
 <h3><a class="reference internal" href="simulation/post-processing.html"><span class="std std-doc">Post-Processing</span></a><a class="headerlink" href="#post-processing" title="Link to this heading">#</a></h3>
@@ -448,6 +489,8 @@ document.write(`
 <li><p><a class="reference internal" href="knowledge-base/faq.html"><span class="std std-doc">FAQ</span></a> — Answers to common questions</p></li>
 </ul>
 </section>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -489,11 +532,11 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="getting-started/overview.html"
+       href="introduction.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Overview</p>
+        <p class="prev-next-title">Introduction</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -513,6 +556,7 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-support">What We Support</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-gradient-dynamics-studio">What is Gradient Dynamics Studio?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-capabilities">Key Capabilities</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#studio"><span class="xref myst">Studio</span></a></li>

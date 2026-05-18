@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -450,11 +454,11 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Structured</strong></p></td>
-<td><p>You want an automated, robust mesh workflow with predictable controls for common CFD and multiphysics cases.</p></td>
+<tr class="row-even"><td><p><strong>Unstructured</strong></p></td>
+<td><p>You want the recommended starting point for production CFD, boundary-layer workflows, complex geometry, interoperability, or imported meshes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Unstructured</strong></p></td>
-<td><p>You need flexibility for complex geometry, interoperability, or imported-mesh workflows.</p></td>
+<tr class="row-odd"><td><p><strong>Structured</strong></p></td>
+<td><p>You want an automated, repeatable mesh workflow where a structured approach fits the solver and validation target.</p></td>
 </tr>
 </tbody>
 </table>
@@ -462,7 +466,7 @@ document.write(`
 </section>
 <section id="simulation">
 <h3>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
-<p>Configure physics, materials, boundary conditions, turbulence models, run controls, and convergence targets. Studio keeps the solver setup user-facing so you can focus on engineering intent rather than implementation details.</p>
+<p>Configure physics, materials, boundary conditions, turbulence models, run controls, and convergence targets. Studio keeps the solver setup user-facing so you can focus on engineering intent.</p>
 </section>
 <section id="results">
 <h3>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h3>

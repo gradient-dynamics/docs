@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -408,13 +412,13 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Structured</strong></p></td>
-<td><p>Fast setup, repeatable workflows, external and internal flow, thermal studies, and common multiphysics projects.</p></td>
+<tr class="row-even"><td><p><strong>Unstructured</strong></p></td>
+<td><p>Production CFD, complex topology, boundary-layer workflows, interoperability, imported-mesh workflows, and cases that require flexible element layouts.</p></td>
 <td><p>Recommended starting point for most Studio users.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Unstructured</strong></p></td>
-<td><p>Complex topology, interoperability, imported-mesh workflows, and cases that require flexible element layouts.</p></td>
-<td><p>Use when the project requirements call for an unstructured mesh.</p></td>
+<tr class="row-odd"><td><p><strong>Structured</strong></p></td>
+<td><p>Fast setup, repeatable workflows, geometry screening, parametric studies, and cases where a structured approach fits the solver and validation target.</p></td>
+<td><p>Use when automation, repeatability, or structured-mesh requirements are the priority.</p></td>
 </tr>
 </tbody>
 </table>
@@ -426,7 +430,7 @@ document.write(`
 <li><p>Upload geometry in a supported CAD or surface format.</p></li>
 <li><p>Check geometry health and repair issues that would prevent volume meshing.</p></li>
 <li><p>Define the domain, named surfaces, and regions.</p></li>
-<li><p>Choose structured or unstructured meshing.</p></li>
+<li><p>Choose unstructured or structured meshing.</p></li>
 <li><p>Set resolution, boundary-layer, and local refinement controls.</p></li>
 <li><p>Generate the mesh and review quality before simulation.</p></li>
 </ol>

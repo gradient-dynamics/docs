@@ -63,7 +63,7 @@
     <link rel="icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Simulation Setup" href="setup.html" />
+    <link rel="next" title="Solver Technology" href="solver-technology.html" />
     <link rel="prev" title="Mesh Export" href="../meshing/export.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Simulation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -381,6 +385,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-workflows">Supported Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-technology-highlights">Solver Technology Highlights</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-workflow">Simulation Workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topics">Topics</a></li>
 </ul>
@@ -396,7 +401,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="simulation">
 <h1>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h1>
-<p>Simulation pages describe how to configure and run Gradient Dynamics multiphysics solver workflows in Studio. The focus is on engineering setup, validation habits, and result interpretation rather than internal implementation.</p>
+<p>Simulation pages describe how to configure and run Gradient Dynamics multiphysics solver workflows in Studio. The focus is on engineering setup, validation habits, and result interpretation, with enough solver-technology background to help you choose the right workflow.</p>
 <section id="supported-workflows">
 <h2>Supported Workflows<a class="headerlink" href="#supported-workflows" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -413,7 +418,7 @@ document.write(`
 <td><p>Pipes, ducts, manifolds, enclosures, HVAC systems, and flow distribution.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Thermal analysis</strong></p></td>
-<td><p>Heat transfer in fluids and solids, electronics cooling, cold plates, and heat exchangers.</p></td>
+<td><p>Heat transfer in fluids and solids, cold plates, heat exchangers, and thermal-management systems.</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Rotating machinery</strong></p></td>
 <td><p>Fans, pumps, compressors, turbines, propellers, and rotating zones.</p></td>
@@ -424,6 +429,12 @@ document.write(`
 </tbody>
 </table>
 </div>
+</section>
+<section id="solver-technology-highlights">
+<h2>Solver Technology Highlights<a class="headerlink" href="#solver-technology-highlights" title="Link to this heading">#</a></h2>
+<p>Gradient Dynamics supports solver workflows on both structured and unstructured meshes. Unstructured meshing is the recommended starting point for most production CFD workflows, while structured meshing is available for repeatable automated studies and cases where that layout fits the validation target.</p>
+<p>The solver stack includes pressure-based low-speed CFD, explicit compressible flow, transient simulation, turbulence modelling, rotating-zone workflows, heat transfer, and coupled multiphysics. The explicit compressible path uses flux reconstruction to build conservative face fluxes for density, momentum, and energy, which is useful for shocks, pressure waves, high-speed aerodynamics, nozzles, and flows with strong density variation.</p>
+<p>See <a class="reference internal" href="solver-technology.html"><span class="std std-doc">Solver Technology</span></a> for an overview of flux reconstruction, numerical fluxes, gradient schemes, pressure-based coupling, and what these choices mean for engineering use.</p>
 </section>
 <section id="simulation-workflow">
 <h2>Simulation Workflow<a class="headerlink" href="#simulation-workflow" title="Link to this heading">#</a></h2>
@@ -440,6 +451,7 @@ document.write(`
 <h2>Topics<a class="headerlink" href="#topics" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="setup.html"><span class="std std-doc">Simulation Setup</span></a></p></li>
+<li><p><a class="reference internal" href="solver-technology.html"><span class="std std-doc">Solver Technology</span></a></p></li>
 <li><p><a class="reference internal" href="turbulence-models.html"><span class="std std-doc">Turbulence Models</span></a></p></li>
 <li><p><a class="reference internal" href="boundary-conditions.html"><span class="std std-doc">Boundary Conditions</span></a></p></li>
 <li><p><a class="reference internal" href="solver-settings.html"><span class="std std-doc">Solver Settings</span></a></p></li>
@@ -491,11 +503,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="setup.html"
+       href="solver-technology.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Simulation Setup</p>
+        <p class="prev-next-title">Solver Technology</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -516,6 +528,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-workflows">Supported Workflows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-technology-highlights">Solver Technology Highlights</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-workflow">Simulation Workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topics">Topics</a></li>
 </ul>

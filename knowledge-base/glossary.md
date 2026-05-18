@@ -30,6 +30,9 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **Bluff Body**
 : A non-streamlined body that creates significant flow separation and a large wake. Examples: trucks, buildings, flat plates.
 
+**BiCGStab**
+: A Krylov-subspace iterative method commonly used for nonsymmetric sparse linear systems.
+
 ## C
 
 **CAD (Computer-Aided Design)**
@@ -37,6 +40,9 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 
 **Cd (Drag Coefficient)**
 : A dimensionless number representing aerodynamic drag force, normalized by dynamic pressure and reference area: Cd = Fd / (0.5 × ρ × V² × A).
+
+**Chebyshev Smoother**
+: A polynomial iterative method that damps targeted error modes. It is often used as a smoother or preconditioner inside multigrid workflows.
 
 **Cell**
 : The fundamental volume element of a computational mesh. The flow equations are solved for each cell.
@@ -81,10 +87,19 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **FVM (Finite Volume Method)**
 : A numerical technique that discretizes the governing equations over control volumes (cells). The standard method in CFD.
 
+**Flux Reconstruction**
+: A high-order CFD technique that reconstructs solution or flux information inside cells and corrects it using interface fluxes. In practical solver settings, it helps combine conservation with higher spatial accuracy.
+
 ## G
 
 **Gauge Pressure**
 : Pressure relative to a reference value (usually atmospheric). In incompressible CFD, only pressure differences matter, so outlet is typically set to 0 Pa gauge.
+
+**GAMG / AMG (Algebraic Multigrid)**
+: A multigrid linear-solver method that builds coarse correction levels from the algebraic system rather than requiring a predefined geometric grid hierarchy.
+
+**Gradient Reconstruction**
+: The process of estimating local field gradients from neighboring cell values. Gradients are used for higher-order face reconstruction, turbulence production, wall shear, heat-transfer estimates, and mesh non-orthogonality corrections.
 
 **Ground Effect**
 : The aerodynamic influence of the ground on a nearby body (e.g., a car). Requires a moving ground boundary condition for accurate simulation.
@@ -141,6 +156,9 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **Patch**
 : A named group of boundary faces. Used to apply boundary conditions (e.g., "inlet" patch, "car_body" patch).
 
+**PCG (Preconditioned Conjugate Gradient)**
+: An iterative method for symmetric positive-definite sparse linear systems. It is commonly used for pressure and diffusion-like solves.
+
 **PIMPLE**
 : A hybrid pressure-velocity coupling algorithm combining SIMPLE outer iterations with PISO inner corrections. The most stable option for transient flows with large time steps.
 
@@ -149,6 +167,9 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 
 **Prism**
 : A wedge-shaped cell typically used in boundary layers, with triangular faces on the wall and outer surfaces.
+
+**Preconditioner**
+: A numerical transformation or approximate solve that makes a linear system easier for an iterative solver to converge.
 
 ## R
 

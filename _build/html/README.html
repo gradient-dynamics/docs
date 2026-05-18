@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -413,7 +417,7 @@ document.write(`
 </div></blockquote>
 <section id="what-is-gradient-dynamics">
 <h2>What is Gradient Dynamics?<a class="headerlink" href="#what-is-gradient-dynamics" title="Link to this heading">#</a></h2>
-<p>Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate structured or unstructured meshes, run simulations, and visualize results from a single interface. No software installation or license management required.</p>
+<p>Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate unstructured or structured meshes, run simulations, and visualize results from a single interface. No software installation or license management required.</p>
 </section>
 <section id="documentation-contents">
 <h2>Documentation Contents<a class="headerlink" href="#documentation-contents" title="Link to this heading">#</a></h2>
@@ -437,7 +441,7 @@ document.write(`
 <td><p>Turbulence models, boundary conditions, solver settings, running simulations, and post-processing</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="examples/index.html"><span class="std std-doc">Examples</span></a></p></td>
-<td><p>Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, electronics cooling, and rotating machinery</p></td>
+<td><p>Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, and rotating machinery</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="knowledge-base/best-practices.html"><span class="std std-doc">Knowledge Base</span></a></p></td>
 <td><p>Best practices, troubleshooting, verification studies, FAQ, and glossary</p></td>
@@ -477,7 +481,7 @@ jupyter-book<span class="w"> </span>build<span class="w"> </span>.
 <section id="writing-guidelines">
 <h3>Writing Guidelines<a class="headerlink" href="#writing-guidelines" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>User-facing</strong> — Focus on how to use the product, not internal implementation details</p></li>
+<li><p><strong>User-facing</strong> — Focus on how to use the product, not internal engineering notes</p></li>
 <li><p><strong>Action-oriented</strong> — Use clear, imperative language (“Click Upload”, “Select External Flow”)</p></li>
 <li><p><strong>Concrete</strong> — Include parameter tables, typical values, and worked examples</p></li>
 <li><p><strong>Callouts</strong> — Use <code class="docutils literal notranslate"><span class="pre">{tip}</span></code>, <code class="docutils literal notranslate"><span class="pre">{warning}</span></code>, and <code class="docutils literal notranslate"><span class="pre">{note}</span></code> admonitions for important information</p></li>

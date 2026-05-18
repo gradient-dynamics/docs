@@ -58,7 +58,7 @@ Navigate to the **Mesh Settings** tab:
 
 | Parameter | Description | Typical Range |
 |-----------|-------------|---------------|
-| **Mesh type** | Structured or unstructured | Structured for most first runs |
+| **Mesh type** | Unstructured or structured | Unstructured for most first runs |
 | **Base cell size** | Starting mesh resolution | 0.01 – 1.0 m |
 | **Refinement levels** | Maximum local refinement depth | 3 – 6 |
 | **Surface refinement** | Resolution near geometry surfaces | Medium – Fine |

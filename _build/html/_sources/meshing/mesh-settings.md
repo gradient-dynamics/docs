@@ -8,10 +8,10 @@ Studio supports two mesh types.
 
 | Mesh Type | When to Use |
 |-----------|-------------|
-| **Structured** | Recommended for most Studio workflows. Use it for automated external flow, internal flow, thermal, and common multiphysics cases. |
-| **Unstructured** | Use it when your project requires flexible element layouts, imported-mesh workflows, or interoperability with external tools. |
+| **Unstructured** | Recommended for most Studio workflows. Use it for production CFD, boundary-layer workflows, complex topology, imported meshes, and interoperability with external tools. |
+| **Structured** | Use it for automated repeatable workflows, geometry screening, parametric studies, and cases where a structured approach fits the solver and validation target. |
 
-Changing mesh type can change which settings are shown. Start with the structured option for standard workflows, then switch to unstructured when the case requirements call for it.
+Changing mesh type can change which settings are shown. Start with the unstructured option for standard CFD workflows, then switch to structured when the case requirements call for it.
 
 ## Core Resolution Controls
 
@@ -24,7 +24,7 @@ The base cell size sets the coarse resolution of the mesh. Smaller values increa
 | Coarse preview | Large enough to generate quickly and validate setup. |
 | Vehicle aerodynamics | Fine enough to resolve the body, wake, ground gap, and major features. |
 | Detailed component analysis | Fine enough to resolve small gaps, fillets, and local gradients. |
-| Electronics cooling | Fine enough to resolve components, heat sinks, vents, and flow passages. |
+| Thermal management | Fine enough to resolve heat sinks, cold plates, vents, and flow passages. |
 
 ```{tip}
 Start coarse, verify the setup, then refine. A quick preview mesh often catches geometry, domain, and boundary-condition issues before you spend credits on a final mesh.

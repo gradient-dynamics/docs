@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -435,6 +439,8 @@ document.write(`
 : The thin region near a solid surface where the fluid velocity changes from zero (at the wall) to the freestream value. Also refers to the mesh layers (prisms) grown on walls to resolve this region.</p>
 <p><strong>Bluff Body</strong>
 : A non-streamlined body that creates significant flow separation and a large wake. Examples: trucks, buildings, flat plates.</p>
+<p><strong>BiCGStab</strong>
+: A Krylov-subspace iterative method commonly used for nonsymmetric sparse linear systems.</p>
 </section>
 <section id="c">
 <h2>C<a class="headerlink" href="#c" title="Link to this heading">#</a></h2>
@@ -442,6 +448,8 @@ document.write(`
 : Software and file formats for creating 3D geometry. STEP and IGES are common CAD exchange formats.</p>
 <p><strong>Cd (Drag Coefficient)</strong>
 : A dimensionless number representing aerodynamic drag force, normalized by dynamic pressure and reference area: Cd = Fd / (0.5 × ρ × V² × A).</p>
+<p><strong>Chebyshev Smoother</strong>
+: A polynomial iterative method that damps targeted error modes. It is often used as a smoother or preconditioner inside multigrid workflows.</p>
 <p><strong>Cell</strong>
 : The fundamental volume element of a computational mesh. The flow equations are solved for each cell.</p>
 <p><strong>Coupled Solver</strong>
@@ -474,11 +482,17 @@ document.write(`
 : The outer boundaries of the domain that are far from the geometry of interest.</p>
 <p><strong>FVM (Finite Volume Method)</strong>
 : A numerical technique that discretizes the governing equations over control volumes (cells). The standard method in CFD.</p>
+<p><strong>Flux Reconstruction</strong>
+: A high-order CFD technique that reconstructs solution or flux information inside cells and corrects it using interface fluxes. In practical solver settings, it helps combine conservation with higher spatial accuracy.</p>
 </section>
 <section id="g">
 <h2>G<a class="headerlink" href="#g" title="Link to this heading">#</a></h2>
 <p><strong>Gauge Pressure</strong>
 : Pressure relative to a reference value (usually atmospheric). In incompressible CFD, only pressure differences matter, so outlet is typically set to 0 Pa gauge.</p>
+<p><strong>GAMG / AMG (Algebraic Multigrid)</strong>
+: A multigrid linear-solver method that builds coarse correction levels from the algebraic system rather than requiring a predefined geometric grid hierarchy.</p>
+<p><strong>Gradient Reconstruction</strong>
+: The process of estimating local field gradients from neighboring cell values. Gradients are used for higher-order face reconstruction, turbulence production, wall shear, heat-transfer estimates, and mesh non-orthogonality corrections.</p>
 <p><strong>Ground Effect</strong>
 : The aerodynamic influence of the ground on a nearby body (e.g., a car). Requires a moving ground boundary condition for accurate simulation.</p>
 </section>
@@ -529,12 +543,16 @@ document.write(`
 <h2>P<a class="headerlink" href="#p" title="Link to this heading">#</a></h2>
 <p><strong>Patch</strong>
 : A named group of boundary faces. Used to apply boundary conditions (e.g., “inlet” patch, “car_body” patch).</p>
+<p><strong>PCG (Preconditioned Conjugate Gradient)</strong>
+: An iterative method for symmetric positive-definite sparse linear systems. It is commonly used for pressure and diffusion-like solves.</p>
 <p><strong>PIMPLE</strong>
 : A hybrid pressure-velocity coupling algorithm combining SIMPLE outer iterations with PISO inner corrections. The most stable option for transient flows with large time steps.</p>
 <p><strong>PISO (Pressure-Implicit with Splitting of Operators)</strong>
 : A pressure-velocity coupling algorithm used primarily for transient simulations with small time steps.</p>
 <p><strong>Prism</strong>
 : A wedge-shaped cell typically used in boundary layers, with triangular faces on the wall and outer surfaces.</p>
+<p><strong>Preconditioner</strong>
+: A numerical transformation or approximate solve that makes a linear system easier for an iterative solver to converge.</p>
 </section>
 <section id="r">
 <h2>R<a class="headerlink" href="#r" title="Link to this heading">#</a></h2>

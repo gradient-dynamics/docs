@@ -37,10 +37,10 @@ Studio supports two meshing types:
 
 | Mesh Type | Best For |
 |-----------|----------|
-| **Structured** | Automated, repeatable CFD and multiphysics workflows with predictable setup controls. |
-| **Unstructured** | Complex topology, imported mesh workflows, interoperability, and cases needing flexible element layouts. |
+| **Unstructured** | Production CFD, complex topology, boundary-layer workflows, imported mesh workflows, interoperability, and cases needing flexible element layouts. |
+| **Structured** | Automated, repeatable workflows, geometry screening, parametric studies, and cases where a structured approach fits the solver and validation target. |
 
-Start with the structured workflow unless your geometry, downstream workflow, or validation requirement specifically calls for an unstructured mesh.
+Start with the unstructured workflow unless your geometry, downstream workflow, or validation requirement specifically calls for a structured mesh.
 
 ## Simulation Capabilities
 
@@ -79,7 +79,7 @@ Prepare mesh -> Assign physics -> Set boundary conditions -> Configure run contr
 | Aerospace | Wings, ducts, nacelles, bodies, and control surfaces. |
 | Wind engineering | Building loads, pedestrian comfort, external flow studies. |
 | Pipe and duct flows | Pressure drop, flow distribution, HVAC design. |
-| Electronics cooling | Thermal management, fan flow, heat sink evaluation. |
+| Thermal management | Fan flow, heat sinks, cold plates, and thermal performance. |
 | Rotating machinery | Fans, pumps, compressors, turbines, propellers. |
 | Heat exchangers | Fluid-solid heat transfer and thermal performance. |
 

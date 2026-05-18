@@ -174,7 +174,11 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../getting-started/quick-start.html">Quick Start</a></li>
@@ -197,6 +201,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../simulation/solver-technology.html">Solver Technology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/setup.html">Simulation Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/turbulence-models.html">Turbulence Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../simulation/boundary-conditions.html">Boundary Conditions</a></li>
@@ -214,7 +219,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/electronics-cooling.html">Example: Electronics Cooling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
 </ul>
 </details></li>
@@ -416,16 +420,16 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Structured</strong></p></td>
-<td><p>Recommended for most Studio workflows. Use it for automated external flow, internal flow, thermal, and common multiphysics cases.</p></td>
+<tr class="row-even"><td><p><strong>Unstructured</strong></p></td>
+<td><p>Recommended for most Studio workflows. Use it for production CFD, boundary-layer workflows, complex topology, imported meshes, and interoperability with external tools.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Unstructured</strong></p></td>
-<td><p>Use it when your project requires flexible element layouts, imported-mesh workflows, or interoperability with external tools.</p></td>
+<tr class="row-odd"><td><p><strong>Structured</strong></p></td>
+<td><p>Use it for automated repeatable workflows, geometry screening, parametric studies, and cases where a structured approach fits the solver and validation target.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Changing mesh type can change which settings are shown. Start with the structured option for standard workflows, then switch to unstructured when the case requirements call for it.</p>
+<p>Changing mesh type can change which settings are shown. Start with the unstructured option for standard CFD workflows, then switch to structured when the case requirements call for it.</p>
 </section>
 <section id="core-resolution-controls">
 <h2>Core Resolution Controls<a class="headerlink" href="#core-resolution-controls" title="Link to this heading">#</a></h2>
@@ -448,8 +452,8 @@ document.write(`
 <tr class="row-even"><td><p>Detailed component analysis</p></td>
 <td><p>Fine enough to resolve small gaps, fillets, and local gradients.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Electronics cooling</p></td>
-<td><p>Fine enough to resolve components, heat sinks, vents, and flow passages.</p></td>
+<tr class="row-odd"><td><p>Thermal management</p></td>
+<td><p>Fine enough to resolve heat sinks, cold plates, vents, and flow passages.</p></td>
 </tr>
 </tbody>
 </table>

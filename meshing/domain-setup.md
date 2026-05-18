@@ -60,7 +60,7 @@ Studio uses the rotating zone definition to prepare the mesh regions and interfa
 
 ### Conjugate Heat Transfer (CHT)
 
-For problems involving heat exchange between fluid and solid regions — heat sinks, cold plates, electronics cooling.
+For problems involving heat exchange between fluid and solid regions, such as heat sinks, cold plates, and thermal-management assemblies.
 
 CHT domain setup requires:
 

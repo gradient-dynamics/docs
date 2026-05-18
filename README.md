@@ -10,7 +10,7 @@ The official documentation for [Gradient Dynamics](https://gradientdynamics.com)
 
 ## What is Gradient Dynamics?
 
-Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate structured or unstructured meshes, run simulations, and visualize results from a single interface. No software installation or license management required.
+Gradient Dynamics Studio is a browser-based platform for computational fluid dynamics (CFD) and multiphysics simulation. Upload geometry, generate unstructured or structured meshes, run simulations, and visualize results from a single interface. No software installation or license management required.
 
 ## Documentation Contents
 
@@ -20,7 +20,7 @@ Gradient Dynamics Studio is a browser-based platform for computational fluid dyn
 | [Studio](studio/overview.md) | GUI workspace for setup, meshing, simulation, monitoring, and post-processing |
 | [Meshing](meshing/index.md) | Geometry preparation, structured and unstructured meshing, quality review, and export |
 | [Simulation](simulation/index.md) | Turbulence models, boundary conditions, solver settings, running simulations, and post-processing |
-| [Examples](examples/index.md) | Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, electronics cooling, and rotating machinery |
+| [Examples](examples/index.md) | Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, and rotating machinery |
 | [Knowledge Base](knowledge-base/best-practices.md) | Best practices, troubleshooting, verification studies, FAQ, and glossary |
 | [Reference](reference/supported-formats.md) | Supported file formats, subscription tiers, and keyboard shortcuts |
 
@@ -54,7 +54,7 @@ We welcome corrections, improvements, and new examples. Please open an issue or 
 
 ### Writing Guidelines
 
-- **User-facing** — Focus on how to use the product, not internal implementation details
+- **User-facing** — Focus on how to use the product, not internal engineering notes
 - **Action-oriented** — Use clear, imperative language ("Click Upload", "Select External Flow")
 - **Concrete** — Include parameter tables, typical values, and worked examples
 - **Callouts** — Use `{tip}`, `{warning}`, and `{note}` admonitions for important information

@@ -51,7 +51,7 @@ Interactive visualization with surface coloring, slice planes, streamlines, isos
 
 ## Quick Links
 
-- [Quick Start](getting-started/quick-start.md) — Run your first simulation in minutes
-- [Studio Examples](examples/index.md) — Step-by-step walkthroughs for common applications
-- [Best Practices](knowledge-base/best-practices.md) — Tips for getting accurate results
-- [FAQ](knowledge-base/faq.md) — Answers to common questions
+- [Quick Start](getting-started/quick-start.md) - Run your first simulation in minutes
+- [Studio Examples](examples/index.md) - Step-by-step walkthroughs for common applications
+- [Best Practices](knowledge-base/best-practices.md) - Tips for getting accurate results
+- [FAQ](knowledge-base/faq.md) - Answers to common questions

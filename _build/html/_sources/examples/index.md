@@ -15,9 +15,6 @@ Analyze an aircraft wing section. Compute lift and drag, visualize pressure coef
 ### [Pipe Flow](internal-pipe-flow.md)
 Simulate turbulent flow through a pipe with bends. Analyze pressure drop, velocity profiles, and secondary flow patterns.
 
-### [Electronics Cooling](electronics-cooling.md)
-Model airflow through an electronics enclosure. Identify hot spots, evaluate cooling effectiveness, and optimize heat sink placement.
-
 ## Rotating Machinery
 
 ### [Fan / Pump](rotating-machinery.md)
@@ -30,5 +27,4 @@ Simulate a rotating fan or pump impeller using the Multiple Reference Frame (MRF
 | Analyze drag on a vehicle | [Vehicle Aerodynamics](vehicle-aerodynamics.md) |
 | Study wing performance | [Aircraft Wing](airfoil.md) |
 | Calculate pipe pressure drop | [Pipe Flow](internal-pipe-flow.md) |
-| Evaluate cooling design | [Electronics Cooling](electronics-cooling.md) |
 | Simulate a fan or pump | [Fan/Pump](rotating-machinery.md) |

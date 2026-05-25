@@ -51,7 +51,10 @@ parts:
     chapters:
       - file: knowledge-base/best-practices
       - file: knowledge-base/troubleshooting
-      - file: knowledge-base/verification-studies
+      - file: knowledge-base/validation-studies
+        sections:
+          - file: knowledge-base/validation-studies/turbulent-pipe-flow
+          - file: knowledge-base/validation-studies/drivaerml
       - file: knowledge-base/faq
       - file: knowledge-base/glossary
 

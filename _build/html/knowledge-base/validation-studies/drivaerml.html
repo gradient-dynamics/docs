@@ -1,0 +1,784 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DrivAerML &#8212; Gradient Dynamics Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=56ffe152" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=c73c0f3e"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=1ae7504c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'knowledge-base/validation-studies/drivaerml';</script>
+    <script src="../../_static/collapsible-nav.js?v=1bf3c62f"></script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Frequently Asked Questions" href="../faq.html" />
+    <link rel="prev" title="Turbulent Pipe Flow" href="turbulent-pipe-flow.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/GD_WordMark_PNG-06.png" class="logo__image only-light" alt="Gradient Dynamics Documentation - Home"/>
+    <script>document.write(`<img src="../../_static/GD_WordMark_PNG-06.png" class="logo__image only-dark" alt="Gradient Dynamics Documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/quick-start.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/projects.html">Projects</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Studio</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../studio/overview.html">Studio</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../meshing/index.html">Meshing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/geometry.html">Geometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/domain-setup.html">Domain Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/mesh-settings.html">Mesh Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/boundary-layers.html">Near-Wall Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/refinement-zones.html">Refinement Zones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/surfaces.html">Surfaces and Named Selections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/multi-region.html">Multi-Region Meshing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/conformal-nonconformal.html">Conformal vs Non-Conformal Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/mesh-quality.html">Mesh Quality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../meshing/export.html">Mesh Export</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../simulation/index.html">Simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/solver-technology.html">Solver Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/setup.html">Simulation Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/turbulence-models.html">Turbulence Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/boundary-conditions.html">Boundary Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/solver-settings.html">Solver Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/running.html">Running Simulations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../simulation/post-processing.html">Post-Processing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../agent/overview.html">AI Assistant</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../agent/mesh-assistant.html">Mesh Configuration with the Assistant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../agent/simulation-assistant.html">Simulation Setup with the Assistant</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/vehicle-aerodynamics.html">Example: Vehicle Aerodynamics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/airfoil.html">Example: Aircraft Wing Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/internal-pipe-flow.html">Example: Internal Pipe Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/rotating-machinery.html">Example: Rotating Machinery (Fan / Pump)</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Knowledge Base</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../best-practices.html">Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../validation-studies.html">Validation Studies</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="turbulent-pipe-flow.html">Turbulent Pipe Flow</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">DrivAerML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../reference/supported-formats.html">Supported Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/subscription-tiers.html">Subscription Tiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/keyboard-shortcuts.html">Keyboard Shortcuts</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/knowledge-base/validation-studies/drivaerml.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>DrivAerML</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-and-simulation-setup">2. Solver and Simulation Setup</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-strategy-and-grid-sensitivity">2.1. Mesh Strategy and Grid Sensitivity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-validation-assessment">3. Results and Validation Assessment</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#drag-coefficient-validation">3.1. Drag Coefficient Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-sensitivity-study">3.2. Mesh-Sensitivity Study</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-field-assessment">3.3. Flow-Field Assessment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-integration">3.4. Workflow Integration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">4. Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">5. Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="drivaerml">
+<h1>DrivAerML<a class="headerlink" href="#drivaerml" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The objective of this validation study is to benchmark the Gradient Dynamics GPU-native steady RANS solver against the DrivAerML open-source automotive aerodynamics dataset and evaluate its suitability for industrial design and optimisation workflows.</p>
+<p>DrivAerML is a high-fidelity public CFD dataset developed to support machine learning and data-driven aerodynamic modelling. The dataset contains 500 parametrically morphed variants of the DrivAer notchback vehicle geometry, with reference aerodynamic data generated using OpenFOAM v2212 scale-resolving CFD simulations on meshes of approximately 140 million cells per case.</p>
+<p>The DrivAer geometry is widely regarded as the modern reference benchmark for automotive external aerodynamics. Developed at TU München by Heft, Indinger, and Adams (2012) in collaboration with Audi and BMW, it was designed to bridge the gap between simplified academic geometries, such as the Ahmed body, and proprietary production vehicle models. Unlike simplified validation cases, the DrivAer geometry captures key real-world automotive flow physics, including detailed underbody flow, wheel and wheelhouse interactions, side-mirror effects, A-pillar separation, rear wake formation, and pressure-recovery behaviour.</p>
+<p>The DrivAerML dataset extends this benchmark through parameterised variations in body proportions, ground clearance, and rear-end geometry, creating a robust framework for evaluating solver accuracy and robustness across multiple vehicle configurations.</p>
+<p>This study evaluates the Gradient Dynamics solver across three representative DrivAerML geometries: Run 1, Run 166, and Run 402. Simulations were performed using the Gradient Dynamics GPU-native RANS solver with the k-omega SST turbulence model. A mesh-sensitivity study was also conducted using three mesh refinement levels to assess convergence behaviour and grid sensitivity.</p>
+<p>The validation focuses on four key objectives:</p>
+<ul class="simple">
+<li><p>Accuracy: agreement of predicted drag coefficient (C_d) against DrivAerML reference CFD data.</p></li>
+<li><p>Mesh sensitivity: convergence behaviour across increasing mesh refinement levels.</p></li>
+<li><p>Robustness across geometry variants: solver performance across multiple parametrically different DrivAerML configurations.</p></li>
+<li><p>Workflow readiness: ability to perform pre-processing, simulation, and post-processing through Gradient Dynamics Studio.</p></li>
+</ul>
+<p>This study is presented as a numerical benchmark against published CFD reference data and is not intended as a wind-tunnel validation study.</p>
+</section>
+<section id="solver-and-simulation-setup">
+<h2>2. Solver and Simulation Setup<a class="headerlink" href="#solver-and-simulation-setup" title="Link to this heading">#</a></h2>
+<p>The simulations were conducted using Gradient Dynamics’ proprietary GPU-native, steady Reynolds-Averaged Navier-Stokes (RANS) solver with the k-omega SST turbulence model (see table 1 for simulation parameters).</p>
+<p>For this validation study, the focus is strictly on benchmarking CFD accuracy against the DrivAerML reference aerodynamic data. The validation case consists of a steady, low-Mach external-flow simulation over the DrivAerML notchback vehicle geometry with a rolling-road ground-plane boundary condition representative of automotive aerodynamic testing environments.</p>
+<p><strong>Table 1: Simulation Parameters</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Flow regime</p></td>
+<td><p>External automotive aerodynamics</p></td>
+</tr>
+<tr class="row-odd"><td><p>Solver type</p></td>
+<td><p>Steady RANS</p></td>
+</tr>
+<tr class="row-even"><td><p>Turbulence model</p></td>
+<td><p>k-omega SST</p></td>
+</tr>
+<tr class="row-odd"><td><p>Inlet velocity</p></td>
+<td><p>60 m/s</p></td>
+</tr>
+<tr class="row-even"><td><p>Mach number</p></td>
+<td><p>0.173 at 300 K</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reynolds number</p></td>
+<td><p>4.06 x 10^6</p></td>
+</tr>
+<tr class="row-even"><td><p>Ground condition</p></td>
+<td><p>Rolling road</p></td>
+</tr>
+<tr class="row-odd"><td><p>Primary metric</p></td>
+<td><p>Drag coefficient, C_d</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The drag coefficient was calculated as:</p>
+<div class="math notranslate nohighlight">
+\[F_d = \frac{1}{2}\rho U^2 C_d A_{ref}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(A_{ref}\)</span> is the projected area of the DrivAer body in the streamline direction and <span class="math notranslate nohighlight">\(F_d\)</span> is the drag force.</p>
+<section id="mesh-strategy-and-grid-sensitivity">
+<h3>2.1. Mesh Strategy and Grid Sensitivity<a class="headerlink" href="#mesh-strategy-and-grid-sensitivity" title="Link to this heading">#</a></h3>
+<p>A mesh-sensitivity study was performed on DrivAerML Run 1, 166 and 402 using three mesh refinement levels to evaluate convergence behaviour and grid sensitivity. The mesh configurations are summarised in Table 2.</p>
+<p><strong>Table 2. Mesh Metrics for Grid Sensitivity Study.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mesh Level</p></th>
+<th class="head"><p>Total Cell Count</p></th>
+<th class="head"><p>Target y+</p></th>
+<th class="head"><p>Boundary-Layer Layers</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Coarse</p></td>
+<td><p>5,154,755</p></td>
+<td><p>30</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Medium</p></td>
+<td><p>14,043,191</p></td>
+<td><p>10</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>Fine</p></td>
+<td><p>22,979,588</p></td>
+<td><p>5</p></td>
+<td><p>15</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This validation approach provides two complementary assessments of solver performance:</p>
+<ul class="simple">
+<li><p>Mesh convergence behaviour through progressive refinement on a single geometry (Run 1).</p></li>
+<li><p>Robustness across geometry variants through comparison across multiple parametrically different DrivAerML configurations.</p></li>
+</ul>
+<p>Figure 1 shows the surface mesh generated for the DrivAerML vehicle geometry used in the study.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../../_images/drivaer-surface-mesh.png"><img alt="Surface mesh on the DrivAerML car body." src="../../_images/drivaer-surface-mesh.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Figure 1: Surface mesh of DrivAerML car body.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="results-and-validation-assessment">
+<h2>3. Results and Validation Assessment<a class="headerlink" href="#results-and-validation-assessment" title="Link to this heading">#</a></h2>
+<section id="drag-coefficient-validation">
+<h3>3.1. Drag Coefficient Validation<a class="headerlink" href="#drag-coefficient-validation" title="Link to this heading">#</a></h3>
+<p>Table 3 compares the drag coefficients predicted by the Gradient Dynamics solver against the DrivAerML reference CFD data for Runs 1, 166, and 402. All simulations were performed using meshes between 5-23 million cells with 7-15 boundary-layer layers.</p>
+<p><strong>Table 3. Drag Coefficient Comparison Against DrivAerML Reference Data</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Case</p></th>
+<th class="head"><p>Gradient Dynamics C_d</p></th>
+<th class="head"><p>DrivAerML Reference C_d</p></th>
+<th class="head"><p>Difference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Run 1</p></td>
+<td><p>0.295</p></td>
+<td><p>0.304</p></td>
+<td><p>-3.0%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Run 166</p></td>
+<td><p>0.247</p></td>
+<td><p>0.245</p></td>
+<td><p>+0.8%</p></td>
+</tr>
+<tr class="row-even"><td><p>Run 402</p></td>
+<td><p>0.261</p></td>
+<td><p>0.264</p></td>
+<td><p>-1.1%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../../_images/drivaer-surface-pressure.png"><img alt="Surface pressure distribution on the DrivAerML vehicle body." src="../../_images/drivaer-surface-pressure.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Figure 2: Surface pressure of from simulation run.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Across the three validation cases, the Gradient Dynamics solver reproduced the DrivAerML reference drag coefficients within 3.0%, with two of the three cases within approximately 1.1% of the published values.</p>
+<p>This level of agreement demonstrates that the solver can accurately capture the dominant aerodynamic behaviour of complex automotive geometries, including wake formation, pressure recovery, and vehicle-body flow interaction. The results are particularly relevant for early-stage aerodynamic design exploration and optimisation workflows, where rapid evaluation of multiple design variants is critical.</p>
+<p>Figure 2 shows the surface-pressure distribution generated from the simulation results. The pressure field captures the expected aerodynamic behaviour across the stagnation region, bonnet, windscreen, roofline, side structures, and rear wake region of the vehicle geometry.</p>
+</section>
+<section id="mesh-sensitivity-study">
+<h3>3.2. Mesh-Sensitivity Study<a class="headerlink" href="#mesh-sensitivity-study" title="Link to this heading">#</a></h3>
+<p>A mesh-sensitivity study was conducted to evaluate convergence behaviour across increasing mesh refinement levels. The results are summarised in Table 4.</p>
+<p><strong>Table 4: Mesh-Sensitivity Results for Run 1</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mesh Level</p></th>
+<th class="head"><p>C_d</p></th>
+<th class="head"><p>Difference vs Fine Mesh</p></th>
+<th class="head"><p>Difference vs DrivAerML Reference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Coarse</p></td>
+<td><p>0.282</p></td>
+<td><p>-6.62%</p></td>
+<td><p>-7.08%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Medium</p></td>
+<td><p>0.300</p></td>
+<td><p>-0.63%</p></td>
+<td><p>-1.12%</p></td>
+</tr>
+<tr class="row-even"><td><p>Fine</p></td>
+<td><p>0.302</p></td>
+<td><p>-</p></td>
+<td><p>-0.49%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The results show clear convergence toward the DrivAerML reference value as mesh resolution increases. The medium and fine meshes achieved drag coefficient predictions within approximately 1.1% and 0.5%, respectively, of the reference solution.</p>
+<p>This behaviour indicates that the solver responds consistently to increasing near-wall and volumetric resolution, with improved agreement obtained through mesh refinement. The convergence trend also demonstrates the numerical robustness of the Gradient Dynamics solver for external automotive aerodynamics applications.</p>
+<p>Figure 3 shows the velocity-magnitude distribution around the vehicle body, including acceleration regions around the front and roof surfaces, near-body flow structures, and downstream wake development.</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../../_images/drivaer-velocity-magnitude.png"><img alt="Velocity magnitude field around the DrivAerML vehicle body and wake." src="../../_images/drivaer-velocity-magnitude.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Figure 3: Velocity magnitude around the car body.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="flow-field-assessment">
+<h3>3.3. Flow-Field Assessment<a class="headerlink" href="#flow-field-assessment" title="Link to this heading">#</a></h3>
+<p>In addition to integrated aerodynamic coefficients, the simulations produced surface-pressure and velocity-field outputs for qualitative flow assessment. The resulting flow fields are consistent with expected external automotive aerodynamics behaviour, including:</p>
+<ul class="simple">
+<li><p>Attached boundary-layer development along the front body surfaces</p></li>
+<li><p>Flow acceleration around the roof and side structures</p></li>
+<li><p>Rear wake formation and pressure recovery behaviour</p></li>
+<li><p>Wheel-wake and underbody interaction regions</p></li>
+</ul>
+<p>The ability to capture these features alongside accurate drag prediction provides further confidence in the solver’s suitability for automotive aerodynamic design studies.</p>
+</section>
+<section id="workflow-integration">
+<h3>3.4. Workflow Integration<a class="headerlink" href="#workflow-integration" title="Link to this heading">#</a></h3>
+<p>The complete validation workflow was executed through the Gradient Dynamics Studio platform, enabling geometry import, automated mesh generation, boundary-condition setup, GPU-native CFD simulation, drag coefficient extraction, and surface-pressure and velocity-field visualisation within a unified environment, while also supporting export to external post-processing tools such as ParaView and Tecplot.</p>
+<p>The platform also supports the import of pre-existing meshes and interoperability with established engineering post-processing environments. This enables integration into existing CAE workflows without requiring engineering teams to replace their current toolchain, supporting practical enterprise deployment and adoption.</p>
+</section>
+</section>
+<section id="interpretation">
+<h2>4. Interpretation<a class="headerlink" href="#interpretation" title="Link to this heading">#</a></h2>
+<p>The results support three important conclusions.</p>
+<p>First, Gradient Dynamics’ steady RANS solver can reproduce DrivAerML reference drag coefficients with engineering-relevant accuracy across multiple realistic automotive geometries.</p>
+<p>Second, the mesh-sensitivity study shows predictable convergence behaviour: increasing cell count and near-wall resolution improves agreement with the reference value, with the fine mesh reaching -0.49% error relative to DrivAerML for Run 1.</p>
+<p>Third, the ability to execute this workflow through Gradient Dynamics Studio demonstrates a path toward enterprise deployment, where automated meshing, GPU-native simulation, and integrated post-processing can reduce friction in aerodynamic design studies.</p>
+</section>
+<section id="conclusion">
+<h2>5. Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>The Gradient Dynamics GPU-native CFD solver successfully reproduced the published DrivAerML reference CFD results across multiple automotive geometry variants, demonstrating strong agreement with the benchmark dataset and consistent convergence behaviour under mesh refinement.</p>
+<p>Across Runs 1, 166, and 402, the solver predicted drag coefficient within 3.0% of the DrivAerML reference values, with two cases within approximately 1.1%. In the mesh-sensitivity study on Run 1, increasing mesh resolution improved agreement with the reference solution, with the fine mesh achieving a drag coefficient error of only -0.49%.</p>
+<p>In addition to accurate drag prediction, the solver captured the expected aerodynamic flow structures around the vehicle geometry, including pressure distribution, wake formation, and near-body flow behaviour consistent with external automotive aerodynamics.</p>
+<p>These results provide credible evidence that Gradient Dynamics can deliver benchmark-quality aerodynamic predictions on complex road-car geometries using a GPU-native CFD workflow designed for high-throughput simulation and engineering optimisation. The study also demonstrates the maturity of the broader Gradient Dynamics platform, including integrated meshing, simulation, visualisation, and interoperability with established CAE post-processing tools, supporting its applicability to enterprise engineering design and optimisation workflows.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Ashton et. al. DrivAerML: High-Fidelity Computational Fluid Dynamics Dataset for Road-Car External Aerodynamics</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./knowledge-base/validation-studies"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="turbulent-pipe-flow.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Turbulent Pipe Flow</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../faq.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Frequently Asked Questions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-and-simulation-setup">2. Solver and Simulation Setup</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-strategy-and-grid-sensitivity">2.1. Mesh Strategy and Grid Sensitivity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-validation-assessment">3. Results and Validation Assessment</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#drag-coefficient-validation">3.1. Drag Coefficient Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-sensitivity-study">3.2. Mesh-Sensitivity Study</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow-field-assessment">3.3. Flow-Field Assessment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-integration">3.4. Workflow Integration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">4. Interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">5. Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gradient Dynamics
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

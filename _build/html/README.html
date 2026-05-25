@@ -227,7 +227,11 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="knowledge-base/best-practices.html">Best Practices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="knowledge-base/troubleshooting.html">Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="knowledge-base/verification-studies.html">Verification Studies</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="knowledge-base/validation-studies.html">Validation Studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="knowledge-base/validation-studies/turbulent-pipe-flow.html">Turbulent Pipe Flow - Gradient Dynamics Solver Validation Study</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knowledge-base/validation-studies/drivaerml.html">DrivAerML - Gradient Dynamics Solver Validation Study</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="knowledge-base/faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="knowledge-base/glossary.html">Glossary</a></li>
 </ul>
@@ -389,9 +393,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-docs-locally">Building the Docs Locally</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build">Build</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-guidelines">Writing Guidelines</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-page">Adding a Page</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-an-example">Adding an Example</a></li>
@@ -411,7 +412,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gradient-dynamics-documentation">
 <h1>Gradient Dynamics Documentation<a class="headerlink" href="#gradient-dynamics-documentation" title="Link to this heading">#</a></h1>
-<p>The official documentation for <a class="reference external" href="https://gradientdynamics.com">Gradient Dynamics</a> — production multiphysics simulation in the browser.</p>
+<p>The official documentation for <a class="reference external" href="https://gradientdynamics.com">Gradient Dynamics</a> — public facing documentation for engineers.</p>
 <blockquote>
 <div><p><strong>Note:</strong> This documentation is currently in active development alongside the product. Some sections may be incomplete or subject to change.</p>
 </div></blockquote>
@@ -444,7 +445,7 @@ document.write(`
 <td><p>Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, and rotating machinery</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="knowledge-base/best-practices.html"><span class="std std-doc">Knowledge Base</span></a></p></td>
-<td><p>Best practices, troubleshooting, verification studies, FAQ, and glossary</p></td>
+<td><p>Best practices, troubleshooting, validation studies, FAQ, and glossary</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="reference/supported-formats.html"><span class="std std-doc">Reference</span></a></p></td>
 <td><p>Supported file formats, subscription tiers, and keyboard shortcuts</p></td>
@@ -474,10 +475,6 @@ jupyter-book<span class="w"> </span>build<span class="w"> </span>.
 </pre></div>
 </div>
 </section>
-</section>
-<section id="contributing">
-<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
-<p>We welcome corrections, improvements, and new examples. Please open an issue or pull request.</p>
 <section id="writing-guidelines">
 <h3>Writing Guidelines<a class="headerlink" href="#writing-guidelines" title="Link to this heading">#</a></h3>
 <ul class="simple">
@@ -557,9 +554,6 @@ jupyter-book<span class="w"> </span>build<span class="w"> </span>.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-the-docs-locally">Building the Docs Locally</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build">Build</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-guidelines">Writing Guidelines</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-page">Adding a Page</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-an-example">Adding an Example</a></li>

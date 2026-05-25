@@ -4,7 +4,7 @@ orphan: true
 
 # Gradient Dynamics Documentation
 
-The official documentation for [Gradient Dynamics](https://gradientdynamics.com) — production multiphysics simulation in the browser.
+The official documentation for [Gradient Dynamics](https://gradientdynamics.com) — public facing documentation for engineers.
 
 > **Note:** This documentation is currently in active development alongside the product. Some sections may be incomplete or subject to change.
 
@@ -21,7 +21,7 @@ Gradient Dynamics Studio is a browser-based platform for computational fluid dyn
 | [Meshing](meshing/index.md) | Geometry preparation, structured and unstructured meshing, quality review, and export |
 | [Simulation](simulation/index.md) | Turbulence models, boundary conditions, solver settings, running simulations, and post-processing |
 | [Examples](examples/index.md) | Studio walkthroughs for vehicle aerodynamics, aircraft wings, pipe flow, and rotating machinery |
-| [Knowledge Base](knowledge-base/best-practices.md) | Best practices, troubleshooting, verification studies, FAQ, and glossary |
+| [Knowledge Base](knowledge-base/best-practices.md) | Best practices, troubleshooting, validation studies, FAQ, and glossary |
 | [Reference](reference/supported-formats.md) | Supported file formats, subscription tiers, and keyboard shortcuts |
 
 ## Building the Docs Locally
@@ -48,9 +48,6 @@ Open the output in your browser:
 open _build/html/index.html
 ```
 
-## Contributing
-
-We welcome corrections, improvements, and new examples. Please open an issue or pull request.
 
 ### Writing Guidelines
 

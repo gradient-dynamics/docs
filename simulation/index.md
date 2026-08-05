@@ -1,40 +1,43 @@
-# Simulation
+# Simulation setup reference
 
-Simulation pages describe how to configure and run Gradient Dynamics multiphysics solver workflows in Studio. The focus is on engineering setup, validation habits, and result interpretation, with enough solver-technology background to help you choose the right workflow.
+These pages provide detailed setup guidance for FluxCore workflows in Studio.
+They focus on the engineering choices that define a reproducible simulation:
+physics, materials, boundary conditions, turbulence, run controls and outputs.
 
-## Supported Workflows
+## Supported workflows
 
-| Workflow | Typical Use |
-|----------|-------------|
-| **External aerodynamics** | Vehicles, aircraft, buildings, sports equipment, and exposed components. |
-| **Internal flow** | Pipes, ducts, manifolds, enclosures, HVAC systems, and flow distribution. |
-| **Thermal analysis** | Heat transfer in fluids and solids, cold plates, heat exchangers, and thermal-management systems. |
-| **Rotating machinery** | Fans, pumps, compressors, turbines, propellers, and rotating zones. |
-| **Coupled multiphysics** | Cases where flow, heat transfer, and multiple regions interact. |
+| Workflow | Typical use |
+|---|---|
+| External aerodynamics | Vehicles, aircraft, buildings and exposed components |
+| Internal flow | Pipes, ducts, manifolds, enclosures and flow distribution |
+| Thermal and CHT | Cold plates, heat sinks, electronics and heat exchangers |
+| Rotating machinery | Fans, pumps, compressors, turbines and propellers |
+| Time-resolved flow | Unsteady loads, wakes and transient operating conditions |
 
-## Solver Technology Highlights
+FluxCore is a novel GPU-native simulation engine, developed as a coherent
+computational product for accelerator hardware rather than adapted from a
+traditional CPU solver. The public documentation describes supported physics,
+controls, boundary conditions and outputs; implementation details remain
+proprietary.
 
-Gradient Dynamics supports solver workflows on both structured and unstructured meshes. Unstructured meshing is the recommended starting point for most production CFD workflows, while structured meshing is available for repeatable automated studies and cases where that layout fits the validation target.
+## Recommended workflow
 
-The solver stack includes pressure-based low-speed CFD, explicit compressible flow, transient simulation, turbulence modelling, rotating-zone workflows, heat transfer, and coupled multiphysics. The explicit compressible path uses flux reconstruction to build conservative face fluxes for density, momentum, and energy, which is useful for shocks, pressure waves, high-speed aerodynamics, nozzles, and flows with strong density variation.
+1. Start from a checked generated or imported mesh.
+2. Choose the physics and materials for every region.
+3. Assign conditions to named boundaries.
+4. Select turbulence and numerical controls appropriate to the application.
+5. Define monitors and engineering outputs before launching.
+6. Run, inspect convergence and confirm conservation and physical plausibility.
+7. Compare important quantities with a reference or mesh-sensitivity study.
 
-See [Solver Technology](solver-technology.md) for an overview of flux reconstruction, numerical fluxes, gradient schemes, pressure-based coupling, and what these choices mean for engineering use.
+```{toctree}
+:maxdepth: 1
 
-## Simulation Workflow
-
-1. Start from a generated or imported mesh.
-2. Choose the physics and materials for each region.
-3. Assign boundary conditions to named surfaces.
-4. Select turbulence and solver settings appropriate for the application.
-5. Run the simulation and monitor convergence.
-6. Post-process fields, forces, heat-transfer metrics, and derived quantities.
-
-## Topics
-
-- [Simulation Setup](setup.md)
-- [Solver Technology](solver-technology.md)
-- [Turbulence Models](turbulence-models.md)
-- [Boundary Conditions](boundary-conditions.md)
-- [Solver Settings](solver-settings.md)
-- [Running Simulations](running.md)
-- [Post-Processing](post-processing.md)
+Simulation setup <setup>
+FluxCore technology <solver-technology>
+Turbulence models <turbulence-models>
+Boundary conditions <boundary-conditions>
+Solver settings <solver-settings>
+Running simulations <running>
+Post-processing <post-processing>
+```

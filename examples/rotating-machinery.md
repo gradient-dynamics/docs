@@ -118,7 +118,7 @@ Expect 5–20 million cells for a medium-resolution fan simulation. Check:
 | Outlet pressure | 0 Pa (or set based on system curve) |
 | Turbulence intensity | 3% |
 | Max iterations | 1500 |
-| Algorithm | SIMPLE |
+| Solver profile | Automatic |
 
 ## Step 8: Results Analysis
 

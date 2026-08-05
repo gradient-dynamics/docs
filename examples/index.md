@@ -28,3 +28,13 @@ Simulate a rotating fan or pump impeller using the Multiple Reference Frame (MRF
 | Study wing performance | [Aircraft Wing](airfoil.md) |
 | Calculate pipe pressure drop | [Pipe Flow](internal-pipe-flow.md) |
 | Simulate a fan or pump | [Fan/Pump](rotating-machinery.md) |
+
+```{toctree}
+:maxdepth: 1
+:hidden:
+
+Vehicle aerodynamics <vehicle-aerodynamics>
+Aircraft wing <airfoil>
+Internal pipe flow <internal-pipe-flow>
+Rotating machinery <rotating-machinery>
+```

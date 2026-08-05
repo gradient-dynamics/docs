@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Studio
 
 Gradient Dynamics Studio is the GUI interface to Gradient Dynamics simulation technology. It brings project setup, geometry review, meshing, solver configuration, run monitoring, and post-processing into one browser workspace.

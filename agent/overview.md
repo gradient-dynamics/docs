@@ -120,3 +120,11 @@ The assistant will explain the reasoning and help you make informed decisions.
 - It requires your **explicit confirmation** before making changes
 - For very complex multi-physics setups, manual configuration may be needed alongside assistant guidance
 - The assistant's suggestions are recommendations — always apply your engineering judgment
+
+```{toctree}
+:maxdepth: 1
+:hidden:
+
+Mesh assistant <mesh-assistant>
+Simulation assistant <simulation-assistant>
+```

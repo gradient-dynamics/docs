@@ -7,17 +7,11 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **Adaptive Mesh**
 : A mesh that varies cell size across the domain, using smaller cells where detail is needed and larger cells elsewhere.
 
-**AMG (Algebraic Multigrid)**
-: A common technique for accelerating linear solves in CFD and multiphysics workflows.
-
 **Angle of Attack (AoA)**
 : The angle between the freestream velocity direction and the reference line of a body (e.g., a wing chord). Measured in degrees.
 
 **Aspect Ratio**
 : The ratio of a cell's longest dimension to its shortest. Boundary layer cells have intentionally high aspect ratios; volume cells should have low aspect ratios.
-
-**AUSM+ (Advection Upstream Splitting Method)**
-: A numerical flux family used in compressible CFD.
 
 ## B
 
@@ -30,9 +24,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **Bluff Body**
 : A non-streamlined body that creates significant flow separation and a large wake. Examples: trucks, buildings, flat plates.
 
-**BiCGStab**
-: A Krylov-subspace iterative method commonly used for nonsymmetric sparse linear systems.
-
 ## C
 
 **CAD (Computer-Aided Design)**
@@ -40,9 +31,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 
 **Cd (Drag Coefficient)**
 : A dimensionless number representing aerodynamic drag force, normalized by dynamic pressure and reference area: Cd = Fd / (0.5 × ρ × V² × A).
-
-**Chebyshev Smoother**
-: A polynomial iterative method that damps targeted error modes. It is often used as a smoother or preconditioner inside multigrid workflows.
 
 **Cell**
 : The fundamental volume element of a computational mesh. The flow equations are solved for each cell.
@@ -87,19 +75,10 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **FVM (Finite Volume Method)**
 : A numerical technique that discretizes the governing equations over control volumes (cells). The standard method in CFD.
 
-**Flux Reconstruction**
-: A high-order CFD technique that reconstructs solution or flux information inside cells and corrects it using interface fluxes. In practical solver settings, it helps combine conservation with higher spatial accuracy.
-
 ## G
 
 **Gauge Pressure**
 : Pressure relative to a reference value (usually atmospheric). In incompressible CFD, only pressure differences matter, so outlet is typically set to 0 Pa gauge.
-
-**GAMG / AMG (Algebraic Multigrid)**
-: A multigrid linear-solver method that builds coarse correction levels from the algebraic system rather than requiring a predefined geometric grid hierarchy.
-
-**Gradient Reconstruction**
-: The process of estimating local field gradients from neighboring cell values. Gradients are used for higher-order face reconstruction, turbulence production, wall shear, heat-transfer estimates, and mesh non-orthogonality corrections.
 
 **Ground Effect**
 : The aerodynamic influence of the ground on a nearby body (e.g., a car). Requires a moving ground boundary condition for accurate simulation.
@@ -108,9 +87,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 
 **Hexahedron (Hex)**
 : A six-faced volume cell. Hexahedral meshes generally provide better numerical accuracy and convergence than tetrahedral meshes.
-
-**HLLC (Harten-Lax-van Leer-Contact)**
-: A numerical flux family used in compressible CFD.
 
 ## I
 
@@ -128,9 +104,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : A turbulence modeling approach that resolves large-scale eddies directly and models only the smallest scales. More accurate but much more expensive than RANS.
 
 ## M
-
-**MUSCL (Monotone Upstream-centered Scheme for Conservation Laws)**
-: A higher-order spatial reconstruction method used in CFD.
 
 **Manifold**
 : A surface where every edge is shared by exactly two faces. Non-manifold surfaces have topology errors.
@@ -156,20 +129,8 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 **Patch**
 : A named group of boundary faces. Used to apply boundary conditions (e.g., "inlet" patch, "car_body" patch).
 
-**PCG (Preconditioned Conjugate Gradient)**
-: An iterative method for symmetric positive-definite sparse linear systems. It is commonly used for pressure and diffusion-like solves.
-
-**PIMPLE**
-: A hybrid pressure-velocity coupling algorithm combining SIMPLE outer iterations with PISO inner corrections. The most stable option for transient flows with large time steps.
-
-**PISO (Pressure-Implicit with Splitting of Operators)**
-: A pressure-velocity coupling algorithm used primarily for transient simulations with small time steps.
-
 **Prism**
 : A wedge-shaped cell typically used in boundary layers, with triangular faces on the wall and outer surfaces.
-
-**Preconditioner**
-: A numerical transformation or approximate solve that makes a linear system easier for an iterative solver to converge.
 
 ## R
 
@@ -186,15 +147,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : A dimensionless number representing the ratio of inertial to viscous forces: Re = ρVL/μ. Determines whether flow is laminar or turbulent.
 
 ## S
-
-**Segregated Solver**
-: A solver strategy that solves related equations in sequence and iterates to convergence.
-
-**SIMPLE (Semi-Implicit Method for Pressure-Linked Equations)**
-: The standard pressure-velocity coupling algorithm for steady-state CFD.
-
-**SIMPLEC (SIMPLE-Consistent)**
-: An improved variant of SIMPLE that requires less under-relaxation and can converge faster for some problems.
 
 **Skewness**
 : A mesh quality metric measuring how much a cell deviates from its ideal shape (0 = perfect, 1 = degenerate).
@@ -216,9 +168,6 @@ Key terms and concepts used throughout the Gradient Dynamics documentation.
 : A file format for unstructured meshes and field data, used by ParaView and other visualization tools.
 
 ## W
-
-**WENO (Weighted Essentially Non-Oscillatory)**
-: A high-order spatial reconstruction scheme that maintains accuracy near discontinuities without introducing spurious oscillations. Available in 3rd and 5th order variants.
 
 **Watertight**
 : A surface mesh that is completely closed with no gaps or holes. Required for volume mesh generation.

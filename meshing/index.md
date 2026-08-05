@@ -31,3 +31,19 @@ Gradient Dynamics supports two meshing types:
 - [Multi-Region Meshing](multi-region.md)
 - [Conformal vs Non-Conformal Meshes](conformal-nonconformal.md)
 - [Mesh Quality](mesh-quality.md)
+
+```{toctree}
+:maxdepth: 1
+:hidden:
+
+Geometry <geometry>
+Domain setup <domain-setup>
+Mesh settings <mesh-settings>
+Near-wall resolution <boundary-layers>
+Refinement zones <refinement-zones>
+Surfaces <surfaces>
+Multi-region meshing <multi-region>
+Conformal and non-conformal meshes <conformal-nonconformal>
+Mesh quality <mesh-quality>
+Export <export>
+```
